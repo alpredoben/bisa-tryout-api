@@ -1,0 +1,18 @@
+{
+  "success": {
+    "default": {},
+    "auth": {}
+  },
+  "error": {
+    "default": {
+      "internalServer": "Terjadi kesalahan di serve",
+      "notFoundItem": "{{value}} tidak ditemukan",
+      "changePassword": "Kata sandi telah diubah. Silakan masuk lagi."
+    },
+    "auth": {
+      "deniedToken": "Akses ditolak. Pastikan token yang dikirim tidak kosong",
+      "invalidToken": "Akses ditolak. Token tidak valid atau sudah kadaluarsa",
+      "deniedAccess": "Akses untuk role pengguna {{value}} ditolak"
+    }
+  }
+}

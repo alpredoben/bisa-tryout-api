@@ -1,0 +1,80 @@
+services:
+  # Service API
+  core_dev_api:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    container_name: core_dev_api
+    env_file:
+      - .env
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - core_dev_network
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100m'
+        max-file: '5'
+
+  # Service NginX
+  core_dev_nginx:
+    container_name: core_dev_nginx
+    image: nginx:stable-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/dev/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - core_dev_api
+    networks:
+      - core_dev_network
+
+  # Service Loki
+  core_dev_loki:
+    container_name: core_dev_loki
+    image: grafana/loki:2.9.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./docker/dev/loki-config.yml:/etc/loki/config.yml
+    command: -config.file=/etc/loki/config.yml
+    networks:
+      - core_dev_network
+
+  # Service Promtail
+  core_dev_promtail:
+    container_name: core_dev_promtail
+    image: grafana/promtail:2.9.0
+    volumes:
+      - ./docker/dev/promtail-config.yaml:/etc/promtail/promtail.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/promtail.yaml
+    networks:
+      - core_dev_network
+
+  # Service Grafana
+  core_dev_grafana:
+    container_name: core_dev_grafana
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    volumes:
+      - core_dev_grafana_data:/var/lib/grafana
+    depends_on:
+      - core_dev_loki
+    networks:
+      - core_dev_network
+
+volumes:
+  core_dev_grafana_data:
+
+networks:
+  core_dev_network:
+    name: core_dev_network
+    external: true
