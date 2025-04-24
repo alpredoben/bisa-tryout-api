@@ -1,79 +1,65 @@
-migration-file=CreateMasterSumberDanaTable
-entity-name=Users
-compose-file=docker-compose.dev.yml
-app-container-name=finance_core_app
-app-pm-name=sikeu-dev
+compose-local-file=docker-compose.local.yml
+compose-dev-file=docker-compose.dev.yml
+compose-prod-file=docker-compose.prod.yml
 
-local-migration-create:
-	yarn typeorm migration:create  ./src/database/migrations/$(migration-file)
+app-container-local=local_core_api
+app-container-dev=core_dev_api
+app-container-prod=core_prod_api
 
-local-entity-create:
-	yarn typeorm entity:create ./src/database/models/$(entity-name)
+# Local Command
+local-deploy:
+	docker compose -f $(compose-local-file) up -d --build  --remove-orphans --force-recreate
 
-run-dev:
-	npm run dev
+local-deploy-watch:
+	docker compose -f $(compose-local-file) up --build  --remove-orphans --force-recreate
 
-seeder:
-	npm run seed
+local-rebuild:
+	docker compose -f $(compose-local-file) build --no-cache
 
-
-# Docker Command
-app-build:
-	docker compose -f $(compose-file) up -d --build 
-
-app-deploy:
-	docker compose -f $(compose-file) up -d --build  --remove-orphans --force-recreate
-
-app-rebuild:
-	docker compose -f $(compose-file) build --no-cache
-
-app-deploy-watch:
-	 docker compose -f $(compose-file) up --build  --remove-orphans --force-recreate
-
-app-down:
-	docker compose -f $(compose-file) down
-
-app-logs:
-	docker logs -f $(app-container-name)
-
-app-check:
-	docker exec -it $(app-container-name) sh
-
-migration-generate:
-	docker exec -it $(app-container-name) yarn run migration:generate
-
-migration-run:
-	docker exec -it $(app-container-name) yarn run migration:run
+local-down:
+	docker compose -f $(compose-local-file) down
 
 
-seed:
-	docker exec -t $(app-container-name) yarn run seed
+# Dev Command
+dev-deploy:
+	docker compose -f $(compose-dev-file) up -d --build  --remove-orphans --force-recreate
 
+dev-deploy-watch:
+	docker compose -f $(compose-dev-file) up --build  --remove-orphans --force-recreate
+
+dev-rebuild:
+	docker compose -f $(compose-dev-file) build --no-cache
+
+dev-down:
+	docker compose -f $(compose-dev-file) down
+
+
+# Prod Command
+prod-deploy:
+	docker compose -f $(compose-prod-file) up -d --build  --remove-orphans --force-recreate
+
+prod-deploy-watch:
+	docker compose -f $(compose-prod-file) up --build  --remove-orphans --force-recreate
+
+prod-rebuild:
+	docker compose -f $(compose-prod-file) build --no-cache
+
+prod-down:
+	docker compose -f $(compose-prod-file) down
+
+
+# Check Log Local App Container
+log-app-local:
+	docker logs -f $(app-container-local)
+
+# Check Log Development App Container
+log-app-dev:
+	docker logs -f $(app-container-dev)
+
+# Check Log Production App Container
+log-app-prod:
+	docker logs -f $(app-container-prod)
+
+# Create Migration On Local
 create-migration:
-	docker exec -it $(app-container-name) yarn run typeorm-ts-node-commonjs migration:create ./src/database/migrations/$(migration-file)
-
-restart-app:
-	docker restart $(app-container-name) 
-
-restart-db:
-	docker restart finance_mysql 
-
-pm-dev:
-	pm2 start npm --name sikeu-api -- run dev
-
-pm-yarn-dev:
-	pm2 start yarn --name sikeu-api -- run dev
-
-
-pm-log:
-	pm2 logs $(app-pm-name)
-
-local-create-migration:
-	yarn run typeorm-ts-node-commonjs migration:create ./src/database/migrations/$(migration-file)
-
-# Quick development commands
-start:
-	docker compose -f $(compose-file) up -d
-
-stop:
-	docker compose -f $(compose-file) down
+	docker exec -it $(app-container-dev) yarn run typeorm-ts-node-commonjs migration:create ./src/database/migrations/$(migration-file)

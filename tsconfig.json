@@ -12,7 +12,7 @@
     "module": "NodeNext" /* Specify what module code is generated. */,
     "rootDir": "./src" /* Specify the root folder within your source files. */,
     "moduleResolution": "nodenext" /* Specify how TypeScript looks up a file from a given module specifier. */,
-    // "typeRoots": ["./src/types", "./node_modules/@types"],
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "resolveJsonModule": true /* Enable importing .json files. */,
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
     "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
@@ -22,6 +22,6 @@
     "strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["./src/**/*.tsx", "./src/**/*.ts", "src/migrationScript.js"],
+  "include": ["./src/**/*.tsx", "./src/**/*.ts", "src/@types", "@types", "src/migrationScript.js"],
   "exclude": ["node_modules", "test/**/*.ts"]
 }

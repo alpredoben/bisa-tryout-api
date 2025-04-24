@@ -1,9 +1,9 @@
 services:
-  sikeu-core-api:
+  core_prod_api:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    container_name: sikeu-core-api
+    container_name: core_prod_api
     restart: unless-stopped
     env_file:
       - .env
@@ -12,7 +12,7 @@ services:
     volumes:
       - './logs/:/app/logs/'
     networks:
-      - sikeu_core_network
+      - core_prod_network
     logging:
       driver: 'json-file'
       options:
@@ -20,6 +20,6 @@ services:
         max-file: '5'
 
 networks:
-  sikeu_core_network:
-    name: sikeu_core_network
-    driver: bridge
+  core_prod_network:
+    name: core_prod_network
+    external: true

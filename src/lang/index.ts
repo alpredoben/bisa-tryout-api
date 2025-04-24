@@ -3,7 +3,7 @@ import path from 'path';
 import { Environments as cfg } from '../environments';
 
 MessageDialog.configure({
-  locales: ['en', 'id'],
+  locales: ['id', 'en'],
   directory: path.join(__dirname, 'locales'),
   defaultLocale: cfg.AppLang,
   objectNotation: true,

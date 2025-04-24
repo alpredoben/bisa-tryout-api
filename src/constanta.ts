@@ -1,20 +1,20 @@
-import { Environments as cfg } from './environments'
+import { Environments as cfg } from './environments';
 
 export const CS_LogActivity = {
   Label: {
-    Auth: 'Authentikasi'
+    Auth: 'Authentikasi',
   },
   Api: {
     Auth: {
       Login: 'Pengguna Berhasil Masuk',
-      Register: 'Pengguna Berhasil Mendaftarkan Akunnya'
-    }
-  }
-}
+      Register: 'Pengguna Berhasil Mendaftarkan Akunnya',
+    },
+  },
+};
 
 export const CS_Notification = {
   Topic: {
-    User: 'Master Pengguna'
+    User: 'Master Pengguna',
   },
   Event: {
     User: {
@@ -22,23 +22,23 @@ export const CS_Notification = {
       Update: (value: string) => `Berhasil mengubah pengguna ${value}`,
       Delete: (value: string) => `Berhasil menghapus pengguna ${value}`,
       ChangePassword: (value: string) => `Berhasil mengubah password pengguna ${value}`,
-      LoginAs: (user: string) => `Pengguna ${user} login menggunakan akun anda`
-    }
+      LoginAs: (user: string) => `Pengguna ${user} login menggunakan akun anda`,
+    },
   },
   Type: {
     Info: 'information',
     Error: 'error',
     Success: 'success',
-    Warn: 'warning'
-  }
-}
+    Warn: 'warning',
+  },
+};
 
 export const CS_LogType = {
   Auth: {
     Register: 'register',
     Login: 'login',
-  }
-}
+  },
+};
 
 export const CS_MessageBroker = {
   Queue: {
@@ -48,32 +48,30 @@ export const CS_MessageBroker = {
   Exchange: {
     Email: 'exchange_email',
     LogActivity: 'exchange_log_activity',
-  }
-}
+  },
+};
 
 export const CS_MailHeader = {
   forgotPassword: {
     subject: 'Request Reset Password and Receive New Token/OTP',
     template: 'forgotPassword',
-    cc: ''
+    cc: '',
   },
   additional: {
     customer_phone: cfg.CustomerPhone,
-    customer_email: cfg.CustomerEmail
-  }
-}
+    customer_email: cfg.CustomerEmail,
+  },
+};
 
 export const CS_DbSchema = {
   TableName: {
     Role: 'master_role',
-    User: 'master_user'
+    User: 'master_user',
   },
   PrimaryKey: {
     Role: 'role_id',
-    User: 'user_id'
-  }
-}
+    User: 'user_id',
+  },
+};
 
-export const CS_DbProcedure = {}
-
-
+export const CS_DbProcedure = {};

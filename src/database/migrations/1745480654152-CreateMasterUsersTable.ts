@@ -1,9 +1,8 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateMasterUsersTable1745480654152 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE master_users (
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE TABLE master_users (
           user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
           role_id UUID DEFAULT NULL,
           full_name VARCHAR(255) DEFAULT NULL,
@@ -32,9 +31,9 @@ export class CreateMasterUsersTable1745480654152 implements MigrationInterface {
           deleted_by UUID NULL DEFAULT NULL,
           CONSTRAINT fk_user_role_id FOREIGN KEY (role_id) REFERENCES master_roles(role_id) ON DELETE SET NULL
         );`);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE master_users`);
-    }
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE master_users`);
+  }
 }

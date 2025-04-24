@@ -1,22 +1,14 @@
-import express, { Application } from 'express';
 import cors from 'cors';
+import express, { Application } from 'express';
 import helmet from 'helmet';
-import {
-  errorMiddleware,
-  removeFaviconMiddleware,
-  syntaxErrorMiddleware,
-} from './app/middlewares/error.middleware';
+import { errorMiddleware, removeFaviconMiddleware, syntaxErrorMiddleware } from './app/middlewares/error.middleware';
+import { setCompression, setHeaderLanguage, setHeaderProtection } from './app/middlewares/other.middleweare';
 import AppDataSource from './config/db.config';
 import { httpLogger } from './config/logger.config';
-import { MessageDialog } from './lang';
-import {
-  setHeaderProtection,
-  setHeaderLanguage,
-  setCompression,
-} from './app/middlewares/other.middleweare';
 import { Environments as cfg } from './environments';
-import RouteApplication from './routes/routeApplication'
 import { RunSubscribers } from './events/subscribers';
+import { MessageDialog } from './lang';
+import RouteApplication from './routes/routeApplication';
 
 export class App {
   public app: Application;
@@ -25,9 +17,8 @@ export class App {
     this.app = express();
 
     if (cfg.AppEnv?.toLowerCase() !== 'test') {
-      RunSubscribers()
+      RunSubscribers();
     }
-
 
     this.initializeMiddleware();
     this.inititalizeRoutes();
@@ -48,20 +39,17 @@ export class App {
     // header protection
     this.app.use(setHeaderProtection);
 
-
     const whitelist = [
       /^http:\/\/localhost:\d+$/, // Allow all localhost ports
-      cfg.DomainApi,  // Replace with your production domain
-      cfg.DomainClient
+      cfg.DomainApi, // Replace with your production domain
+      cfg.DomainClient,
     ];
 
     // cors
     this.app.use(
       cors({
         origin: (origin, callback) => {
-          if (!origin || whitelist.some((rule) =>
-            typeof rule === 'string' ? rule === origin : rule.test(origin)
-          )) {
+          if (!origin || whitelist.some((rule) => (typeof rule === 'string' ? rule === origin : rule.test(origin)))) {
             callback(null, true);
           } else {
             callback(new Error('Not allowed by CORS'));
@@ -71,13 +59,13 @@ export class App {
         allowedHeaders: ['Content-Type', 'Authorization'],
         exposedHeaders: ['Authorization'],
         credentials: true,
-      })
+      }),
     );
 
     this.app.use(express.json({ limit: cfg.AppJsonLimit }));
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(httpLogger);
-    this.app.use(MessageDialog.init);
+    this.app.use(MessageDialog.init.bind(MessageDialog) as unknown as express.RequestHandler);
   }
 
   protected inititalizeRoutes(): void {
@@ -97,5 +85,4 @@ export class App {
         process.exit(1);
       });
   }
-
 }

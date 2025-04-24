@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import compression from 'compression';
+import { NextFunction, Request, Response } from 'express';
 import { Environments as cfg } from '../../environments';
 import { MessageDialog } from '../../lang';
-import compression from 'compression';
 
 /** Set Application Compression */
 export const setCompression = () => {
@@ -37,5 +37,3 @@ export const setHeaderProtection = (req: Request, res: Response, next: NextFunct
 
   next();
 };
-
-

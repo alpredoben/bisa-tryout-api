@@ -9,7 +9,6 @@ import { Logger } from './config/logger.config';
 const application = new App();
 const server: Server = createServer(application.app);
 
-
 const localesPath = path.join(__dirname, '../dist/lang/locales');
 
 if (!fs.existsSync(localesPath)) {
@@ -38,13 +37,11 @@ const gracefulShutdown = async (signal: NodeJS.Signals) => {
       Logger().error('Forced shutdown after timeout.');
       process.exit(1);
     }, 10000).unref();
-
   } catch (error) {
     Logger().error('Error during shutdown:', error);
     process.exit(1);
   }
 };
-
 
 /** Handling unhandled errors */
 process.on('unhandledRejection', (reason: any, promise) => {
@@ -54,8 +51,6 @@ process.on('uncaughtException', (err: Error) => {
   Logger().error('Uncaught Exception thrown:', err);
   gracefulShutdown('SIGTERM'); // simulate graceful shutdown
 });
-
-
 
 /** Handling termination signals */
 ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
