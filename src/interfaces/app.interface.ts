@@ -89,11 +89,11 @@ export interface I_MulterInterface {
 }
 
 export interface I_HistoryDescription {
-  total_created: number
-  total_updated: number
-  total_failed: number
-  total_row: number,
-  message: string,
+  total_created: number;
+  total_updated: number;
+  total_failed: number;
+  total_row: number;
+  message: string;
 }
 
 /** Auth User JWT Payload */
@@ -103,4 +103,10 @@ export interface I_AuthUserPayload extends JwtPayload {
   last_name: string;
   email: string;
   role: any;
+}
+
+export interface I_ResultService {
+  success: boolean;
+  message: string;
+  record: Record<string, any> | object | any;
 }

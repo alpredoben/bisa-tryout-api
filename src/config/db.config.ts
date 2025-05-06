@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { Environments as cfg, IsProduction } from '../environments';
 
 const AppDataSource = new DataSource({
-  type: 'mysql',
+  type: 'postgres',
   host: cfg.DbHost,
   port: cfg.DbPort,
   username: cfg.DbUser,
@@ -17,9 +17,9 @@ const AppDataSource = new DataSource({
     connectionLimit: 10,
     queueLimit: 0,
     waitForConnections: true,
-    connectTimeout: 10000
+    connectTimeout: 10000,
   },
-  maxQueryExecutionTime: 5000
+  maxQueryExecutionTime: 5000,
 });
 
 export default AppDataSource;

@@ -1,7 +1,11 @@
 {
   "success": {
     "default": {},
-    "auth": {}
+    "converter": {
+      "downloadTemplate": "Download template berhasil",
+      "importExcel": "Proses import excel berhasil. Silahkan cek riwayat import excel nya",
+      "checkHistory": "Data riwayat import excel berhasil ditarik"
+    }
   },
   "error": {
     "default": {
@@ -9,10 +13,8 @@
       "notFoundItem": "{{value}} tidak ditemukan",
       "changePassword": "Kata sandi telah diubah. Silakan masuk lagi."
     },
-    "auth": {
-      "deniedToken": "Akses ditolak. Pastikan token yang dikirim tidak kosong",
-      "invalidToken": "Akses ditolak. Token tidak valid atau sudah kadaluarsa",
-      "deniedAccess": "Akses untuk role pengguna {{value}} ditolak"
+    "converter": {
+      "storeHistory": "Gagal menyimpan riwayat import data"
     }
   }
 }

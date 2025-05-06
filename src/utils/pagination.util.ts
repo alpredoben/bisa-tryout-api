@@ -4,11 +4,10 @@ export const setPagination = (
   data: Record<string, any>[],
   totalRow: number,
   page: number = 1,
-  limit: number = 20
+  limit: number = 20,
 ): I_ResponsePagination => {
   page = Math.max(page, 1);
   limit = Math.max(limit, 1);
-
 
   const totalPage = Math.ceil(totalRow / limit);
   const nextPage = page < totalPage ? page + 1 : null;
@@ -17,7 +16,7 @@ export const setPagination = (
     records: data,
     next_page: nextPage,
     prev_page: prevPage,
-    total_page: totalRow,
+    total_page: totalPage,
     total_row: totalRow,
     limit,
     page,

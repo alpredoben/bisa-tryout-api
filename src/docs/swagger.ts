@@ -2,10 +2,9 @@ import createSwaggerPath from './path';
 import createSwaggerSchema from './schema';
 
 const swaggerDocInfo: object = {
-  description:
-    'Dokumentasi Restfull API Sistem Informasi Keuangan (Unimed)',
+  description: 'Dokumentasi Restfull API Transaction Converter',
   version: '1.0.0',
-  title: 'SIKEU CORE API',
+  title: 'TRANSACTION CONVERTER',
   contact: {
     email: '',
   },

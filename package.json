@@ -13,7 +13,7 @@
     "build": "rimraf dist && tsc --module NodeNext && mkdir dist\\lang\\locales",
     "start:prod": "NODE_ENV=production node --import tsx dist/server.js",
     "pm2:start": "pm2 start dist/server.js --name sikeu-api --interpreter node -- --import tsx",
-    "typeorm": "typeorm-ts-node-commonjs -d ./src/config/dbconfig.ts",
+    "typeorm": "typeorm-ts-node-commonjs -d ./src/config/db.config.ts",
     "migration:generate": "npm run typeorm migration:generate",
     "migration:show": "npm run typeorm migration:show",
     "migration:revert": "npm run typeorm migration:revert",

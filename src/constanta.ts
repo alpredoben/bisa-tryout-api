@@ -43,11 +43,11 @@ export const CS_LogType = {
 export const CS_MessageBroker = {
   Queue: {
     Email: 'queue_email',
-    LogActivity: 'queue_log_activity',
+    Transaction: 'queue_transaction',
   },
   Exchange: {
     Email: 'exchange_email',
-    LogActivity: 'exchange_log_activity',
+    Transaction: 'exchange_transaction',
   },
 };
 

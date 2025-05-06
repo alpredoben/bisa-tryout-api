@@ -1,0 +1,82 @@
+{
+  "/transaction/import-excel": {
+    "post": {
+      "tags": ["Transaction"],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaTransactionImportExcel"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transaction/check-import": {
+    "get": {
+      "tags": ["Transaction"],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transaction/download-report": {
+    "get": {
+      "tags": ["Transaction"],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/octet-stream:": {}
+          }
+        }
+      }
+    }
+  },
+  "/transaction/download-excel/{history_id}": {
+    "get": {
+      "tags": ["Transaction"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "history_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/octet-stream:": {}
+          }
+        }
+      }
+    }
+  }
+}
