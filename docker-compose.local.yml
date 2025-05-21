@@ -1,23 +1,25 @@
 services:
   # API Service
-  local_core_api:
+  web-simulation-api:
     build:
       context: .
       dockerfile: ./docker/local/Dockerfile
-    container_name: local_core_api
+    container_name: web-simulation-api
     restart: on-failure
     env_file:
       - .env
     ports:
       - '${APP_PORT}:${APP_PORT}'
     depends_on:
-      - local_core_db
-      - local_core_rabbitmq
+      - web-simulation-db
+      - web-simulation-rmq
+      - web-simulation-redis
+      - web-simulation-minio
     volumes:
       - .:/app
       - /app/node_modules
     networks:
-      - local_core_network
+      - web_simulation_network
     logging:
       driver: 'json-file'
       options:
@@ -25,22 +27,22 @@ services:
         max-file: '5'
 
   # PostgreSQL Service
-  local_core_db:
+  web-simulation-db:
     image: postgres:15.12-alpine3.21
-    container_name: local_core_db
+    container_name: web-simulation-db
     restart: always
     env_file:
       - .env
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=99Xe4MyS4Cf6Dzt
-      - POSTGRES_DB=db_boiler
+      - POSTGRES_DB=exam_simulator
     ports:
-      - '5880:5432'
+      - '7101:5432'
     volumes:
-      - local_core_db_data:/var/lib/postgresql/data
+      - web_simulation_db_data:/var/lib/postgresql/data
     networks:
-      - local_core_network
+      - web_simulation_network
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME} -p ${DB_PASS}']
       interval: 10s
@@ -48,25 +50,61 @@ services:
       retries: 3
 
   # RabbitMQ
-  local_core_rabbitmq:
+  web-simulation-rmq:
     image: rabbitmq:3.13.7-management-alpine
-    container_name: local_core_rabbitmq
+    container_name: web-simulation-rmq
     restart: always
     ports:
-      - '5677:${RABBITMQ_PORT}'
-      - '15677:15672'
+      - '7102:5672'
+      - '7103:15672'
     env_file:
       - .env
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=zUxSaYBnYz
     networks:
-      - local_core_network
+      - web_simulation_network
+
+  web-simulation-minio:
+    image: minio/minio:latest
+    container_name: web-simulation-minio
+    restart: always
+    command: server /data --console-address ":9001"
+    ports:
+      - '7104:9000' # API port
+      - '7105:9001' # Console UI
+    env_file:
+      - .env
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=HIweK134YA
+    volumes:
+      - web_simulation_minio_data:/data
+    networks:
+      - web_simulation_network
+
+  # Redis Service
+  web-simulation-redis:
+    image: redis:latest
+    container_name: web-simulation-redis
+    restart: always
+    ports:
+      - '7106:6379'
+    environment:
+      - REDIS_USER=admin
+      - REDIS_PASSWORD=G4Z8z2VYGfMK2E7
+      - REDIS_DB=key_simulation
+    volumes:
+      - web_simulation_redis_data:/data
+    networks:
+      - web_simulation_network
 
 volumes:
-  local_core_db_data:
+  web_simulation_db_data:
+  web_simulation_minio_data:
+  web_simulation_redis_data:
 
 networks:
-  local_core_network:
-    name: local_core_network
+  web_simulation_network:
+    name: web_simulation_network
     driver: bridge

@@ -1,0 +1,22 @@
+{
+  "SchemaSingleUploadFile": {
+    "type": "object",
+    "properties": {
+      "file": {
+        "type": "string",
+        "format": "binary",
+        "description": "Upload your file with extension (jpg, jpeg, png, webp, tiff, bmp or svg)"
+      }
+    }
+  },
+  "SchemaUpdateSingleFile": {
+    "type": "object",
+    "properties": {
+      "file": {
+        "type": "string",
+        "format": "binary",
+        "description": "Upload your file with extension (jpg, jpeg, png, webp, tiff, bmp or svg)"
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "SchemaCreateForMasterMenu": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Enter name of menu"
+      },
+      "slug": {
+        "type": "string",
+        "description": "Enter slug (path location)"
+      },
+      "order_number": {
+        "type": "number",
+        "default": 1,
+        "description": "Order Number"
+      },
+      "parent_id": {
+        "type": "string",
+        "description": "Enter parent_id (uuid) and Optional. Example: module_id=de189b42-7b63-4e52-9f3c-491e431d046e"
+      },
+      "file_id": {
+        "type": "string",
+        "description": "File ID (UUID). Optional value"
+      }
+    }
+  },
+
+  "SchemaUpdateForMasterMenu": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Enter name of menu"
+      },
+      "slug": {
+        "type": "string",
+        "description": "Enter slug (path location)"
+      },
+      "order_number": {
+        "type": "number",
+        "default": 1,
+        "description": "Order Number"
+      },
+      "parent_id": {
+        "type": "string",
+        "description": "Enter parent_id (uuid) and Optional. Example: module_id=de189b42-7b63-4e52-9f3c-491e431d046e"
+      }
+    }
+  }
+}

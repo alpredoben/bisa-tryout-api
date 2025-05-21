@@ -1,9 +1,9 @@
 services:
-  core_prod_api:
+  web-simulation-api:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    container_name: core_prod_api
+    container_name: web-simulation-api
     restart: unless-stopped
     env_file:
       - .env
@@ -12,7 +12,7 @@ services:
     volumes:
       - './logs/:/app/logs/'
     networks:
-      - core_prod_network
+      - web_simulation_network
     logging:
       driver: 'json-file'
       options:
@@ -20,6 +20,6 @@ services:
         max-file: '5'
 
 networks:
-  core_prod_network:
-    name: core_prod_network
+  web_simulation_network:
+    name: web_simulation_network
     external: true

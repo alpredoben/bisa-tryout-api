@@ -1,5 +1,3 @@
-import { Environments as cfg } from './environments';
-
 export const CS_LogActivity = {
   Label: {
     Auth: 'Authentikasi',
@@ -58,19 +56,23 @@ export const CS_MailHeader = {
     cc: '',
   },
   additional: {
-    customer_phone: cfg.CustomerPhone,
-    customer_email: cfg.CustomerEmail,
+    customer_phone: null,
+    customer_email: null,
   },
 };
 
 export const CS_DbSchema = {
   TableName: {
-    Role: 'master_role',
-    User: 'master_user',
+    Role: 'master_roles',
+    User: 'master_users',
+    FileStorage: 'file_storages',
+    Menu: 'master_menu',
   },
   PrimaryKey: {
     Role: 'role_id',
     User: 'user_id',
+    FileStorage: 'file_id',
+    Menu: 'menu_id',
   },
 };
 

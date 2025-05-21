@@ -78,7 +78,11 @@ export const Environments = {
   MailAlert: process.env.MAIL_ALERT_LIST ?? 'alpredo.tampubolon@gmail.com',
   MailIgnoreTLS: Boolean(process.env.MAIL_IGNORE_TLS ?? 'false'),
 
-  // Customer
-  CustomerPhone: process.env.CUSTOMER_PHONE ?? '0612234556',
-  CustomerEmail: process.env.CUSTOMER_EMAIL ?? 'cs@support.com',
+  // Minio Storage
+  MinioHost: process.env.MINIO_ENDPOINT ?? 'localhost',
+  MinioPort: (process.env.MINIO_PORT ?? 9000).toString(),
+  MinioUseSSL: process.env.MINIO_USE_SSL ?? false,
+  MinioUser: process.env.MINIO_ROOT_USER ?? 'admin',
+  MinioPass: process.env.MINIO_ROOT_PASSWORD ?? 'admin',
+  MinioBucketName: process.env.MINIO_BUCKET_NAME ?? 'admin-bucket',
 };

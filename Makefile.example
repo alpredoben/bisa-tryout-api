@@ -2,9 +2,12 @@ compose-local-file=docker-compose.local.yml
 compose-dev-file=docker-compose.dev.yml
 compose-prod-file=docker-compose.prod.yml
 
-app-container-local=local_core_api
+app-container-local=web-simulation-api
 app-container-dev=core_dev_api
 app-container-prod=core_prod_api
+
+local-logs:
+	docker logs -f $(app-container-local)
 
 # Local Command
 local-deploy:
@@ -18,6 +21,12 @@ local-rebuild:
 
 local-down:
 	docker compose -f $(compose-local-file) down
+
+local-migrate:
+	docker compose -f $(compose-local-file) exec $(app-container-local) yarn migration:run
+
+local-seed:
+	docker compose -f $(compose-local-file) exec $(app-container-local) yarn seed
 
 
 # Dev Command

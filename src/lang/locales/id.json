@@ -1,20 +1,78 @@
 {
   "success": {
-    "default": {},
-    "converter": {
-      "downloadTemplate": "Download template berhasil",
-      "importExcel": "Proses import excel berhasil. Silahkan cek riwayat import excel nya",
-      "checkHistory": "Data riwayat import excel berhasil ditarik"
+    "default": {
+      "uploadFileToStorage": "File berhasil diupload",
+      "deleteFileFromStorage": "File {{value}} berhasil dihapus",
+      "foundItem": "Data {{value}} berhasil ditemukan"
+    },
+    "auth": {
+      "login": "Login berhasil",
+      "register": "Pendaftaran akun berhasil"
+    },
+    "files": {
+      "fetch": "Data file berhasil ditarik",
+      "store": "Data file {{value}} berhasil ditambahkan",
+      "update": "Data file berhasil diubah",
+      "delete": "Data file berhasil dihapus"
+    },
+    "roles": {
+      "fetch": "Data role berhasil ditarik",
+      "store": "Data role {{value}} berhasil ditambahkan",
+      "update": "Data role {{value}} berhasil diubah",
+      "delete": "Data role {{value}} berhasil dihapus"
+    },
+    "users": {
+      "fetch": "Data pengguna berhasil ditarik",
+      "store": "Data pengguna {{value}} berhasil ditambahkan",
+      "update": "Data pengguna {{value}} berhasil diubah",
+      "delete": "Data pengguna {{value}} berhasil dihapus"
+    },
+    "menu": {
+      "fetch": "Data menu berhasil ditarik",
+      "store": "Data menu {{value}} berhasil ditambahkan",
+      "update": "Data menu {{value}} berhasil diubah",
+      "delete": "Data menu {{value}} berhasil dihapus"
     }
   },
   "error": {
+    "validator": {
+      "required": "{{field}} wajib diisi",
+      "string": "{{field}} wajib bertipe string",
+      "email": "Email tidak valid",
+      "exists": "Data {{value}} sudah terdaftar disistem",
+      "min": "Password harus memiliki minimal {{value}} karakter",
+      "matchPassword": "Konfirmasi password tidak cocok dengan password"
+    },
     "default": {
       "internalServer": "Terjadi kesalahan di serve",
       "notFoundItem": "{{value}} tidak ditemukan",
-      "changePassword": "Kata sandi telah diubah. Silakan masuk lagi."
+      "changePassword": "Kata sandi telah diubah. Silakan masuk lagi.",
+      "noFileUpload": "Tidak ada file yang diupload"
     },
-    "converter": {
-      "storeHistory": "Gagal menyimpan riwayat import data"
+    "auth": {
+      "invalidEmail": "Email {{value}} tidak terdaftar",
+      "invalidPassword": "Password tidak sesuai",
+      "register": "Pendaftaran akun gagal",
+      "deniedToken": "Akses ditolak. Tidak ada token yang diberikan.",
+      "invalidToken": "Token tidak valid atau kedaluwarsa"
+    },
+    "roles": {
+      "fetch": "Data role gagal ditarik",
+      "store": "Data role {{value}} gagal ditambahkan",
+      "update": "Data role gagal diubah",
+      "delete": "Data role gagal dihapus"
+    },
+    "users": {
+      "fetch": "Data pengguna gagal ditarik",
+      "store": "Data pengguna {{value}} gagal ditambahkan",
+      "update": "Data pengguna gagal diubah",
+      "delete": "Data pengguna gagal dihapus"
+    },
+    "menu": {
+      "fetch": "Data menu gagal ditarik",
+      "store": "Data menu {{value}} gagal ditambahkan",
+      "update": "Data menu gagal diubah",
+      "delete": "Data menu gagal dihapus"
     }
   }
 }

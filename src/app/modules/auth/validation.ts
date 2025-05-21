@@ -1,88 +1,38 @@
-import Joi from 'joi';
+import { MessageDialog } from '../../../lang';
+import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 
-export const loginValidateSchema = {
-  body: Joi.object({
-    email: Joi.string()
-      .email()
-      .required()
-      .error((errors: any) => {
-        return errors.map((err: any) => {
-          switch (err.code) {
-            case 'string.email':
-              return new Error('Email must be a valid email address');
-            case 'any.required':
-              return new Error('Email is required');
-            default:
-              return err;
-          }
-        });
-      }),
-    password: Joi.string()
-      .min(8)
-      .required()
-      .error((errors: any) => {
-        return errors.map((err: any) => {
-          switch (err.code) {
-            case 'string.min':
-              return new Error('Password must be at least 6 characters long');
-            case 'any.required':
-              return new Error('Password is required');
-            default:
-              return err;
-          }
-        });
-      }),
-  }),
-};
+export const AuthValidation = {
+  login: [
+    reqValidation('email', 'Email', 'check')
+      .isEmail()
+      .normalizeEmail()
+      .withMessage(MessageDialog.__('error.validator.email')),
 
-export const registerValidateSchema = {
-  body: Joi.object({
-    name: Joi.string()
-      .min(3)
-      .required()
-      .error((errors: any) => {
-        return errors.map((err: any) => {
-          switch (err.code) {
-            case 'string.base':
-              return new Error('Name must be a string');
-            case 'string.min':
-              return new Error('Name must be at least 3 characters long');
-            case 'any.required':
-              return new Error('Name is required');
-            default:
-              return err;
-          }
-        });
+    reqValidation('password', 'Password', 'check')
+      .isLength({ min: 6 })
+      .withMessage(MessageDialog.__('error.validator.min', { value: '6' })),
+    ...validationMiddleware,
+  ],
+
+  register: [
+    reqValidation('phone', 'No. Telepon/WA', 'check'),
+    reqValidation('nama', 'Nama Lengkap', 'check'),
+    reqValidation('email', 'Email', 'check')
+      .isEmail()
+      .normalizeEmail()
+      .withMessage(MessageDialog.__('error.validator.email')),
+    reqValidation('password', 'Password', 'check')
+      .isLength({ min: 6 })
+      .withMessage(MessageDialog.__('error.validator.min', { value: '6' })),
+    reqValidation('confirm_password', 'Konfirmasi Password', 'check')
+      .isLength({ min: 6 })
+      .withMessage(MessageDialog.__('error.validator.min', { value: '6' }))
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error(MessageDialog.__('error.validator.matchPassword'));
+        }
+        return true;
       }),
-    email: Joi.string()
-      .email()
-      .required()
-      .error((errors: any) => {
-        return errors.map((err: any) => {
-          switch (err.code) {
-            case 'string.email':
-              return new Error('Email must be a valid email address');
-            case 'any.required':
-              return new Error('Email is required');
-            default:
-              return err;
-          }
-        });
-      }),
-    password: Joi.string()
-      .min(8)
-      .required()
-      .error((errors: any) => {
-        return errors.map((err: any) => {
-          switch (err.code) {
-            case 'string.min':
-              return new Error('Password must be at least 6 characters long');
-            case 'any.required':
-              return new Error('Password is required');
-            default:
-              return err;
-          }
-        });
-      }),
-  }),
+    ...validationMiddleware,
+  ],
 };

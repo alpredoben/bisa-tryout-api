@@ -1,167 +1,111 @@
 import crypto from 'crypto';
 import { Request, Response } from 'express';
-import fs from 'fs';
+import mime from 'mime-types';
 import multer from 'multer';
-import path from 'path';
-import { Environments as cfg } from '../environments';
-import { I_MulterInterface, I_ResultService } from '../interfaces/app.interface';
-import { sendErrorResponse } from '../utils/response.util';
+import { Environments as Cfg } from '../environments';
+import { I_ExpressResponse, I_MulterInterface } from '../interfaces/app.interface';
+import { MessageDialog } from '../lang';
+import { sendErrorResponse, sendSuccessResponse } from '../utils/response.util';
+import { minioClient, minioEnsureBucket, minioUploadToStorage } from './minio.config';
 
-const BASE_URL = cfg?.DomainApi ? cfg?.DomainApi : `${cfg.AppHost}:${cfg.AppPort}`;
+const BUCKET_NAME = Cfg.MinioBucketName;
+const BASE_URL = Cfg?.DomainApi ? Cfg?.DomainApi : `http://${Cfg.AppHost}:${Cfg.AppPort}`;
 
-const uploadPath = path.join(__dirname, '../../uploads');
+// Generate unique filename
+export const generateFileName = (originalName: string): string => {
+  const randomString = crypto.randomBytes(8).toString('hex');
+  const extension = originalName.split('.').pop();
+  return `${randomString}-${Date.now()}${extension}`;
+};
 
-// Ensure the folders exist (if not, create them)
-if (!fs.existsSync(path.join(uploadPath, 'icon'))) {
-  fs.mkdirSync(path.join(uploadPath, 'icon'), { recursive: true });
-}
+const multerStorage = multer.memoryStorage();
 
-if (!fs.existsSync(path.join(uploadPath, 'logo'))) {
-  fs.mkdirSync(path.join(uploadPath, 'logo'), { recursive: true });
-}
-
-if (!fs.existsSync(path.join(uploadPath, 'images'))) {
-  fs.mkdirSync(path.join(uploadPath, 'images'), { recursive: true });
-}
-
-// Create undangan directory if it doesn't exist
-if (!fs.existsSync(path.join(uploadPath, 'undangan'))) {
-  fs.mkdirSync(path.join(uploadPath, 'undangan'), { recursive: true });
-}
-
-const multerStorage = multer.diskStorage({
-  destination: function (req: Request, file: Express.Multer.File, cb: Function) {
-    if (file.fieldname === 'file_icon') {
-      cb(null, path.join(uploadPath, 'icon')); // Save file_icon in 'uploads/icon'
-    } else if (file.fieldname === 'file_logo') {
-      cb(null, path.join(uploadPath, 'logo')); // Save file_logo in 'uploads/logo'
-    } else if (file.fieldname === 'file_image') {
-      cb(null, path.join(uploadPath, 'images')); // Save file_logo in 'uploads/logo'
-    } else if (file.fieldname === 'file_undangan') {
-      cb(null, path.join(uploadPath, 'undangan')); // Save file_undangan in 'uploads/undangan'
-    } else {
-      cb(new Error('Invalid file type'), ''); // Handle error if fieldname is wrong
-    }
-  },
-  filename: function (req: Request, file: Express.Multer.File, cb: Function) {
-    const timestamp = Date.now();
-    const randomString = crypto.randomBytes(8).toString('hex'); // Generate a random string
-    const ext = path.extname(file.originalname); // Get file extension (e.g., .jpg, .png)
-    const newFileName = `${randomString}-${timestamp}${ext}`; // Random filename + timestamp
-    cb(null, newFileName);
-  },
-});
-
+// Upload Middleware
 export const uploadImageToStorage = multer({
   storage: multerStorage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // Limit file size to 10MB
-  },
-  fileFilter: function (req: Request, file: Express.Multer.File, cb: Function) {
-    if (file.fieldname === 'file_undangan') {
-      // Allow PDF files for undangan
-      const filetypes = /jpeg|jpg|png|gif|pdf/;
-      const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-      const mimetype = /jpeg|jpg|png|gif|pdf/.test(file.mimetype);
-
-      if (extname && mimetype) {
-        return cb(null, true);
-      } else {
-        cb(new Error('Invalid file type. Allowed types: JPG, PNG, GIF, PDF'), false);
-      }
-    } else {
-      // For other fields, only allow images
-      const filetypes = /jpeg|jpg|png|gif/; // Allowed file types
-      const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-      const mimetype = filetypes.test(file.mimetype);
-
-      if (extname && mimetype) {
-        return cb(null, true);
-      } else {
-        cb(new Error('Invalid file type. Allowed types: JPG, PNG, GIF'), false);
-      }
-    }
-  },
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-export const readBodyReq = multer();
+// Upload File To Minio
+export const uploadFile = async (req: Request): Promise<I_ExpressResponse> => {
+  try {
+    await minioEnsureBucket(BUCKET_NAME);
 
-export const makeFullUrlFile = (filePath: string, pathSlug: string = 'master-module'): any => {
-  if (filePath != null && filePath != '' && filePath != undefined) {
-    return `${BASE_URL}/api/v1/${pathSlug}/files/${filePath}`;
-  }
-  return filePath;
-};
+    if (!req?.file) {
+      return {
+        success: false,
+        code: 400,
+        message: MessageDialog.__('error.default.noFileUpload'),
+        data: null,
+      };
+    }
 
-export const getFileFromStorage = (type: string, filename: string): I_ResultService => {
-  const validTypes = ['icon', 'logo', 'images', 'undangan']; // Ensure valid directories
+    const fileName = generateFileName(req?.file?.originalname);
 
-  if (!validTypes.includes(type)) {
-    return {
-      success: false,
-      message: 'Invalid file type',
-      record: null,
-    };
-  }
+    console.log({ BUCKET_NAME, FILENAME: fileName });
 
-  const filePath = path.join(uploadPath, type, filename);
+    await minioUploadToStorage(BUCKET_NAME, fileName, req?.file?.buffer, req?.file?.size, {
+      'Content-Type': req?.file?.mimetype,
+    });
 
-  // Check if the file exists
-  if (!fs.existsSync(filePath)) {
-    return {
-      success: false,
-      message: 'File not found',
-      record: filePath,
-    };
-  }
+    const fileUrl = `${BASE_URL}/api/v1/files/${fileName}`;
 
-  return {
-    success: true,
-    message: 'Get file success',
-    record: filePath,
-  };
-};
-
-export const removeFileInStorage = (fileName: string): I_ResultService => {
-  // Change this to your actual file name
-  const filePath = path.join(uploadPath, fileName);
-
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
     return {
       success: true,
-      message: `${fileName} was found and deleted.`,
-      record: filePath,
+      message: MessageDialog.__('success.default.uploadFileToStorage'),
+      code: 200,
+      data: {
+        file_name: fileName,
+        file_url: fileUrl,
+      },
     };
-  } else {
+  } catch (error: any) {
+    console.log({ ERROR_FILE: error });
     return {
-      success: true,
-      message: `${fileName} does not exist.`,
-      record: filePath,
+      success: false,
+      message: error.message,
+      code: 400,
+      data: error,
     };
   }
 };
 
-export const showFile = (req: Request, res: Response): Response | any => {
-  const { type, filename } = req.params;
-  const result = getFileFromStorage(type, filename);
+// Get File URL
+export const getFileUrl = (fileName: string): string => {
+  return `${BASE_URL}/api/v1/files/${fileName}`;
+};
 
-  if (!result?.success) {
-    return sendErrorResponse(res, 400, result.message, result.record);
-  } else {
-    return res.sendFile(result.record);
+// Fetch file from Minio
+export const fetchFileFromStorage = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { filename } = req.params;
+
+    const fileStream = await minioClient.getObject(BUCKET_NAME, filename);
+    const contentType = mime.lookup(filename) || 'application/octet-stream';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+
+    fileStream.pipe(res);
+  } catch (error: any) {
+    sendErrorResponse(res, 404, MessageDialog.__('error.default.notFoundItem', { value: 'File' }));
   }
 };
 
-/**
- * Khusus untuk handle multipart-form with file any extension
- * Contoh penggunaan :
- * multerUpload({ type: 'single', name: 'nama_body_req' })
- */
+// Delete File From Minio
+export const removeFileInStorage = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { filename } = req.params;
+    await minioClient.removeObject(BUCKET_NAME, filename);
+    return sendSuccessResponse(res, 200, MessageDialog.__('success.default.deleteFileFromStorage'), {
+      valeu: filename,
+    });
+  } catch (error) {
+    return sendErrorResponse(res, 500, 'Error deleting file', error);
+  }
+};
+
+// Multer wrapper for Express route handlers
 export const multerUpload = (options: I_MulterInterface) => {
-  const upload = multer({});
-  if (options?.type === 'single') {
-    return upload.single(options.name);
-  }
-  return upload.any();
+  return options?.type === 'single' ? uploadImageToStorage.single(options.name) : uploadImageToStorage.any();
 };

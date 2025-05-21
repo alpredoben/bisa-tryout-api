@@ -39,11 +39,7 @@ export class App {
     // header protection
     this.app.use(setHeaderProtection);
 
-    const whitelist = [
-      /^http:\/\/localhost:\d+$/, // Allow all localhost ports
-      cfg.DomainApi, // Replace with your production domain
-      cfg.DomainClient,
-    ];
+    const whitelist = [/^http:\/\/localhost:\d+$/];
 
     // cors
     this.app.use(
