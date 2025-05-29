@@ -1,22 +1,24 @@
 import { Response } from 'express';
 import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
-import { generateSlug, standartDateISO } from '../../../utils/common.util';
+import { standartDateISO } from '../../../utils/common.util';
 import { defineRequestOrderORM, defineRequestPaginateArgs } from '../../../utils/request.util';
 import { sendResponseJson } from '../../../utils/response.util';
 import { sortItem } from './constanta';
-import { RoleService } from './service';
+import { TryoutCategoryService } from './service';
 
-class RoleHandler {
-  private readonly service = new RoleService();
+class TryoutCategoryHandler {
+  private readonly service = new TryoutCategoryService();
 
   bodyValidation(req: I_RequestCustom): Record<string, any> {
     let payload: Record<string, any> = {};
 
-    if (req?.body?.role_name) {
-      const name: string = req?.body?.role_name;
-      payload.role_name = name;
-      payload.role_slug = generateSlug(name);
+    if (req?.body?.name) {
+      payload.name = req?.body?.name;
+    }
+
+    if (req?.body?.description) {
+      payload.description = req?.body?.description;
     }
 
     return payload;
@@ -32,7 +34,7 @@ class RoleHandler {
   }
 
   async findById(req: I_RequestCustom, res: Response): Promise<Response> {
-    const id: string = req?.params?.[SC.PrimaryKey.Role];
+    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
     const result = await this.service.findById(id);
     return sendResponseJson(res, result);
   }
@@ -52,7 +54,7 @@ class RoleHandler {
 
   async update(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.Role];
+    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
     let payload: Record<string, any> = {
       updated_at: today,
       updated_by: req?.user?.user_id,
@@ -65,7 +67,7 @@ class RoleHandler {
 
   async softDelete(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.Role];
+    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
     let payload: Record<string, any> = {
       deleted_at: today,
       deleted_by: req?.user?.user_id,
@@ -76,4 +78,4 @@ class RoleHandler {
   }
 }
 
-export default new RoleHandler();
+export default new TryoutCategoryHandler();

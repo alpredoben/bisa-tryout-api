@@ -4,29 +4,23 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleMenuSelectionModel } from './RoleMenuSelectionModel';
+import { PermissionModel } from './PermissionModel';
+import { RoleMenuModel } from './RoleMenuModel';
 
-@Entity({ name: 'role_menu_permissions' })
-export class RoleMenuPermissionsModel {
+@Entity({ name: 'access_permissions' })
+export class AccessPermissionModel {
   @PrimaryGeneratedColumn('uuid')
+  access_id!: string;
+
+  @Column({ name: 'item_id', type: 'uuid', default: null, nullable: true })
+  item_id!: string;
+
+  @Column({ name: 'permission_id', type: 'uuid', default: null, nullable: true })
   permission_id!: string;
-
-  @Column({ name: 'selection_id', type: 'uuid', default: null, nullable: true })
-  selection_id!: string;
-
-  @OneToOne(() => RoleMenuSelectionModel, (value) => value.role_menu_permission)
-  @JoinColumn({ name: 'selection_id' })
-  menu_selection!: RoleMenuSelectionModel;
-
-  @Column({ type: 'text', default: null, nullable: true })
-  access_name!: string;
-
-  @Column({ type: 'boolean', default: false })
-  access_status!: boolean;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -45,4 +39,12 @@ export class RoleMenuPermissionsModel {
 
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
+
+  @ManyToOne(() => RoleMenuModel, (value) => value.access_permissions)
+  @JoinColumn({ name: 'item_id' })
+  role_menu_access!: RoleMenuModel;
+
+  @ManyToOne(() => PermissionModel, (value) => value.access_permissions)
+  @JoinColumn({ name: 'permission_id' })
+  permission!: PermissionModel;
 }

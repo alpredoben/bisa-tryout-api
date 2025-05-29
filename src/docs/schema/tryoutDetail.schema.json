@@ -1,0 +1,80 @@
+{
+  "SchemaCreateForTryoutDetail": {
+    "type": "object",
+    "properties": {
+      "package_id": {
+        "type": "string",
+        "summary": "Tryout Package ID",
+        "default": "UUID"
+      },
+      "name": {
+        "type": "string",
+        "summary": "Tryout Detail Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Tryout Detail Description",
+        "default": "Seleksi Kompetensi Dasar"
+      },
+      "total_questions": {
+        "type": "number",
+        "summary": "Total Question",
+        "default": 110
+      },
+      "duration": {
+        "type": "number",
+        "summary": "Total Duration",
+        "default": 110
+      },
+      "satuan": {
+        "type": "string",
+        "summary": "Satuan (menit, detik, jam)",
+        "default": "detik"
+      },
+      "passing_grade": {
+        "type": "number",
+        "default": 100
+      }
+    }
+  },
+  "SchemaUpdateForTryoutDetail": {
+    "type": "object",
+    "properties": {
+      "package_id": {
+        "type": "string",
+        "summary": "Tryout Package ID",
+        "default": "UUID"
+      },
+      "name": {
+        "type": "string",
+        "summary": "Tryout Detail Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Tryout Detail Description",
+        "default": "Seleksi Kompetensi Dasar"
+      },
+      "total_questions": {
+        "type": "number",
+        "summary": "Total Question",
+        "default": 110
+      },
+      "duration": {
+        "type": "number",
+        "summary": "Total Duration",
+        "default": 110
+      },
+      "satuan": {
+        "type": "string",
+        "summary": "Satuan (menit, detik, jam)",
+        "default": "detik"
+      },
+      "passing_grade": {
+        "type": "number",
+        "default": 100
+      }
+    }
+  }
+}

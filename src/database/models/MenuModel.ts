@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,7 +10,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleMenuSelectionModel } from './RoleMenuSelectionModel';
+import { AccessPermissionModel } from './AccessPermissionModel';
+import { RoleMenuModel } from './RoleMenuModel';
 
 @Entity({ name: 'master_menu' })
 export class MenuModel {
@@ -59,6 +61,32 @@ export class MenuModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToMany(() => RoleMenuSelectionModel, (value) => value.role)
-  role_menu_selection!: RoleMenuSelectionModel[];
+  @OneToMany(() => RoleMenuModel, (value) => value.menu)
+  role_menu_access!: RoleMenuModel[];
+
+  // virtual property
+  access_permissions?: AccessPermissionModel[];
+
+  @AfterLoad()
+  populateAccessPermissions() {
+    // Hanya untuk menu yang memiliki parent (bukan root)
+    if (this.parent_id !== null) {
+      this.access_permissions = this.role_menu_access?.flatMap((rm) =>
+        (rm?.access_permissions ?? []).map((x) => ({
+          access_id: x.access_id,
+          item_id: x.item_id,
+          permission: x.permission
+            ? {
+                permission_id: x.permission.permission_id,
+                name: x.permission.name,
+                order_number: x.permission.order_number,
+              }
+            : null,
+        })),
+      ) as unknown as AccessPermissionModel[];
+    }
+
+    // tetap rekursif ke children
+    this.childrens?.forEach((child) => child.populateAccessPermissions?.());
+  }
 }

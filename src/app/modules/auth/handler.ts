@@ -84,7 +84,7 @@ class AuthHandler {
 
   async fetchProfile(req: I_RequestCustom, res: Response): Promise<Response> {
     const id: any = req?.user?.user_id;
-    const result = await this.userService.findById(id);
+    const result = await this.userService.getProfile(id);
     return sendResponseJson(res, result);
   }
 }

@@ -1,5 +1,7 @@
 import AppDataSource from '../../config/db.config';
 import { MenuSeeders } from './MenuSeeders';
+import { PermissionSeeders } from './PermissionSeeders';
+import { RoleMenuPermissionSeeder } from './RoleMenuPermissionSeeder';
 import { RoleSeeders } from './RoleSeeders';
 import { UserSeeders } from './UserSeeders';
 
@@ -25,6 +27,16 @@ const runSeeders = async () => {
     console.log('Seeding master menu running....');
     await MenuSeeders();
     console.log('Seeding master menu successfully');
+
+    /** Menu */
+    console.log('Seeding master permission running....');
+    await PermissionSeeders();
+    console.log('Seeding master permission successfully');
+
+    /** RoleMenuPermission */
+    console.log('Seeding role menu permission running....');
+    await RoleMenuPermissionSeeder();
+    console.log('Seeding role menu permission successfully');
 
     /**
      * REGISTER FUNCTION SEEDER IN HERE

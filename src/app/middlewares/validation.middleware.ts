@@ -33,5 +33,5 @@ export const reqValidation = (property: string, required: string, type: string =
     return validation.optional(optional);
   }
 
-  return validation.notEmpty().withMessage(MessageDialog.__('validator.required', { field: `${required}` }));
+  return validation.notEmpty().withMessage(MessageDialog.__('error.validator.required', { field: `${required}` }));
 };

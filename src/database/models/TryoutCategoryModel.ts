@@ -3,24 +3,25 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleMenuModel } from './RoleMenuModel';
-import { UserModel } from './UserModel';
+import { TryoutPackageModel } from './TryoutPackageModel';
 
-@Entity({ name: 'master_roles' })
-export class RoleModel {
+@Entity({ name: 'tryout_categories' })
+export class TryoutCategoryModel {
   @PrimaryGeneratedColumn('uuid')
-  role_id!: string;
+  category_id!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'role_name' })
-  role_name!: string;
+  @Column({ type: 'varchar', length: 255, nullable: false, name: 'name' })
+  name!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'role_slug' })
-  role_slug!: string;
+  @Column({ type: 'text', default: null, name: 'description' })
+  description!: string;
+
+  @Column({ type: 'text', default: null, name: 'icon' })
+  icon!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -40,9 +41,6 @@ export class RoleModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => UserModel, (value) => value.role)
-  user!: UserModel;
-
-  @OneToMany(() => RoleMenuModel, (value) => value.role)
-  role_menu_access!: RoleMenuModel[];
+  @OneToOne(() => TryoutPackageModel, (value) => value.tryout_category)
+  tryout_package!: TryoutPackageModel;
 }

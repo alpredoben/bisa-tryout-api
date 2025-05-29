@@ -1,0 +1,32 @@
+{
+  "SchemaCreateForTryoutCategory": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Category Name",
+        "default": "BUMN FG 2025"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Category Description",
+        "default": "Tryout Proses Rekrutmen Pegawai Fresh Graduate BUMN Tahun 2025"
+      }
+    }
+  },
+  "SchemaUpdateForTryoutCategory": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Category Name",
+        "default": "BUMN FG 2025"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Category Description",
+        "default": "Tryout Proses Rekrutmen Pegawai Fresh Graduate BUMN Tahun 2025"
+      }
+    }
+  }
+}

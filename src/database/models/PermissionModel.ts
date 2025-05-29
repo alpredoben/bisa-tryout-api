@@ -4,23 +4,21 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleMenuModel } from './RoleMenuModel';
-import { UserModel } from './UserModel';
+import { AccessPermissionModel } from './AccessPermissionModel';
 
-@Entity({ name: 'master_roles' })
-export class RoleModel {
+@Entity({ name: 'master_permissions' })
+export class PermissionModel {
   @PrimaryGeneratedColumn('uuid')
-  role_id!: string;
+  permission_id!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'role_name' })
-  role_name!: string;
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  name!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'role_slug' })
-  role_slug!: string;
+  @Column({ type: 'bigint', default: null, nullable: true })
+  order_number!: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -40,9 +38,6 @@ export class RoleModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => UserModel, (value) => value.role)
-  user!: UserModel;
-
-  @OneToMany(() => RoleMenuModel, (value) => value.role)
-  role_menu_access!: RoleMenuModel[];
+  @OneToMany(() => AccessPermissionModel, (value) => value.permission)
+  access_permissions!: AccessPermissionModel[];
 }

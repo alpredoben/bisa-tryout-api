@@ -7,7 +7,7 @@ export class CreateTablesUsers1745480654152 implements MigrationInterface {
       name VARCHAR(255) NOT NULL,
       email VARCHAR(255) UNIQUE,
       password TEXT NOT NULL,
-      role_id UUID DEFAULT NULL,
+      role_id UUID NULL DEFAULT NULL,
       refresh_token TEXT NULL,
       photo JSONB NULL DEFAULT NULL,
       phone VARCHAR(20) NULL DEFAULT NULL,

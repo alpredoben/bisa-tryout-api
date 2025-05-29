@@ -5,29 +5,24 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { AccessPermissionModel } from './AccessPermissionModel';
 import { MenuModel } from './MenuModel';
-import { RoleMenuPermissionsModel } from './RoleMenuPermissionsModel';
 import { RoleModel } from './RoleModel';
 
-@Entity({ name: 'role_menu_selection' })
-export class RoleMenuSelectionModel {
+@Entity({ name: 'role_had_menus' })
+export class RoleMenuModel {
   @PrimaryGeneratedColumn('uuid')
-  selection_id!: string;
+  item_id!: string;
 
-  @ManyToOne(() => RoleModel, (value) => value.role_menu_selection)
-  @JoinColumn({ name: 'role_id' })
-  role!: RoleModel;
+  @Column({ name: 'role_id', type: 'uuid', default: null, nullable: true })
+  role_id!: string;
 
-  @ManyToOne(() => MenuModel, (value) => value.role_menu_selection)
-  @JoinColumn({ name: 'menu_id' })
-  master_module!: MenuModel;
-
-  @OneToOne(() => RoleMenuPermissionsModel, (value) => value.menu_selection)
-  role_menu_permission!: RoleMenuPermissionsModel;
+  @Column({ name: 'menu_id', type: 'uuid', default: null, nullable: true })
+  menu_id!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -46,4 +41,15 @@ export class RoleMenuSelectionModel {
 
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
+
+  @ManyToOne(() => RoleModel, (value) => value.role_menu_access)
+  @JoinColumn({ name: 'role_id' })
+  role!: RoleModel;
+
+  @ManyToOne(() => MenuModel, (value) => value.role_menu_access)
+  @JoinColumn({ name: 'menu_id' })
+  menu!: MenuModel;
+
+  @OneToMany(() => AccessPermissionModel, (value) => value.role_menu_access)
+  access_permissions!: AccessPermissionModel[];
 }

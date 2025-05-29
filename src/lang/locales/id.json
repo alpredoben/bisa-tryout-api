@@ -32,6 +32,34 @@
       "store": "Data menu {{value}} berhasil ditambahkan",
       "update": "Data menu {{value}} berhasil diubah",
       "delete": "Data menu {{value}} berhasil dihapus"
+    },
+    "permissions": {
+      "fetch": "Data permission berhasil ditarik",
+      "store": "Data permission {{value}} berhasil ditambahkan",
+      "update": "Data permission {{value}} berhasil diubah",
+      "delete": "Data permission {{value}} berhasil dihapus"
+    },
+    "features-access": {
+      "create-assign-menu": "Akses menu berhasil ditambahkan",
+      "update-assign-menu": "Akses menu berhasil diubah"
+    },
+    "tryout-category": {
+      "fetch": "Data kategori tryout berhasil ditarik",
+      "store": "Data kategori tryout {{value}} berhasil ditambahkan",
+      "update": "Data kategori tryout {{value}} berhasil diubah",
+      "delete": "Data kategori tryout {{value}} berhasil dihapus"
+    },
+    "tryout-package": {
+      "fetch": "Data paket tryout berhasil ditarik",
+      "store": "Data paket tryout {{value}} berhasil ditambahkan",
+      "update": "Data paket tryout {{value}} berhasil diubah",
+      "delete": "Data paket tryout {{value}} berhasil dihapus"
+    },
+    "tryout-details": {
+      "fetch": "Data detail tryout berhasil ditarik",
+      "store": "Data detail tryout {{value}} berhasil ditambahkan",
+      "update": "Data detail tryout {{value}} berhasil diubah",
+      "delete": "Data detail tryout {{value}} berhasil dihapus"
     }
   },
   "error": {
@@ -41,11 +69,13 @@
       "email": "Email tidak valid",
       "exists": "Data {{value}} sudah terdaftar disistem",
       "min": "Password harus memiliki minimal {{value}} karakter",
-      "matchPassword": "Konfirmasi password tidak cocok dengan password"
+      "matchPassword": "Konfirmasi password tidak cocok dengan password",
+      "notEmpty": "Data {{field}} tidak boleh string kosong",
+      "uuid": "Format data {{field}} tidak sesuai"
     },
     "default": {
       "internalServer": "Terjadi kesalahan di serve",
-      "notFoundItem": "{{value}} tidak ditemukan",
+      "notFoundItem": "Data {{value}} tidak ditemukan",
       "changePassword": "Kata sandi telah diubah. Silakan masuk lagi.",
       "noFileUpload": "Tidak ada file yang diupload"
     },
@@ -73,6 +103,34 @@
       "store": "Data menu {{value}} gagal ditambahkan",
       "update": "Data menu gagal diubah",
       "delete": "Data menu gagal dihapus"
+    },
+    "permissions": {
+      "fetch": "Data permission gagal ditarik",
+      "store": "Data permission {{value}} gagal ditambahkan",
+      "update": "Data permission gagal diubah",
+      "delete": "Data permission gagal dihapus"
+    },
+    "features-access": {
+      "create-assign-menu": "Akses menu gagal ditambahkan",
+      "update-assign-menu": "Akses menu gagal diubah"
+    },
+    "tryout-category": {
+      "fetch": "Data kategori tryout gagal ditarik",
+      "store": "Data kategori tryout {{value}} gagal ditambahkan",
+      "update": "Data kategori tryout gagal diubah",
+      "delete": "Data kategori tryout gagal dihapus"
+    },
+    "tryout-package": {
+      "fetch": "Data paket tryout gagal ditarik",
+      "store": "Data paket tryout {{value}} gagal ditambahkan",
+      "update": "Data paket tryout gagal diubah",
+      "delete": "Data paket tryout gagal dihapus"
+    },
+    "tryout-details": {
+      "fetch": "Data detail tryout berhasil ditarik",
+      "store": "Data detail tryout {{value}} berhasil ditambahkan",
+      "update": "Data detail tryout berhasil diubah",
+      "delete": "Data detail tryout berhasil dihapus"
     }
   }
 }

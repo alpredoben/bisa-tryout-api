@@ -1,0 +1,52 @@
+{
+  "SchemaCreateForTryoutPackage": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Tryout Package Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Tryout Package Description",
+        "default": "Seleksi Kompetensi Dasar"
+      },
+      "category_id": {
+        "type": "string",
+        "summary": "Tryout Category ID",
+        "default": "UUID"
+      },
+      "prices": {
+        "type": "number",
+        "summary": "Tryout package price",
+        "default": 5000
+      }
+    }
+  },
+  "SchemaUpdateForTryoutPackage": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Tryout Package Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Tryout Package Description",
+        "default": "Seleksi Kompetensi Dasar"
+      },
+      "category_id": {
+        "type": "string",
+        "summary": "Tryout Category ID",
+        "default": "UUID"
+      },
+      "prices": {
+        "type": "number",
+        "summary": "Tryout package price",
+        "default": 5000
+      }
+    }
+  }
+}

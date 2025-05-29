@@ -1,0 +1,32 @@
+{
+  "SchemaCreateForPermission": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Name",
+        "default": "create"
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
+      }
+    }
+  },
+  "SchemaUpdateForPermission": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Name",
+        "default": "create"
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
+      }
+    }
+  }
+}

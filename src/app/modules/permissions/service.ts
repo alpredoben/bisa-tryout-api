@@ -1,7 +1,7 @@
 import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
-import { RoleModel } from '../../../database/models/RoleModel';
+import { PermissionModel } from '../../../database/models/PermissionModel';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';
@@ -9,15 +9,15 @@ import { setPagination } from '../../../utils/pagination.util';
 import { setupErrorMessage } from '../../../utils/response.util';
 import { selection } from './constanta';
 
-export class RoleService {
-  private repository = AppDataSource.getRepository(RoleModel);
+export class PermissionService {
+  private repository = AppDataSource.getRepository(PermissionModel);
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting } = filters;
     try {
       let whereCondition: Record<string, any>[] = [];
 
-      let whereAnd: FindOptionsWhere<RoleModel> = {
+      let whereAnd: FindOptionsWhere<PermissionModel> = {
         deleted_at: IsNull(),
       };
 
@@ -25,11 +25,11 @@ export class RoleService {
         const searchTerm: any = paging?.search;
         whereCondition = [
           {
-            role_name: ILike(`%${searchTerm}%`),
+            name: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
           {
-            role_slug: ILike(`%${searchTerm}%`),
+            action: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
         ];
@@ -48,7 +48,7 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.fetch'),
+        message: MessageDialog.__('success.permissions.fetch'),
         data: pagination,
       };
     } catch (error: any) {
@@ -70,7 +70,7 @@ export class RoleService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'role' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'permission' }),
           data: result,
         };
       }
@@ -78,7 +78,7 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.fetch'),
+        message: MessageDialog.__('success.permissions.fetch'),
         data: result,
       };
     } catch (error: any) {
@@ -91,7 +91,7 @@ export class RoleService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          role_id: id,
+          [SC.PrimaryKey.Permission]: id,
         },
         select: selection.default,
       });
@@ -100,7 +100,7 @@ export class RoleService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { value: 'role' }),
+          message: MessageDialog.__('error.default.notFoundItem', { value: 'permission' }),
           data: result,
         };
       }
@@ -108,7 +108,7 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.fetch'),
+        message: MessageDialog.__('success.permissions.fetch'),
         data: result,
       };
     } catch (error: any) {
@@ -124,7 +124,7 @@ export class RoleService {
         return {
           success: false,
           code: 400,
-          message: MessageDialog.__('error.roles.store'),
+          message: MessageDialog.__('error.permissions.store'),
           data: result,
         };
       }
@@ -135,9 +135,9 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.store', { value: payload.role_name }),
+        message: MessageDialog.__('success.permissions.store', { value: payload.role_name }),
         data: {
-          [SC.PrimaryKey.Role]: result.role_id,
+          [SC.PrimaryKey.Permission]: result.permission_id,
         },
       };
     } catch (error: any) {
@@ -150,7 +150,7 @@ export class RoleService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          role_id: id,
+          [SC.PrimaryKey.Permission]: id,
         },
       });
 
@@ -163,7 +163,7 @@ export class RoleService {
         };
       }
 
-      const roleName: string = result?.role_name;
+      const name: string = result?.name;
       const updateResult = { ...result, ...payload };
       await this.repository.save(updateResult);
 
@@ -173,9 +173,9 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.update', { value: roleName }),
+        message: MessageDialog.__('success.permissions.update', { value: name }),
         data: {
-          [SC.PrimaryKey.Role]: id,
+          [SC.PrimaryKey.Permission]: id,
         },
       };
     } catch (error: any) {
@@ -187,7 +187,7 @@ export class RoleService {
     try {
       const result = await this.repository.findOne({
         where: {
-          role_id: id,
+          [SC.PrimaryKey.Permission]: id,
           deleted_at: IsNull(),
         },
       });
@@ -196,12 +196,12 @@ export class RoleService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'role' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'permission' }),
           data: result,
         };
       }
 
-      const roleName: string = result?.role_name;
+      const name: string = result?.name;
 
       const updateResult = {
         ...result,
@@ -216,9 +216,9 @@ export class RoleService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.roles.delete', { value: roleName }),
+        message: MessageDialog.__('success.permissions.delete', { value: name }),
         data: {
-          [SC.PrimaryKey.Role]: id,
+          [SC.PrimaryKey.Permission]: id,
         },
       };
     } catch (error: any) {

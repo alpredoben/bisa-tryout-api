@@ -1,6 +1,7 @@
 import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
+import { RoleMenuModel } from '../../../database/models/RoleMenuModel';
 import { UserModel } from '../../../database/models/UserModel';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
@@ -13,6 +14,7 @@ import { selection } from './constanta';
 
 export class UserService {
   private repository = AppDataSource.getRepository(UserModel);
+  private repoRoleMenu = AppDataSource.getRepository(RoleMenuModel);
   private fileService = new FileService();
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
@@ -98,6 +100,139 @@ export class UserService {
         code: 200,
         message: MessageDialog.__('success.users.fetch'),
         data: result,
+      };
+    } catch (error: any) {
+      return setupErrorMessage(error);
+    }
+  }
+
+  async getProfile(id: string): Promise<I_ExpressResponse> {
+    try {
+      const rowUser = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          user_id: id,
+        },
+        relations: {
+          role: true,
+        },
+        select: selection.default,
+      });
+
+      if (!rowUser) {
+        return {
+          success: false,
+          code: 404,
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'user' }),
+          data: rowUser,
+        };
+      }
+
+      const rowMenu = await this.repoRoleMenu.find({
+        where: {
+          deleted_at: IsNull(),
+          role: {
+            role_id: rowUser?.role.role_id,
+          },
+          menu: {
+            parent_id: IsNull(),
+          },
+        },
+        select: {
+          item_id: true,
+          menu: {
+            menu_id: true,
+            name: true,
+            slug: true,
+            icon: true,
+            order_number: true,
+            childrens: {
+              menu_id: true,
+              name: true,
+              slug: true,
+              icon: true,
+              order_number: true,
+              childrens: {
+                menu_id: true,
+                name: true,
+                slug: true,
+                icon: true,
+                order_number: true,
+              },
+            },
+            role_menu_access: {
+              access_permissions: {
+                access_id: true,
+                permission: {
+                  permission_id: true,
+                  name: true,
+                  order_number: true,
+                },
+              },
+            },
+          },
+          access_permissions: {
+            access_id: true,
+            permission: {
+              permission_id: true,
+              name: true,
+              order_number: true,
+            },
+          },
+        },
+        relations: [
+          'access_permissions',
+          'access_permissions.permission',
+          'menu',
+          'menu.childrens',
+          'menu.childrens.role_menu_access',
+          'menu.childrens.role_menu_access.access_permissions',
+          'menu.childrens.role_menu_access.access_permissions.permission',
+          'menu.childrens.childrens',
+          'menu.childrens.childrens.role_menu_access',
+          'menu.childrens.childrens.role_menu_access.access_permissions',
+          'menu.childrens.childrens.role_menu_access.access_permissions.permission',
+        ],
+        order: {
+          menu: {
+            order_number: 'ASC',
+            childrens: {
+              order_number: 'ASC',
+              childrens: {
+                order_number: 'ASC',
+                role_menu_access: {
+                  access_permissions: {
+                    permission: {
+                      order_number: 'ASC',
+                    },
+                  },
+                },
+              },
+              role_menu_access: {
+                access_permissions: {
+                  permission: {
+                    order_number: 'ASC',
+                  },
+                },
+              },
+            },
+          },
+          access_permissions: {
+            permission: {
+              order_number: 'ASC',
+            },
+          },
+        },
+      });
+
+      return {
+        success: true,
+        code: 200,
+        message: MessageDialog.__('success.users.fetch'),
+        data: {
+          ...rowUser,
+          list_menu_access: rowMenu,
+        },
       };
     } catch (error: any) {
       return setupErrorMessage(error);

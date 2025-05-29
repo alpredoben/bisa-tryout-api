@@ -11,31 +11,70 @@ const data = [
     order_number: 1,
   },
   {
-    name: 'Master Data',
-    slug: '/master-data',
+    name: 'Konfigurasi',
+    slug: '/configuration',
     order_number: 2,
     childrens: [
       {
-        name: 'Role Akses',
+        name: 'Master Role',
         slug: '/master-role',
         order_number: 1,
       },
       {
-        name: 'Pengguna',
-        slug: '/master-pengguna',
+        name: 'Master Permission',
+        slug: '/master-permission',
         order_number: 2,
       },
       {
-        name: 'Kategori Paket',
-        slug: '/master-kategori-paket',
+        name: 'Master User',
+        slug: '/master-user',
         order_number: 3,
+      },
+    ],
+  },
+  {
+    name: 'Master Tryout',
+    slug: '/master-data',
+    order_number: 3,
+    childrens: [
+      {
+        name: 'Kategori Tryout',
+        slug: '/tryout-categories',
+        order_number: 1,
+      },
+      {
+        name: 'Paket Tryout',
+        slug: '/tryout-packages',
+        order_number: 2,
+      },
+      {
+        name: 'Detail Tryout',
+        slug: '/tryout-details',
+        order_number: 3,
+      },
+    ],
+  },
+  {
+    name: 'Master Pertanyaan',
+    slug: '/master-question',
+    order_number: 4,
+    childrens: [
+      {
+        name: 'Tipe Pertanyaan',
+        slug: '/question-type',
+        order_number: 1,
+      },
+      {
+        name: 'Daftar Pertanyaan',
+        slug: '/questions',
+        order_number: 2,
       },
     ],
   },
   {
     name: 'Try Out',
     slug: '/tryout',
-    order_number: 3,
+    order_number: 5,
     childrens: [
       {
         name: 'Daftar Paket',
@@ -52,7 +91,7 @@ const data = [
   {
     name: 'Laporan',
     slug: '/laporan',
-    order_number: 4,
+    order_number: 6,
     childrens: [
       {
         name: 'Hasil Try Out',
