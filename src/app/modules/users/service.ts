@@ -12,6 +12,16 @@ import { setupErrorMessage } from '../../../utils/response.util';
 import { FileService } from '../files/service';
 import { selection } from './constanta';
 
+interface MenuItem {
+  menu_id: string;
+  menu_name: string;
+  menu_slug: string;
+  menu_icon: string;
+  menu_order_number: number;
+  access_permissions: any;
+  childrens?: MenuItem[];
+}
+
 export class UserService {
   private repository = AppDataSource.getRepository(UserModel);
   private repoRoleMenu = AppDataSource.getRepository(RoleMenuModel);
@@ -225,13 +235,41 @@ export class UserService {
         },
       });
 
+      const recursiveMenuItem = (menu: any): MenuItem => {
+        return {
+          menu_id: menu.menu_id,
+          menu_name: menu.name,
+          menu_slug: menu.slug,
+          menu_icon: menu.icon,
+          menu_order_number: menu.order_number,
+          access_permissions: menu.access_permissions,
+          childrens: menu.childrens?.length ? menu.childrens.map(recursiveMenuItem) : [],
+        };
+      };
+
       return {
         success: true,
         code: 200,
         message: MessageDialog.__('success.users.fetch'),
         data: {
           ...rowUser,
-          list_menu_access: rowMenu,
+          list_access:
+            rowMenu?.length > 0
+              ? rowMenu.map((x) => {
+                  const childrens =
+                    x?.menu.childrens?.length > 0 ? x?.menu.childrens.map((ch) => recursiveMenuItem(ch)) : [];
+
+                  return {
+                    menu_id: x.menu.menu_id,
+                    menu_name: x.menu.name,
+                    menu_slug: x.menu.slug,
+                    menu_icon: x.menu.icon,
+                    menu_order_number: x.menu.order_number,
+                    childrens: childrens,
+                    access_permissions: x.access_permissions,
+                  };
+                })
+              : rowMenu,
         },
       };
     } catch (error: any) {
