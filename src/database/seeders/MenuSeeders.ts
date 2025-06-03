@@ -30,6 +30,11 @@ const data = [
         slug: '/master-user',
         order_number: 3,
       },
+      {
+        name: 'Master Menu',
+        slug: '/master-menu',
+        order_number: 4,
+      },
     ],
   },
   {

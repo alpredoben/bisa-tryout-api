@@ -33,6 +33,10 @@ const data = [
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
       },
       {
+        name: 'Master Menu',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+      {
         name: 'Master Tryout',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
       },
@@ -46,6 +50,35 @@ const data = [
       },
       {
         name: 'Detail Tryout',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+
+      {
+        name: 'Master Pertanyaan',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+
+      {
+        name: 'Tipe Pertanyaan',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+      {
+        name: 'Daftar Pertanyaan',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+
+      {
+        name: 'Laporan',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+
+      {
+        name: 'Hasil Try Out',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
+      },
+
+      {
+        name: 'Pembelian Paket Tryout',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report'],
       },
     ],
