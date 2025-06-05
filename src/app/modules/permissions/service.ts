@@ -28,10 +28,6 @@ export class PermissionService {
             name: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
-          {
-            action: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
         ];
       }
 
