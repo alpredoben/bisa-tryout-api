@@ -21,7 +21,7 @@ const IDValidation = [
 export const UserValidation = {
   created: [
     reqValidation(columns.role_id, 'Role Id', 'check'),
-    reqValidation('file_id', 'File Id', 'check'),
+    reqValidation('file_id', 'File Id', 'check', true),
     reqValidation(columns.name, 'Nama Lengkap', 'check'),
     reqValidation(columns.email, 'Email', 'check')
       .isEmail()
