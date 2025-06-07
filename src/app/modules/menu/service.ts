@@ -186,6 +186,9 @@ export class MenuService {
           menu_id: id,
           deleted_at: IsNull(),
         },
+        relations: {
+          role_menu_access: true,
+        },
       });
 
       if (!result) {
@@ -193,6 +196,15 @@ export class MenuService {
           success: false,
           code: 404,
           message: MessageDialog.__('error.default.notFoundItem', { item: 'menu' }),
+          data: result,
+        };
+      }
+
+      if (result?.role_menu_access?.length > 0) {
+        return {
+          success: false,
+          code: 400,
+          message: MessageDialog.__('error.menu.cannot'),
           data: result,
         };
       }

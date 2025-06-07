@@ -102,7 +102,8 @@
       "fetch": "Data menu gagal ditarik",
       "store": "Data menu {{value}} gagal ditambahkan",
       "update": "Data menu gagal diubah",
-      "delete": "Data menu gagal dihapus"
+      "delete": "Data menu gagal dihapus",
+      "cannot": "Data menu telah digunakan dan tidak dapat dihapus"
     },
     "permissions": {
       "fetch": "Data permission gagal ditarik",

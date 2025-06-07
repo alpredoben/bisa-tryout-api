@@ -32,12 +32,21 @@ export const minioEnsureBucket = async (bucketName: string): Promise<void> => {
 export const minioUploadToStorage = async (
   bucketName: string,
   fileName: string,
-  buffer: any,
-  fileSize: any,
-  option: any,
+  buffer: Buffer,
+  fileSize: number,
+  option: { [key: string]: string },
 ): Promise<void> => {
-  await minioClient.putObject(bucketName, fileName, buffer, fileSize, option);
-  console.log(`File '${fileName}' uploaded successfully to bucket '${bucketName}'`);
+  try {
+    if (!buffer || !fileName || !fileSize) {
+      throw new Error('Invalid file data. Upload canceled.');
+    }
+
+    await minioClient.putObject(bucketName, fileName, buffer, fileSize, option);
+    console.log(`✅ File '${fileName}' uploaded successfully to bucket '${bucketName}'`);
+  } catch (error: any) {
+    console.error(`❌ Failed to upload file '${fileName}' to bucket '${bucketName}':`, error.message);
+    throw new Error(`Minio upload failed: ${error.message}`);
+  }
 };
 
 /**

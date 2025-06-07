@@ -6,18 +6,29 @@ import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.inte
 import { MessageDialog } from '../../../lang';
 import { standartDateISO } from '../../../utils/common.util';
 import { setupErrorMessage } from '../../../utils/response.util';
+import { MenuService } from '../menu/service';
 import { UserService } from '../users/service';
 
 export class FileService {
   private repository = AppDataSource.getRepository(FileStorageModel);
 
   private _userService?: UserService;
+  private _menuService?: MenuService;
 
   private get userService(): UserService {
     if (!this._userService) {
       this._userService = new UserService();
     }
+
     return this._userService;
+  }
+
+  private get menuService(): MenuService {
+    if (!this._menuService) {
+      this._menuService = new MenuService();
+    }
+
+    return this._menuService;
   }
 
   async uploaded(req: I_RequestCustom): Promise<I_ExpressResponse> {
@@ -33,7 +44,7 @@ export class FileService {
 
       const resultStore = await this.repository.save(
         this.repository.create({
-          file_desc: `Upload file ${req?.file?.originalname} with size ${req?.file?.size}`,
+          file_desc: `Upload file ${file_name} with size ${req?.file?.size}`,
           file_name: file_name,
           file_url: file_url,
           created_at: today,
@@ -132,6 +143,38 @@ export class FileService {
 
           result = await this.userService.update(req, id, {
             photo: payloadImage,
+            updated_at: new Date(standartDateISO()),
+            updated_by: req?.user?.user_id,
+          });
+
+          if (!result?.success) {
+            await queryRunner.rollbackTransaction();
+            return result;
+          }
+          break;
+
+        case 'menu':
+          result = await this.menuService.findById(id);
+
+          if (!result.success) {
+            await queryRunner.rollbackTransaction();
+            return result;
+          }
+
+          images = result.data.file;
+
+          result = await this.update(req, images.file_id, {
+            deleted_at: new Date(standartDateISO()),
+            deleted_by: req?.user?.user_id,
+          });
+
+          if (!result?.success) {
+            await queryRunner.rollbackTransaction();
+            return result;
+          }
+
+          result = await this.menuService.update(req, id, {
+            icon: payloadImage,
             updated_at: new Date(standartDateISO()),
             updated_by: req?.user?.user_id,
           });
