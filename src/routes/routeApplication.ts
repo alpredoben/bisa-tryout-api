@@ -5,6 +5,7 @@ import RouteHealtCheck from './routeHealtCheck';
 import { authMiddleware } from '../app/middlewares/auth.middleware';
 import AuthRouter from '../app/modules/auth';
 import FileRouter from '../app/modules/files';
+import HistoryTryoutRouter from '../app/modules/history-tryout';
 import MenuRouter from '../app/modules/menu';
 import PermissionRouter from '../app/modules/permissions';
 import RoleRouter from '../app/modules/roles';
@@ -28,6 +29,7 @@ class RouteApplication extends MainRoutes {
     this.router.use(`${tagVersionOne}/tryout-packages`, authMiddleware, TryoutPackageRouter);
 
     this.router.use(`${tagVersionOne}/tryout-details`, authMiddleware, TryoutDetailRouter);
+    this.router.use(`${tagVersionOne}/history-tryout`, authMiddleware, HistoryTryoutRouter);
   }
 }
 

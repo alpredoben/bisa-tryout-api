@@ -110,6 +110,23 @@ const data = [
       },
     ],
   },
+  {
+    name: 'Pengaturan Akun',
+    slug: '/akun',
+    order_number: 7,
+    childrens: [
+      {
+        name: 'Profil',
+        slug: '/profile',
+        order_number: 1,
+      },
+      {
+        name: 'Notifikasi',
+        slug: '/notification',
+        order_number: 2,
+      },
+    ],
+  },
 ];
 
 const repository = AppDataSource.getRepository(MenuModel);

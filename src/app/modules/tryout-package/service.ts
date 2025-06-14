@@ -234,7 +234,7 @@ export class TryoutPackageService {
       const resultHistory = await this.historyService.create(req, {
         history_status: CS_StatusName.onProgress,
         history_type: CS_HistoryReportType.import.name,
-        history_request: { req },
+        history_request: { files: req?.file, user: req?.user },
         history_description: CS_HistoryReportType.import.description('Paket Tryout'),
         created_at: resultExtract.origin.today,
         created_by: req?.user?.user_id,
