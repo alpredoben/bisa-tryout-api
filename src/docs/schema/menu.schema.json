@@ -22,6 +22,10 @@
       "file_id": {
         "type": "string",
         "description": "File ID (UUID). Optional value"
+      },
+      "is_sidebar": {
+        "type": "boolean",
+        "value": true
       }
     }
   },
@@ -45,6 +49,10 @@
       "parent_id": {
         "type": "string",
         "description": "Enter parent_id (uuid) and Optional. Example: module_id=de189b42-7b63-4e52-9f3c-491e431d046e"
+      },
+      "is_sidebar": {
+        "type": "boolean",
+        "value": true
       }
     }
   }

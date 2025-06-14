@@ -6,6 +6,7 @@ export const columns = {
   icon: 'icon',
   slug: 'slug',
   order_number: 'order_number',
+  is_sidebar: 'is_sidebar',
 };
 
 export const sortItem = {

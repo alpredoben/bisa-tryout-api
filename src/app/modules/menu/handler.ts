@@ -31,6 +31,10 @@ class MenuHandler {
       payload.file_id = req?.body?.file_id;
     }
 
+    if (req?.body?.is_sidebar) {
+      payload.is_sidebar = req?.body?.is_sidebar;
+    }
+
     return payload;
   }
 

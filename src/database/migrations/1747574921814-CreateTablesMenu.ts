@@ -9,6 +9,7 @@ export class CreateTablesMenu1747574921814 implements MigrationInterface {
       slug TEXT DEFAULT NULL,
       order_number BIGINT DEFAULT NULL,  
       parent_id UUID NULL,
+      is_sidebar BOOLEAN DEFAULT false,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
       created_by UUID NULL,
       updated_at TIMESTAMP NULL,

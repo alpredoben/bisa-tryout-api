@@ -19,11 +19,11 @@ export class HistoryTryoutService {
         deleted_at: IsNull(),
       };
 
-      if (queries?.history_type && queries?.history_type != 'all') {
+      if (queries?.history_type && queries?.history_type?.toLowerCase() != 'all') {
         whereAnd.history_type = queries.history_type;
       }
 
-      if (queries?.history_status && queries?.history_status != 'all') {
+      if (queries?.history_status && queries?.history_status?.toLowerCase() != 'all') {
         whereAnd.history_status = queries.history_status;
       }
 

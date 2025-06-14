@@ -43,6 +43,9 @@ export class MenuModel {
   @OneToMany(() => MenuModel, (value) => value.parent)
   childrens!: MenuModel[];
 
+  @Column({ type: 'bool', name: 'is_sidebar', default: false })
+  is_sidebar!: Boolean;
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
 

@@ -95,6 +95,10 @@ const data = [
         name: 'Notifikasi',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
+      {
+        name: 'History Import Tryout',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+      },
     ],
   },
 ];

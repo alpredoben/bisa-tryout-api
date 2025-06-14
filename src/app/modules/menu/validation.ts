@@ -20,6 +20,7 @@ export const MenuValidation = {
     reqValidation(columns.name, 'Nama Menu', 'check'),
     reqValidation(columns.slug, 'Slug', 'check'),
     reqValidation(columns.order_number, 'No. Urut', 'check'),
+    reqValidation(columns.is_sidebar, 'Menu Sidebar', 'check', true),
     ...validationMiddleware,
   ],
   updated: [
@@ -28,6 +29,7 @@ export const MenuValidation = {
     reqValidation(columns.name, 'Nama Lengkap', 'check', true),
     reqValidation(columns.slug, 'Slug', 'check', true),
     reqValidation(columns.order_number, 'No. Urut', 'check', true),
+    reqValidation(columns.is_sidebar, 'Menu Sidebar', 'check', true),
     ...validationMiddleware,
   ],
   findId: [...IDValidation, ...validationMiddleware],
