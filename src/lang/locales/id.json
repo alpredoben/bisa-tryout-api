@@ -53,13 +53,20 @@
       "fetch": "Data paket tryout berhasil ditarik",
       "store": "Data paket tryout {{value}} berhasil ditambahkan",
       "update": "Data paket tryout {{value}} berhasil diubah",
-      "delete": "Data paket tryout {{value}} berhasil dihapus"
+      "delete": "Data paket tryout {{value}} berhasil dihapus",
+      "import": "Import data paket tryout berhasil"
     },
     "tryout-details": {
       "fetch": "Data detail tryout berhasil ditarik",
       "store": "Data detail tryout {{value}} berhasil ditambahkan",
       "update": "Data detail tryout {{value}} berhasil diubah",
       "delete": "Data detail tryout {{value}} berhasil dihapus"
+    },
+    "history-tryout": {
+      "fetch": "Data riwayat tryout berhasil ditarik",
+      "store": "Data riwayat {{value}} tryout  berhasil ditambahkan",
+      "update": "Data riwayat {{value}} tryout berhasil diubah",
+      "delete": "Data riwayat tryout {{value}} tryout berhasil dihapus"
     }
   },
   "error": {
@@ -132,6 +139,13 @@
       "store": "Data detail tryout {{value}} berhasil ditambahkan",
       "update": "Data detail tryout berhasil diubah",
       "delete": "Data detail tryout berhasil dihapus"
+    },
+
+    "history-tryout": {
+      "fetch": "Data riwayat tryout gagal ditarik",
+      "store": "Data riwayat {{value}} tryout  gagal ditambahkan",
+      "update": "Data riwayat tryout gagal diubah",
+      "delete": "Data riwayat tryout gagal dihapus"
     }
   }
 }

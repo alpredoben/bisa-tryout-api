@@ -41,11 +41,12 @@ export const CS_LogType = {
 export const CS_MessageBroker = {
   Queue: {
     Email: 'queue_email',
-    Transaction: 'queue_transaction',
+    HistoryTryout: 'queue_history_tryout',
   },
   Exchange: {
     Email: 'exchange_email',
     Transaction: 'exchange_transaction',
+    HistoryTryout: 'exchange_history_tryout',
   },
 };
 
@@ -77,6 +78,7 @@ export const CS_DbSchema = {
     Questions: 'questions',
     QuestionAnswers: 'question_answers',
     TryoutQuestionMapping: 'tryout_question_mapping',
+    HistoryReportTryout: 'history_reported_tryout',
   },
   PrimaryKey: {
     Role: 'role_id',
@@ -93,7 +95,29 @@ export const CS_DbSchema = {
     Questions: 'question_id',
     QuestionAnswers: 'answer_id',
     TryoutQuestionMapping: 'tryout_question_id',
+    HistoryReportTryout: 'history_id',
   },
 };
 
+export const CS_HistoryReportType = {
+  import: {
+    name: 'import',
+    description: (value: string) => `Proses import file excel, yaitu data ${value}`,
+  },
+};
+
+export const CS_StatusName = {
+  onProgress: 'ON PROGRESS',
+  waiting: 'WAITING',
+  success: 'SUCCESS',
+  failed: 'FAILED',
+  done: 'DONE',
+  confirm: 'CONFIRM',
+  approve: 'APPROVE',
+};
+
 export const CS_DbProcedure = {};
+
+export const CS_TypeName = {
+  TryoutPackage: 'tryout-package',
+};

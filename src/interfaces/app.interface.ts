@@ -109,3 +109,12 @@ export interface I_ResultService {
   message: string;
   record: Record<string, any> | object | any;
 }
+
+export interface I_MetaHistory {
+  total_created: number;
+  total_row: number;
+  total_updated: number;
+  total_failed: number;
+  record: any[];
+  message: string;
+}

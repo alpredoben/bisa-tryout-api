@@ -1,10 +1,11 @@
 import { Response } from 'express';
+import { makeFileExcel } from '../../../config/excel.config';
 import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
-import { standartDateISO } from '../../../utils/common.util';
+import { formatDateToday, standartDateISO } from '../../../utils/common.util';
 import { defineRequestOrderORM, defineRequestPaginateArgs } from '../../../utils/request.util';
 import { sendResponseJson } from '../../../utils/response.util';
-import { sortItem } from './constanta';
+import { excelHeaders, sortItem } from './constanta';
 import { TryoutPackageService } from './service';
 
 class TryoutPackageHandler {
@@ -74,6 +75,11 @@ class TryoutPackageHandler {
     return sendResponseJson(res, result);
   }
 
+  async imported(req: I_RequestCustom, res: Response): Promise<Response> {
+    const result = await this.service.excelImported(req);
+    return sendResponseJson(res, result);
+  }
+
   async softDelete(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
     const id: string = req?.params?.[SC.PrimaryKey.TryoutPackages];
@@ -84,6 +90,23 @@ class TryoutPackageHandler {
 
     const result = await this.service.softDelete(req, id, payload);
     return sendResponseJson(res, result);
+  }
+
+  async downloadTemplate(req: I_RequestCustom, res: Response): Promise<Response> {
+    const result = await this.service.downloadTemplate();
+
+    if (!result?.success) {
+      return sendResponseJson(res, result);
+    }
+
+    const fileName = `TemplatePaketTrout_${formatDateToday('YYYYMMDDHHmmss', new Date(standartDateISO()))}`;
+    const headers = excelHeaders.map((x: any) => x.header);
+    return await makeFileExcel(res, {
+      fileName,
+      headers,
+      data: result.data,
+      sheetName: 'Paket Trayout',
+    });
   }
 }
 

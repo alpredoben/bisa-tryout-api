@@ -48,5 +48,15 @@
         "default": 5000
       }
     }
+  },
+
+  "SchemaTryoutPackageImported": {
+    "type": "object",
+    "properties": {
+      "file": {
+        "type": "string",
+        "format": "binary"
+      }
+    }
   }
 }

@@ -87,6 +87,36 @@ export class TryoutCategoryService {
     }
   }
 
+  async findByCondition(condition: Record<string, any>): Promise<I_ExpressResponse> {
+    try {
+      const result = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          ...condition,
+        },
+        select: selection.default,
+      });
+
+      if (!result) {
+        return {
+          success: false,
+          code: 404,
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'tryout category' }),
+          data: result,
+        };
+      }
+
+      return {
+        success: true,
+        code: 200,
+        message: MessageDialog.__('success.tryout-category.fetch'),
+        data: result,
+      };
+    } catch (error: any) {
+      return setupErrorMessage(error);
+    }
+  }
+
   async create(req: I_RequestCustom, payload: Record<string, any>): Promise<I_ExpressResponse> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();

@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import MainRoutes from '../../../config/routes.config';
+import { multerUpload } from '../../../config/storage.config';
 import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
 import Handler from './handler';
@@ -9,6 +10,10 @@ class TryoutPackageRouter extends MainRoutes {
   public routes(): void {
     this.router.get('/', async (req: I_RequestCustom, res: Response) => {
       await Handler.fetchParam(req, res);
+    });
+
+    this.router.get('/download-template', async (req: I_RequestCustom, res: Response) => {
+      await Handler.downloadTemplate(req, res);
     });
 
     this.router.get(
@@ -28,6 +33,14 @@ class TryoutPackageRouter extends MainRoutes {
       TryoutPackageValidation.updated,
       async (req: I_RequestCustom, res: Response) => {
         await Handler.update(req, res);
+      },
+    );
+
+    this.router.post(
+      '/imported',
+      multerUpload({ type: 'single', name: 'file' }),
+      async (req: I_RequestCustom, res: Response) => {
+        await Handler.imported(req, res);
       },
     );
 

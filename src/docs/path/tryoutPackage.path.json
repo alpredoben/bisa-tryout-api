@@ -110,6 +110,60 @@
     }
   },
 
+  "/tryout-packages/imported": {
+    "post": {
+      "tags": ["Tryout Package"],
+      "summary": "Upload and Import file Excel (xlsx, xls), for insert data into database",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaTryoutPackageImported"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/tryout-packages/download-template": {
+    "get": {
+      "tags": ["Tryout Package"],
+      "summary": "Download template excel (Tryout Package)",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/octet-stream:": {}
+          }
+        }
+      }
+    }
+  },
+
   "/tryout-packages/{package_id}": {
     "get": {
       "tags": ["Tryout Package"],

@@ -37,6 +37,10 @@ const data = [
     name: 'report',
     order_number: 8,
   },
+  {
+    name: 'download',
+    order_number: 9,
+  },
 ];
 
 const repository = AppDataSource.getRepository(PermissionModel);
