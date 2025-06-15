@@ -269,6 +269,7 @@ export class UserService {
                     menu_name: x.menu.name,
                     menu_slug: x.menu.slug,
                     menu_icon: x.menu.icon,
+                    is_sidebar: x.menu.is_sidebar,
                     menu_order_number: x.menu.order_number,
                     childrens: childrens,
                     access_permissions: x.access_permissions,
