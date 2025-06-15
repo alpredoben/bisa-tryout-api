@@ -18,6 +18,7 @@ interface MenuItem {
   menu_slug: string;
   menu_icon: string;
   menu_order_number: number;
+  is_sidebar: boolean;
   access_permissions: any;
   childrens?: MenuItem[];
 }
@@ -156,18 +157,21 @@ export class UserService {
             slug: true,
             icon: true,
             order_number: true,
+            is_sidebar: true,
             childrens: {
               menu_id: true,
               name: true,
               slug: true,
               icon: true,
               order_number: true,
+              is_sidebar: true,
               childrens: {
                 menu_id: true,
                 name: true,
                 slug: true,
                 icon: true,
                 order_number: true,
+                is_sidebar: true,
               },
             },
             role_menu_access: {
@@ -242,6 +246,7 @@ export class UserService {
           menu_slug: menu.slug,
           menu_icon: menu.icon,
           menu_order_number: menu.order_number,
+          is_sidebar: menu.is_sidebar == null ? false : menu.is_sidebar,
           access_permissions: menu.access_permissions,
           childrens: menu.childrens?.length ? menu.childrens.map(recursiveMenuItem) : [],
         };

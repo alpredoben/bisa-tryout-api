@@ -93,6 +93,7 @@ const data = [
     name: 'Try Out',
     slug: '/tryout',
     order_number: 5,
+    is_sidebar: true,
     childrens: [
       {
         name: 'Daftar Paket',
@@ -112,6 +113,7 @@ const data = [
     name: 'Laporan',
     slug: '/laporan',
     order_number: 6,
+    is_sidebar: true,
     childrens: [
       {
         name: 'Hasil Try Out',
@@ -131,6 +133,7 @@ const data = [
     name: 'Pengaturan Akun',
     slug: '/akun',
     order_number: 7,
+    is_sidebar: true,
     childrens: [
       {
         name: 'Profil',
@@ -176,6 +179,7 @@ const insertMenuRecursive = async (userId: any, menu: Record<string, any>, paren
       slug: menu.slug,
       order_number: menu.order_number,
       parent_id: parentId,
+      is_sidebar: menu.is_sidebar,
       created_at: new Date(standartDateISO()),
       created_by: userId,
     }),
@@ -217,6 +221,7 @@ export const MenuSeeders = async () => {
               name: element.name,
               slug: element.slug,
               order_number: element.order_number,
+              is_sidebar: element.is_sidebar,
               created_at: new Date(standartDateISO()),
               created_by: userId,
             }),

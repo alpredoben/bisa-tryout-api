@@ -59,8 +59,6 @@ export class MenuService {
         },
       });
 
-      console.log({ RESULTS: result });
-
       if (!result) {
         return {
           success: false,
