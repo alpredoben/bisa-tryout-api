@@ -432,4 +432,61 @@ export class UserService {
       return setupErrorMessage(error);
     }
   }
+
+  async manualChangePassword(
+    req: I_RequestCustom,
+    userId: any,
+    payload: Record<string, any>,
+  ): Promise<I_ExpressResponse> {
+    const { updated_at, updated_by, ...rest } = payload;
+
+    try {
+      const user = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          user_id: userId,
+        },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          code: 404,
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'user' }),
+          data: user,
+        };
+      }
+
+      if (rest?.new_password) {
+        const { password_hash } = await encryptPassword(rest.new_password);
+        user.password = password_hash;
+      }
+
+      user.password_change_at = updated_at;
+      user.updated_at = updated_at;
+      user.updated_by = updated_by;
+
+      const result = await this.repository.save(user);
+
+      if (!result) {
+        return {
+          success: false,
+          code: 400,
+          message: MessageDialog.__('error.auth.changePassword'),
+          data: result,
+        };
+      }
+
+      return {
+        success: true,
+        code: 200,
+        message: MessageDialog.__('success.auth.changePassword'),
+        data: {
+          user_id: userId,
+        },
+      };
+    } catch (error: any) {
+      return setupErrorMessage(error);
+    }
+  }
 }

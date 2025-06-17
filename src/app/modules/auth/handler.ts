@@ -45,6 +45,14 @@ class AuthHandler {
       payload.confirm_password = req?.body?.confirm_password;
     }
 
+    if (req?.body?.old_password) {
+      payload.old_password = req?.body?.old_password;
+    }
+
+    if (req?.body?.new_password) {
+      payload.new_password = req?.body?.new_password;
+    }
+
     return payload;
   }
 
@@ -85,6 +93,20 @@ class AuthHandler {
   async fetchProfile(req: I_RequestCustom, res: Response): Promise<Response> {
     const id: any = req?.user?.user_id;
     const result = await this.userService.getProfile(id);
+    return sendResponseJson(res, result);
+  }
+
+  async manualChangePassword(req: I_RequestCustom, res: Response): Promise<Response> {
+    const today: Date = new Date(standartDateISO());
+    const userId: any = req?.user?.user_id;
+
+    let payload: Record<string, any> = {
+      ...this.bodyValidation(req),
+      updated_at: today,
+      updated_by: userId,
+    };
+
+    const result = await this.userService.manualChangePassword(req, userId, payload);
     return sendResponseJson(res, result);
   }
 }

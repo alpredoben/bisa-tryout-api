@@ -18,6 +18,10 @@ class AuthRouter extends MainRoutes {
     this.router.get('/profile', authMiddleware, async (req: I_RequestCustom, res: Response) => {
       await Handler.fetchProfile(req, res);
     });
+
+    this.router.post('/manual-change-password', authMiddleware, async (req: I_RequestCustom, res: Response) => {
+      await Handler.manualChangePassword(req, res);
+    });
   }
 }
 

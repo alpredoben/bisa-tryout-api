@@ -7,7 +7,8 @@
     },
     "auth": {
       "login": "Login berhasil",
-      "register": "Pendaftaran akun berhasil"
+      "register": "Pendaftaran akun berhasil",
+      "changePassword": "Ubah password berhasil"
     },
     "files": {
       "fetch": "Data file berhasil ditarik",
@@ -91,7 +92,8 @@
       "invalidPassword": "Password tidak sesuai",
       "register": "Pendaftaran akun gagal",
       "deniedToken": "Akses ditolak. Tidak ada token yang diberikan.",
-      "invalidToken": "Token tidak valid atau kedaluwarsa"
+      "invalidToken": "Token tidak valid atau kedaluwarsa",
+      "changePassword": "Ubah password gagal"
     },
     "roles": {
       "fetch": "Data role gagal ditarik",
