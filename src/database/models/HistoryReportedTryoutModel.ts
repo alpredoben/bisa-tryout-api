@@ -1,7 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { CS_DbSchema as CS } from '../../constanta';
 
-@Entity({ name: CS.TableName.HistoryReportTryout })
+@Entity({ name: 'history_reported_tryout' })
 export class HistoryReportedTryoutModel {
   @PrimaryGeneratedColumn('uuid')
   history_id!: string;

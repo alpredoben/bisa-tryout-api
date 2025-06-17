@@ -1,0 +1,218 @@
+{
+  "/question-types": {
+    "get": {
+      "tags": ["Question Types"],
+      "summary": "Fetch all question types with pagination response service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "page",
+          "required": false,
+          "schema": {
+            "type": "number"
+          },
+          "description": "Page value is number. ex : ?page=1"
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "type": "number"
+          },
+          "description": "Limit value is number by default limit is 10. ex : ?limit=100"
+        },
+        {
+          "in": "query",
+          "name": "direction_name",
+          "required": false,
+          "schema": {
+            "type": "array or string"
+          },
+          "description": "Example --> direction_name=role_name, direction_name=order_number"
+        },
+        {
+          "in": "query",
+          "name": "order_name",
+          "required": false,
+          "schema": {
+            "type": "array or string"
+          },
+          "description": "Example --> order_name=asc, order_name=desc"
+        },
+        {
+          "in": "query",
+          "name": "search",
+          "required": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Example --> search=Pengaturan"
+        },
+        {
+          "in": "query",
+          "name": "category_id",
+          "required": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Example --> search=Category ID (UUID)"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponsePaginationSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "tags": ["Question Types"],
+      "summary": "Add new question type service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaCreateForQuestionType"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/question-types/{question_type_id}": {
+    "get": {
+      "tags": ["Question Types"],
+      "summary": "Find question type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "question_type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": ["Question Types"],
+      "summary": "Update question type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "question_type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaUpdateForQuestionType"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Question Types"],
+      "summary": "Delete question type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "question_type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

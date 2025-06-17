@@ -68,6 +68,13 @@
       "store": "Data riwayat {{value}} tryout  berhasil ditambahkan",
       "update": "Data riwayat {{value}} tryout berhasil diubah",
       "delete": "Data riwayat tryout {{value}} tryout berhasil dihapus"
+    },
+    "question-type": {
+      "fetch": "Data tipe pertanyaan berhasil ditarik",
+      "store": "Data tipe pertanyaan {{value}} berhasil ditambahkan",
+      "update": "Data tipe pertanyaan {{value}} berhasil diubah",
+      "delete": "Data tipe pertanyaan {{value}} berhasil dihapus",
+      "import": "Import data tipe pertanyaan berhasil"
     }
   },
   "error": {
@@ -148,6 +155,12 @@
       "store": "Data riwayat {{value}} tryout  gagal ditambahkan",
       "update": "Data riwayat tryout gagal diubah",
       "delete": "Data riwayat tryout gagal dihapus"
+    },
+    "question-type": {
+      "fetch": "Data tipe pertanyaan gagal ditarik",
+      "store": "Data tipe pertanyaan {{value}}  gagal ditambahkan",
+      "update": "Data tipe pertanyaant gagal diubah",
+      "delete": "Data tipe pertanyaan gagal dihapus"
     }
   }
 }

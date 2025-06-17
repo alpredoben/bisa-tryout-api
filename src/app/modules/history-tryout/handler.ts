@@ -14,6 +14,7 @@ class HistoryTryoutHandler {
       sorting: defineRequestOrderORM(req, sortItem.default, sortItem.request),
       queries: req?.query,
     };
+
     const result = await this.service.fetchPagination(filters);
     return sendResponseJson(res, result);
   }

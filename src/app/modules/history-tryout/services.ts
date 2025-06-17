@@ -20,11 +20,11 @@ export class HistoryTryoutService {
       };
 
       if (queries?.history_type && queries?.history_type?.toLowerCase() != 'all') {
-        whereAnd.history_type = queries.history_type;
+        whereAnd.history_type = queries.history_type.toLowerCase();
       }
 
       if (queries?.history_status && queries?.history_status?.toLowerCase() != 'all') {
-        whereAnd.history_status = queries.history_status;
+        whereAnd.history_status = queries.history_status.toLowerCase();
       }
 
       if (paging?.search) {
@@ -44,6 +44,8 @@ export class HistoryTryoutService {
           },
         ];
       }
+
+      console.log({ whereCondition, whereAnd, sorting });
 
       const [rows, count] = await this.repository.findAndCount({
         where: whereCondition?.length > 0 ? whereCondition : whereAnd,

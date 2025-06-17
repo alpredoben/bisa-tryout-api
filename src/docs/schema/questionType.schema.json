@@ -1,0 +1,32 @@
+{
+  "SchemaCreateForQuestionType": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Question Type Name",
+        "default": "Text"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Question Type Description",
+        "default": "Tipe pertanyaan adalah berupa text/kalimat"
+      }
+    }
+  },
+  "SchemaUpdateForQuestionType": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Question Type Name",
+        "default": "Text"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Question Type Description",
+        "default": "Tipe pertanyaan adalah berupa text/kalimat"
+      }
+    }
+  }
+}

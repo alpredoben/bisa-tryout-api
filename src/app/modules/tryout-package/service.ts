@@ -238,6 +238,8 @@ export class TryoutPackageService {
         history_description: CS_HistoryReportType.import.description('Paket Tryout'),
         created_at: resultExtract.origin.today,
         created_by: req?.user?.user_id,
+        updated_at: resultExtract.origin.today,
+        updated_by: req?.user?.user_id,
       });
 
       if (!resultHistory?.success) {

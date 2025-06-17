@@ -98,37 +98,6 @@
           }
         }
       }
-    },
-    "post": {
-      "tags": ["Tryout Package"],
-      "summary": "Add new tryout package service",
-      "security": [
-        {
-          "bearerAuth": []
-        }
-      ],
-      "requestBody": {
-        "required": false,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/SchemaCreateForTryoutPackage"
-            }
-          }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "OK",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DefaultResponseSchema"
-              }
-            }
-          }
-        }
-      }
     }
   }
 }

@@ -79,6 +79,7 @@ export const CS_DbSchema = {
     QuestionAnswers: 'question_answers',
     TryoutQuestionMapping: 'tryout_question_mapping',
     HistoryReportTryout: 'history_reported_tryout',
+    QustionType: 'question_types',
   },
   PrimaryKey: {
     Role: 'role_id',
@@ -96,6 +97,7 @@ export const CS_DbSchema = {
     QuestionAnswers: 'answer_id',
     TryoutQuestionMapping: 'tryout_question_id',
     HistoryReportTryout: 'history_id',
+    QustionType: 'question_type_id',
   },
 };
 
@@ -107,13 +109,13 @@ export const CS_HistoryReportType = {
 };
 
 export const CS_StatusName = {
-  onProgress: 'ON PROGRESS',
-  waiting: 'WAITING',
-  success: 'SUCCESS',
-  failed: 'FAILED',
-  done: 'DONE',
-  confirm: 'CONFIRM',
-  approve: 'APPROVE',
+  onProgress: 'on progress',
+  waiting: 'waiting',
+  success: 'success',
+  failed: 'failed',
+  done: 'done',
+  confirm: 'confirm',
+  approve: 'approve',
 };
 
 export const CS_DbProcedure = {};

@@ -15,5 +15,6 @@ export const sortItem = {
     history_type: 'history_type',
     history_description: 'history_description',
     updated_at: 'updated_at',
+    created_at: 'created_at',
   },
 };
