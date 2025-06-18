@@ -13,6 +13,7 @@ import RoleRouter from '../app/modules/roles';
 import TryoutCategoryRouter from '../app/modules/tryout-category';
 import TryoutDetailRouter from '../app/modules/tryout-details';
 import TryoutPackageRouter from '../app/modules/tryout-package';
+import TryoutStageRouter from '../app/modules/tryout-stage';
 import UserRouter from '../app/modules/users';
 
 const tagVersionOne: string = '/api/v1';
@@ -29,6 +30,9 @@ class RouteApplication extends MainRoutes {
     this.router.use(`${tagVersionOne}/organizations`, authMiddleware, OrganizationRouter);
 
     this.router.use(`${tagVersionOne}/tryout-categories`, authMiddleware, TryoutCategoryRouter);
+
+    this.router.use(`${tagVersionOne}/tryout-stages`, authMiddleware, TryoutStageRouter);
+
     this.router.use(`${tagVersionOne}/tryout-packages`, authMiddleware, TryoutPackageRouter);
 
     this.router.use(`${tagVersionOne}/tryout-details`, authMiddleware, TryoutDetailRouter);

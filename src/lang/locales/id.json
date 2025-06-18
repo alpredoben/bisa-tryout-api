@@ -81,6 +81,12 @@
       "store": "Data organisasi {{value}} berhasil ditambahkan",
       "update": "Data organisasi {{value}} berhasil diubah",
       "delete": "Data organisasi {{value}} berhasil dihapus"
+    },
+    "tryout-stage": {
+      "fetch": "Data tahapan tryout berhasil ditarik",
+      "store": "Data tahapan tryout {{value}} berhasil ditambahkan",
+      "update": "Data tahapan tryout {{value}} berhasil diubah",
+      "delete": "Data tahapan tryout {{value}} berhasil dihapus"
     }
   },
   "error": {
@@ -173,6 +179,12 @@
       "store": "Data organisasi {{value}}  gagal ditambahkan",
       "update": "Data organisasi gagal diubah",
       "delete": "Data organisasi gagal dihapus"
+    },
+    "tryout-stage": {
+      "fetch": "Data tahapan tryout gagal ditarik",
+      "store": "Data tahapan tryout {{value}}  gagal ditambahkan",
+      "update": "Data tahapan tryout gagal diubah",
+      "delete": "Data tahapan tryout gagal dihapus"
     }
   }
 }

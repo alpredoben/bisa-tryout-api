@@ -10,7 +10,7 @@
       "description": {
         "type": "string",
         "summary": "Category Description",
-        "default": "TTryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
+        "default": "Tryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
       },
       "organization_id": {
         "type": "string",
@@ -40,7 +40,7 @@
       "description": {
         "type": "string",
         "summary": "Category Description",
-        "default": "TTryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
+        "default": "Tryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
       },
       "organization_id": {
         "type": "string",

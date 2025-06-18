@@ -1,0 +1,32 @@
+{
+  "SchemaCreateForTryoutStage": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Stage Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Stage Description",
+        "default": "Seleksi Kemampuan Dasar"
+      }
+    }
+  },
+  "SchemaUpdateForTryoutStage": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Stage Name",
+        "default": "SKD"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Stage Description",
+        "default": "Seleksi Kemampuan Dasar"
+      }
+    }
+  }
+}
