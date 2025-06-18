@@ -4,10 +4,10 @@ import { standartDateISO } from '../../../utils/common.util';
 import { defineRequestOrderORM, defineRequestPaginateArgs } from '../../../utils/request.util';
 import { sendResponseJson } from '../../../utils/response.util';
 import { columns, sortItem } from './constanta';
-import { TryoutCategoryService } from './service';
+import { OrganizationService } from './service';
 
-class TryoutCategoryHandler {
-  private readonly service = new TryoutCategoryService();
+class OrganizationHandler {
+  private readonly service = new OrganizationService();
 
   bodyValidation(req: I_RequestCustom): Record<string, any> {
     let payload: Record<string, any> = {};
@@ -20,20 +20,8 @@ class TryoutCategoryHandler {
       payload.description = req?.body?.description;
     }
 
-    if (req?.body?.prices) {
-      payload.prices = req?.body?.prices;
-    }
-
-    if (req?.body?.year) {
-      payload.year = req?.body?.year;
-    }
-
     if (req?.body?.file_id) {
       payload.file_id = req?.body?.file_id;
-    }
-
-    if (req?.body?.[columns.organization_id]) {
-      payload.organization_id = req?.body?.[columns.organization_id];
     }
 
     return payload;
@@ -43,7 +31,6 @@ class TryoutCategoryHandler {
     const filters: Record<string, any> = {
       paging: defineRequestPaginateArgs(req),
       sorting: defineRequestOrderORM(req, sortItem.default, sortItem.request),
-      queries: req?.query,
     };
     const result = await this.service.fetchPagination(filters);
     return sendResponseJson(res, result);
@@ -94,4 +81,4 @@ class TryoutCategoryHandler {
   }
 }
 
-export default new TryoutCategoryHandler();
+export default new OrganizationHandler();

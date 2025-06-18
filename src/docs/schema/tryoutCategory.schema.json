@@ -5,12 +5,27 @@
       "name": {
         "type": "string",
         "summary": "Category Name",
-        "default": "BUMN FG 2025"
+        "default": "BUMN Career 2025"
       },
       "description": {
         "type": "string",
         "summary": "Category Description",
-        "default": "Tryout Proses Rekrutmen Pegawai Fresh Graduate BUMN Tahun 2025"
+        "default": "TTryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
+      },
+      "organization_id": {
+        "type": "string",
+        "summary": "Organization ID",
+        "default": "UUID Organization ID"
+      },
+      "year": {
+        "type": "number",
+        "summary": "Year",
+        "default": 2025
+      },
+      "prices": {
+        "type": "number",
+        "summary": "Prices of product",
+        "default": 2025
       }
     }
   },
@@ -20,12 +35,27 @@
       "name": {
         "type": "string",
         "summary": "Category Name",
-        "default": "BUMN FG 2025"
+        "default": "BUMN Career 2025"
       },
       "description": {
         "type": "string",
         "summary": "Category Description",
-        "default": "Tryout Proses Rekrutmen Pegawai Fresh Graduate BUMN Tahun 2025"
+        "default": "TTryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025"
+      },
+      "organization_id": {
+        "type": "string",
+        "summary": "Organization ID",
+        "default": "UUID Organization ID"
+      },
+      "year": {
+        "type": "number",
+        "summary": "Year",
+        "default": 2025
+      },
+      "prices": {
+        "type": "number",
+        "summary": "Prices of product",
+        "default": 2025
       }
     }
   }

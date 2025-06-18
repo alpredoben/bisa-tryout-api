@@ -75,6 +75,12 @@
       "update": "Data tipe pertanyaan {{value}} berhasil diubah",
       "delete": "Data tipe pertanyaan {{value}} berhasil dihapus",
       "import": "Import data tipe pertanyaan berhasil"
+    },
+    "organization": {
+      "fetch": "Data organisasi berhasil ditarik",
+      "store": "Data organisasi {{value}} berhasil ditambahkan",
+      "update": "Data organisasi {{value}} berhasil diubah",
+      "delete": "Data organisasi {{value}} berhasil dihapus"
     }
   },
   "error": {
@@ -159,8 +165,14 @@
     "question-type": {
       "fetch": "Data tipe pertanyaan gagal ditarik",
       "store": "Data tipe pertanyaan {{value}}  gagal ditambahkan",
-      "update": "Data tipe pertanyaant gagal diubah",
+      "update": "Data tipe pertanyaan gagal diubah",
       "delete": "Data tipe pertanyaan gagal dihapus"
+    },
+    "organization": {
+      "fetch": "Data organisasi gagal ditarik",
+      "store": "Data organisasi {{value}}  gagal ditambahkan",
+      "update": "Data organisasi gagal diubah",
+      "delete": "Data organisasi gagal dihapus"
     }
   }
 }

@@ -1,8 +1,11 @@
 import AppDataSource from '../../config/db.config';
 import { MenuSeeders } from './MenuSeeders';
+import { OrganizationSeeder } from './OrganizationSeeders';
 import { PermissionSeeders } from './PermissionSeeders';
 import { RoleMenuPermissionSeeder } from './RoleMenuPermissionSeeder';
 import { RoleSeeders } from './RoleSeeders';
+import { TryoutCategorySeeder } from './TryoutCategorySeeders';
+import { TryoutStageSeeder } from './TryoutStageSeeder';
 import { UserSeeders } from './UserSeeders';
 
 const runSeeders = async () => {
@@ -37,6 +40,21 @@ const runSeeders = async () => {
     console.log('Seeding role menu permission running....');
     await RoleMenuPermissionSeeder();
     console.log('Seeding role menu permission successfully');
+
+    /** Tryout Category Seeder */
+    console.log('Seedeing organization running ...');
+    await OrganizationSeeder();
+    console.log('Seeding organization successfully');
+
+    /** Tryout Category Seeder */
+    console.log('Seedeing tryout category running ...');
+    await TryoutCategorySeeder();
+    console.log('Seeding tryout category successfully');
+
+    /** Tryout Stage Seeder */
+    console.log('Seedeing tryout stage running ...');
+    await TryoutStageSeeder();
+    console.log('Seeding tryout stage successfully');
 
     /**
      * REGISTER FUNCTION SEEDER IN HERE

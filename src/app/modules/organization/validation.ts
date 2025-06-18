@@ -1,15 +1,14 @@
 import { IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutPackageModel } from '../../../database/models/TryoutTypeModal';
+import { OrganizationModal } from '../../../database/models/OrganizationModal';
 import { MessageDialog } from '../../../lang';
 import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 import { columns } from './constanta';
-import { QuestionTypeService } from './service';
+import { OrganizationService } from './service';
 
 const IDValidation = [
-  reqValidation(columns.id, 'Id Tipe Pertanyaan', 'param').custom(async (value) => {
-    const service = new QuestionTypeService();
+  reqValidation(columns.id, 'Organisasi Id', 'param').custom(async (value) => {
+    const service = new OrganizationService();
     const result = await service.findById(value);
 
     if (!result.success) {
@@ -18,11 +17,11 @@ const IDValidation = [
   }),
 ];
 
-const repository = AppDataSource.getRepository(TryoutPackageModel);
+const repository = AppDataSource.getRepository(OrganizationModal);
 
-export const QusetionTypeValidation = {
+export const OrganizationValidation = {
   created: [
-    reqValidation(columns.name, 'Nama Tipe', 'check').custom(async (value) => {
+    reqValidation(columns.name, 'Nama Organisasi', 'check').custom(async (value) => {
       const result = await repository.findOne({
         where: {
           deleted_at: IsNull(),
@@ -34,20 +33,20 @@ export const QusetionTypeValidation = {
         throw new Error(MessageDialog.__('error.validator.exists', { value: value }));
       }
     }),
-    reqValidation(columns.description, 'Deskripsi', 'check', true),
+    reqValidation(columns.description, 'Keterangan', 'check', true),
     ...validationMiddleware,
   ],
   updated: [
     ...IDValidation,
-    reqValidation(columns.name, 'Nama Tipe', 'check', true).custom(async (value, { req }) => {
-      const id = req?.params?.[SC.PrimaryKey.QuestionTypes];
+    reqValidation(columns.name, 'Nama Organisasi', 'check', true).custom(async (value, { req }) => {
+      const id = req?.params?.[columns.id];
       const search: string = value.trim();
       const result = await repository.findOne({
         where: [
           {
             name: search,
             deleted_at: IsNull(),
-            [SC.PrimaryKey.QuestionTypes]: Not(id),
+            [columns.id]: Not(id),
           },
         ],
       });
@@ -56,7 +55,6 @@ export const QusetionTypeValidation = {
         throw new Error(MessageDialog.__('error.validator.exists', { value: search }));
       }
     }),
-    reqValidation(columns.description, 'Deskripsi', 'check', true),
     ...validationMiddleware,
   ],
   findId: [...IDValidation, ...validationMiddleware],

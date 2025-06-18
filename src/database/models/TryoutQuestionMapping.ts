@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { QuestionModel } from './QuestionModel';
-import { TryoutPackageDetailModel } from './TryoutPackageDetailModel';
+import { TryoutPackageDetailModel } from './TryoutDetailModal';
 
 @Entity({ name: 'tryout_question_mapping' })
 export class TryoutQuestionMapping {

@@ -1,29 +1,27 @@
 import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutPackageDetailModel } from '../../../database/models/TryoutDetailModal';
-import { TryoutPackageModel } from '../../../database/models/TryoutTypeModal';
+import { OrganizationModal } from '../../../database/models/OrganizationModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';
 import { setPagination } from '../../../utils/pagination.util';
 import { setupErrorMessage } from '../../../utils/response.util';
-import { selection } from './constanta';
+import { FileService } from '../files/service';
+import { columns, selection } from './constanta';
 
-export class TryoutDetailService {
-  private repository = AppDataSource.getRepository(TryoutPackageDetailModel);
+const MSG_LABEL: string = 'organization';
+
+export class OrganizationService {
+  private repository = AppDataSource.getRepository(OrganizationModal);
+  private fileService = new FileService();
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
-    const { paging, sorting, queries } = filters;
+    const { paging, sorting } = filters;
     try {
       let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutPackageModel> = {
+      let whereAnd: FindOptionsWhere<OrganizationModal> = {
         deleted_at: IsNull(),
       };
-
-      if (queries?.category_id) {
-        whereAnd.category_id = queries.category_id;
-      }
 
       if (paging?.search) {
         const searchTerm: any = paging?.search;
@@ -37,22 +35,10 @@ export class TryoutDetailService {
             ...whereAnd,
           },
         ];
-
-        if (!isNaN(searchTerm)) {
-          whereCondition.push({
-            passing_grade: Number(searchTerm),
-          });
-          whereCondition.push({
-            total_questions: Number(searchTerm),
-          });
-        }
       }
 
       const [rows, count] = await this.repository.findAndCount({
         where: whereCondition?.length > 0 ? whereCondition : whereAnd,
-        relations: {
-          tryout_package: true,
-        },
         select: selection.default,
         skip: Number(paging?.skip),
         take: Number(paging?.limit),
@@ -64,7 +50,7 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: pagination,
       };
     } catch (error: any) {
@@ -77,10 +63,7 @@ export class TryoutDetailService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
-        },
-        relations: {
-          tryout_package: true,
+          [columns.id]: id,
         },
         select: selection.default,
       });
@@ -89,7 +72,7 @@ export class TryoutDetailService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'detail tryout' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'organisasi' }),
           data: result,
         };
       }
@@ -97,7 +80,37 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
+        data: result,
+      };
+    } catch (error: any) {
+      return setupErrorMessage(error);
+    }
+  }
+
+  async findByCondition(condition: Record<string, any>): Promise<I_ExpressResponse> {
+    try {
+      const result = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          ...condition,
+        },
+        select: selection.default,
+      });
+
+      if (!result) {
+        return {
+          success: false,
+          code: 404,
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'organisasi' }),
+          data: result,
+        };
+      }
+
+      return {
+        success: true,
+        code: 200,
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: result,
       };
     } catch (error: any) {
@@ -106,18 +119,41 @@ export class TryoutDetailService {
   }
 
   async create(req: I_RequestCustom, payload: Record<string, any>): Promise<I_ExpressResponse> {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    let fileDesc = null;
     try {
+      if (payload?.file_id) {
+        const result = await this.fileService.update(req, payload?.file_id, {
+          updated_at: payload.created_at,
+          updated_by: payload.created_by,
+          has_used: true,
+        });
+
+        if (!result.success) {
+          await queryRunner.rollbackTransaction();
+          return result;
+        }
+
+        fileDesc = result.data;
+        delete payload?.file_id;
+      }
+
       const result = await this.repository.save(
         this.repository.create({
           ...payload,
+          icon: fileDesc,
         }),
       );
 
       if (!result) {
+        await queryRunner.rollbackTransaction();
         return {
           success: false,
           code: 400,
-          message: MessageDialog.__('error.tryout-details.store', { value: payload.name }),
+          message: MessageDialog.__(`error.${MSG_LABEL}.store`, { value: payload.name }),
           data: result,
         };
       }
@@ -125,16 +161,20 @@ export class TryoutDetailService {
       // Log Activity
       // Notification
 
+      await queryRunner.commitTransaction();
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.store', { value: payload.name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.store`, { value: payload.name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: result.package_id,
+          [columns.id]: result?.organization_id,
         },
       };
     } catch (error: any) {
+      await queryRunner.rollbackTransaction();
       return setupErrorMessage(error);
+    } finally {
+      await queryRunner.release();
     }
   }
 
@@ -143,7 +183,7 @@ export class TryoutDetailService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       });
 
@@ -151,7 +191,7 @@ export class TryoutDetailService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'detail tryout' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'organisasi' }),
           data: result,
         };
       }
@@ -166,9 +206,9 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.update', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.update`, { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {
@@ -180,7 +220,7 @@ export class TryoutDetailService {
     try {
       const result = await this.repository.findOne({
         where: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
           deleted_at: IsNull(),
         },
       });
@@ -189,7 +229,7 @@ export class TryoutDetailService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'detail tryout' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'organisasi' }),
           data: result,
         };
       }
@@ -209,9 +249,9 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.delete', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.delete`, { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {

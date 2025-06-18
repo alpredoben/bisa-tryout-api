@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { QuestionAnswerModel } from './QuestionAnswerModel';
 import { QuestionTypeModel } from './QuestionTypeModel';
-import { TryoutPackageDetailModel } from './TryoutPackageDetailModel';
+import { TryoutPackageDetailModel } from './TryoutDetailModal';
 
 @Entity({ name: 'questions' })
 export class QuestionModel {

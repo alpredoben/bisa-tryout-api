@@ -1,7 +1,7 @@
 import { IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutPackageDetailModel } from '../../../database/models/TryoutPackageDetailModel';
+import { TryoutPackageDetailModel } from '../../../database/models/TryoutDetailModal';
 import { MessageDialog } from '../../../lang';
 import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 import { columns } from './constanta';

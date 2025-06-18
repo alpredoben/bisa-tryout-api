@@ -2,7 +2,7 @@ import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
 import { QuestionTypeModel } from '../../../database/models/QuestionTypeModel';
-import { TryoutPackageModel } from '../../../database/models/TryoutPackageModel';
+import { TryoutPackageModel } from '../../../database/models/TryoutTypeModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';

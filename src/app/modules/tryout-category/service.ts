@@ -1,26 +1,31 @@
 import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutCategoryModel } from '../../../database/models/TryoutCategoryModel';
+import { TryoutCategoryModal } from '../../../database/models/TryoutCategoryModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';
 import { setPagination } from '../../../utils/pagination.util';
 import { setupErrorMessage } from '../../../utils/response.util';
 import { FileService } from '../files/service';
-import { selection } from './constanta';
+import { columns, selection } from './constanta';
+
+const MSG_LABEL: string = 'tryout-category';
 
 export class TryoutCategoryService {
-  private repository = AppDataSource.getRepository(TryoutCategoryModel);
+  private repository = AppDataSource.getRepository(TryoutCategoryModal);
   private fileService = new FileService();
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
-    const { paging, sorting } = filters;
+    const { paging, sorting, queries } = filters;
     try {
       let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutCategoryModel> = {
+      let whereAnd: FindOptionsWhere<TryoutCategoryModal> = {
         deleted_at: IsNull(),
       };
+
+      if (queries?.[columns.organization_id]) {
+        whereAnd.organization_id = queries?.[columns.organization_id];
+      }
 
       if (paging?.search) {
         const searchTerm: any = paging?.search;
@@ -38,6 +43,9 @@ export class TryoutCategoryService {
 
       const [rows, count] = await this.repository.findAndCount({
         where: whereCondition?.length > 0 ? whereCondition : whereAnd,
+        relations: {
+          organization: true,
+        },
         select: selection.default,
         skip: Number(paging?.skip),
         take: Number(paging?.limit),
@@ -49,7 +57,7 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: pagination,
       };
     } catch (error: any) {
@@ -62,7 +70,10 @@ export class TryoutCategoryService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          category_id: id,
+          [columns.id]: id,
+        },
+        relations: {
+          organization: true,
         },
         select: selection.default,
       });
@@ -71,7 +82,7 @@ export class TryoutCategoryService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'tryout category' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'kategori tryout' }),
           data: result,
         };
       }
@@ -79,7 +90,7 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: result,
       };
     } catch (error: any) {
@@ -94,6 +105,9 @@ export class TryoutCategoryService {
           deleted_at: IsNull(),
           ...condition,
         },
+        relations: {
+          organization: true,
+        },
         select: selection.default,
       });
 
@@ -101,7 +115,7 @@ export class TryoutCategoryService {
         return {
           success: false,
           code: 404,
-          message: MessageDialog.__('error.default.notFoundItem', { item: 'tryout category' }),
+          message: MessageDialog.__('error.default.notFoundItem', { item: 'kategori tryout' }),
           data: result,
         };
       }
@@ -109,7 +123,7 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: result,
       };
     } catch (error: any) {
@@ -152,7 +166,7 @@ export class TryoutCategoryService {
         return {
           success: false,
           code: 400,
-          message: MessageDialog.__('error.tryout-category.store', { value: payload.name }),
+          message: MessageDialog.__(`error.${MSG_LABEL}.store`, { value: payload.name }),
           data: result,
         };
       }
@@ -164,9 +178,9 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.store', { value: payload.name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.store`, { value: payload.name }),
         data: {
-          [SC.PrimaryKey.TryoutCategories]: result.category_id,
+          [columns.id]: result.category_id,
         },
       };
     } catch (error: any) {
@@ -182,7 +196,7 @@ export class TryoutCategoryService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutCategories]: id,
+          [columns.id]: id,
         },
       });
 
@@ -205,9 +219,9 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.update', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.update`, { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutCategories]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {
@@ -219,7 +233,7 @@ export class TryoutCategoryService {
     try {
       const result = await this.repository.findOne({
         where: {
-          [SC.PrimaryKey.TryoutCategories]: id,
+          [columns.id]: id,
           deleted_at: IsNull(),
         },
       });
@@ -248,9 +262,9 @@ export class TryoutCategoryService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-category.delete', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.delete`, { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutCategories]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {

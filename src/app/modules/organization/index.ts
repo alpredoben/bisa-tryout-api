@@ -3,9 +3,9 @@ import MainRoutes from '../../../config/routes.config';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
 import { columns } from './constanta';
 import Handler from './handler';
-import { TryoutCategoryValidation as Validation } from './validation';
+import { OrganizationValidation as Validation } from './validation';
 
-class TryoutCategoryRouter extends MainRoutes {
+class OrganizationRouter extends MainRoutes {
   public routes(): void {
     this.router.get('/', async (req: I_RequestCustom, res: Response) => {
       await Handler.fetchParam(req, res);
@@ -29,4 +29,4 @@ class TryoutCategoryRouter extends MainRoutes {
   }
 }
 
-export default new TryoutCategoryRouter().router;
+export default new OrganizationRouter().router;
