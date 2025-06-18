@@ -1,0 +1,32 @@
+{
+  "SchemaCreateForTryoutType": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Type Name",
+        "default": "TWK"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Type Description",
+        "default": "Test Wawasan Kebangsaan"
+      }
+    }
+  },
+  "SchemaUpdateForTryoutType": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Type Name",
+        "default": "TWK"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Type Description",
+        "default": "Test Wawasan Kebangsaan"
+      }
+    }
+  }
+}

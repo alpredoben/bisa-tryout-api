@@ -87,6 +87,12 @@
       "store": "Data tahapan tryout {{value}} berhasil ditambahkan",
       "update": "Data tahapan tryout {{value}} berhasil diubah",
       "delete": "Data tahapan tryout {{value}} berhasil dihapus"
+    },
+    "tryout-type": {
+      "fetch": "Data jenis tes berhasil ditarik",
+      "store": "Data jenis tes {{value}} berhasil ditambahkan",
+      "update": "Data jenis tes {{value}} berhasil diubah",
+      "delete": "Data jenis tes {{value}} berhasil dihapus"
     }
   },
   "error": {
@@ -185,6 +191,12 @@
       "store": "Data tahapan tryout {{value}}  gagal ditambahkan",
       "update": "Data tahapan tryout gagal diubah",
       "delete": "Data tahapan tryout gagal dihapus"
+    },
+    "tryout-type": {
+      "fetch": "Data jenis tes gagal ditarik",
+      "store": "Data jenis tes {{value}}  gagal ditambahkan",
+      "update": "Data jenis tes gagal diubah",
+      "delete": "Data jenis tes gagal dihapus"
     }
   }
 }

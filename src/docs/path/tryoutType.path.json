@@ -1,8 +1,8 @@
 {
-  "/tryout-stages": {
+  "/tryout-types": {
     "get": {
-      "tags": ["Tryout Stage"],
-      "summary": "Fetch all tryout stages with pagination response service",
+      "tags": ["Tryout Type"],
+      "summary": "Fetch all tryout types with pagination response service",
       "security": [
         {
           "bearerAuth": []
@@ -69,8 +69,8 @@
       }
     },
     "post": {
-      "tags": ["Tryout Stage"],
-      "summary": "Add new tryout stage service",
+      "tags": ["Tryout Type"],
+      "summary": "Add new tryout type service",
       "security": [
         {
           "bearerAuth": []
@@ -81,7 +81,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/SchemaCreateForTryoutType"
+              "$ref": "#/components/schemas/SchemaCreateForTryoutStage"
             }
           }
         }
@@ -101,10 +101,10 @@
     }
   },
 
-  "/tryout-stages/{stage_id}": {
+  "/tryout-types/{type_id}": {
     "get": {
-      "tags": ["Tryout Stage"],
-      "summary": "Find tryout stage by id service",
+      "tags": ["Tryout Type"],
+      "summary": "Find tryout type by id service",
       "security": [
         {
           "bearerAuth": []
@@ -113,7 +113,7 @@
       "parameters": [
         {
           "in": "path",
-          "name": "stage_id",
+          "name": "type_id",
           "required": true,
           "schema": {
             "type": "string"
@@ -134,8 +134,8 @@
       }
     },
     "put": {
-      "tags": ["Tryout Stage"],
-      "summary": "Update tryout stage by id service",
+      "tags": ["Tryout Type"],
+      "summary": "Update tryout type by id service",
       "security": [
         {
           "bearerAuth": []
@@ -144,7 +144,7 @@
       "parameters": [
         {
           "in": "path",
-          "name": "stage_id",
+          "name": "type_id",
           "required": true,
           "schema": {
             "type": "string"
@@ -156,7 +156,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/SchemaUpdateForTryoutType"
+              "$ref": "#/components/schemas/SchemaUpdateForTryoutStage"
             }
           }
         }
@@ -175,8 +175,8 @@
       }
     },
     "delete": {
-      "tags": ["Tryout Stage"],
-      "summary": "Delete tryout stage by id service",
+      "tags": ["Tryout Type"],
+      "summary": "Delete tryout type by id service",
       "security": [
         {
           "bearerAuth": []
@@ -185,7 +185,7 @@
       "parameters": [
         {
           "in": "path",
-          "name": "stage_id",
+          "name": "type_id",
           "required": true,
           "schema": {
             "type": "string"
