@@ -1,9 +1,9 @@
 import { Response } from 'express';
 import MainRoutes from '../../../config/routes.config';
-import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
+import { columns } from './constanta';
 import Handler from './handler';
-import { TryoutDetailValidation } from './validation';
+import { TryoutDetailValidation as Validation } from './validation';
 
 class TryoutDetailRouter extends MainRoutes {
   public routes(): void {
@@ -11,33 +11,21 @@ class TryoutDetailRouter extends MainRoutes {
       await Handler.fetchParam(req, res);
     });
 
-    this.router.get(
-      `/:${SC.PrimaryKey.TryoutPackageDetails}`,
-      TryoutDetailValidation.findId,
-      async (req: I_RequestCustom, res: Response) => {
-        await Handler.findById(req, res);
-      },
-    );
+    this.router.get(`/:${columns.id}`, Validation.findId, async (req: I_RequestCustom, res: Response) => {
+      await Handler.findById(req, res);
+    });
 
-    this.router.post('/', TryoutDetailValidation.created, async (req: I_RequestCustom, res: Response) => {
+    this.router.post('/', Validation.created, async (req: I_RequestCustom, res: Response) => {
       await Handler.store(req, res);
     });
 
-    this.router.put(
-      `/:${SC.PrimaryKey.TryoutPackageDetails}`,
-      TryoutDetailValidation.updated,
-      async (req: I_RequestCustom, res: Response) => {
-        await Handler.update(req, res);
-      },
-    );
+    this.router.put(`/:${columns.id}`, Validation.updated, async (req: I_RequestCustom, res: Response) => {
+      await Handler.update(req, res);
+    });
 
-    this.router.delete(
-      `/:${SC.PrimaryKey.TryoutPackageDetails}`,
-      TryoutDetailValidation.findId,
-      async (req: I_RequestCustom, res: Response) => {
-        await Handler.softDelete(req, res);
-      },
-    );
+    this.router.delete(`/:${columns.id}`, Validation.findId, async (req: I_RequestCustom, res: Response) => {
+      await Handler.softDelete(req, res);
+    });
   }
 }
 

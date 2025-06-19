@@ -2,7 +2,7 @@
   "/tryout-packages": {
     "get": {
       "tags": ["Tryout Package"],
-      "summary": "Fetch all tryout-packages with pagination response service",
+      "summary": "Fetch all tryout packages with pagination response service",
       "security": [
         {
           "bearerAuth": []
@@ -61,7 +61,16 @@
           "schema": {
             "type": "string"
           },
-          "description": "Example --> search=Category ID (UUID)"
+          "description": "Example --> search=Tryout Category ID (UUID)"
+        },
+        {
+          "in": "query",
+          "name": "stage_id",
+          "required": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Example --> search=Tryout Stage ID (UUID)"
         }
       ],
       "responses": {
@@ -104,60 +113,6 @@
                 "$ref": "#/components/schemas/DefaultResponseSchema"
               }
             }
-          }
-        }
-      }
-    }
-  },
-
-  "/tryout-packages/imported": {
-    "post": {
-      "tags": ["Tryout Package"],
-      "summary": "Upload and Import file Excel (xlsx, xls), for insert data into database",
-      "security": [
-        {
-          "bearerAuth": []
-        }
-      ],
-      "requestBody": {
-        "required": false,
-        "content": {
-          "multipart/form-data": {
-            "schema": {
-              "$ref": "#/components/schemas/SchemaTryoutPackageImported"
-            }
-          }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "OK",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DefaultResponseSchema"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-
-  "/tryout-packages/download-template": {
-    "get": {
-      "tags": ["Tryout Package"],
-      "summary": "Download template excel (Tryout Package)",
-      "security": [
-        {
-          "bearerAuth": []
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
-          "content": {
-            "application/octet-stream:": {}
           }
         }
       }

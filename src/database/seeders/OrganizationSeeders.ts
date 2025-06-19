@@ -1,10 +1,10 @@
 import { IsNull } from 'typeorm';
 import AppDataSource from '../../config/db.config';
 import { standartDateISO } from '../../utils/common.util';
-import { OrganizationModel } from '../models/OrganizationModal';
+import { OrganizationModal } from '../models/OrganizationModal';
 import { UserModel } from '../models/UserModel';
 
-const repository = AppDataSource.getRepository(OrganizationModel);
+const repository = AppDataSource.getRepository(OrganizationModal);
 
 const data = [
   { name: 'BUMN' },

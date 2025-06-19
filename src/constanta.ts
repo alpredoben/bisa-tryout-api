@@ -77,13 +77,10 @@ export const CS_DbSchema = {
     TryoutTypes: 'tryout_types',
     TryoutPackages: 'tryout_packages',
     TryoutDetails: 'tryout_details',
-
-    QuestionTypes: 'question_types',
     Questions: 'questions',
-    QuestionAnswers: 'question_answers',
-    TryoutQuestionMapping: 'tryout_question_mapping',
+    Answers: 'answers',
+    Discussion: 'discussions',
     HistoryReportTryout: 'history_reported_tryout',
-    QustionType: 'question_types',
   },
   PrimaryKey: {
     Role: 'role_id',
@@ -99,13 +96,10 @@ export const CS_DbSchema = {
     TryoutTypes: 'type_id',
     TryoutPackages: 'package_id',
     TryoutDetails: 'detail_id',
-
-    QuestionTypes: 'question_type_id',
     Questions: 'question_id',
-    QuestionAnswers: 'answer_id',
-    TryoutQuestionMapping: 'tryout_question_id',
+    Answers: 'answer_id',
+    Discussion: 'discussion_id',
     HistoryReportTryout: 'history_id',
-    QustionType: 'question_type_id',
   },
 };
 

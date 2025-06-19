@@ -6,6 +6,7 @@ import { RoleMenuPermissionSeeder } from './RoleMenuPermissionSeeder';
 import { RoleSeeders } from './RoleSeeders';
 import { TryoutCategorySeeder } from './TryoutCategorySeeders';
 import { TryoutStageSeeder } from './TryoutStageSeeder';
+import { TryoutTypeSeeder } from './TryoutTypeSeeder';
 import { UserSeeders } from './UserSeeders';
 
 const runSeeders = async () => {
@@ -46,15 +47,19 @@ const runSeeders = async () => {
     await OrganizationSeeder();
     console.log('Seeding organization successfully');
 
+    console.log('Seedeing tryout stage running ...');
+    await TryoutStageSeeder();
+    console.log('Seeding tryout stage successfully');
+
+    /** Tryout Stage Seeder */
+    console.log('Seedeing tryout type running ...');
+    await TryoutTypeSeeder();
+    console.log('Seeding tryout type successfully');
+
     /** Tryout Category Seeder */
     console.log('Seedeing tryout category running ...');
     await TryoutCategorySeeder();
     console.log('Seeding tryout category successfully');
-
-    /** Tryout Stage Seeder */
-    console.log('Seedeing tryout stage running ...');
-    await TryoutStageSeeder();
-    console.log('Seeding tryout stage successfully');
 
     /**
      * REGISTER FUNCTION SEEDER IN HERE

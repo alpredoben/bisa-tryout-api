@@ -1,40 +1,35 @@
 import { Response } from 'express';
-import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
 import { standartDateISO } from '../../../utils/common.util';
 import { defineRequestOrderORM, defineRequestPaginateArgs } from '../../../utils/request.util';
 import { sendResponseJson } from '../../../utils/response.util';
-import { sortItem } from './constanta';
+import { columns, sortItem } from './constanta';
 import { TryoutDetailService } from './service';
 
-class TryoutCategoryHandler {
+class TryoutDetailHandler {
   private readonly service = new TryoutDetailService();
 
   bodyValidation(req: I_RequestCustom): Record<string, any> {
     let payload: Record<string, any> = {};
 
-    if (req?.body?.name) {
-      payload.name = req?.body?.name;
+    if (req?.body?.package_id) {
+      payload.package_id = req?.body?.package_id;
     }
 
-    if (req?.body?.description) {
-      payload.description = req?.body?.description;
+    if (req?.body?.type_id) {
+      payload.type_id = req?.body?.type_id;
     }
 
     if (req?.body?.total_questions) {
       payload.total_questions = req?.body?.total_questions;
     }
 
-    if (req?.body?.duration && req?.body?.satuan) {
-      payload.total_duration = {
-        duration: req?.body?.duration,
-        satuan: req?.body?.satuan,
-      };
-    } else if (req?.body?.duration || req?.body?.satuan) {
-      payload.total_duration = {
-        duration: req?.body?.duration ?? null,
-        satuan: req?.body?.satuan ?? null,
-      };
+    if (req?.body?.total_duration && req?.body?.total_duration) {
+      payload.total_duration = req?.body?.total_duration;
+    }
+
+    if (req?.body?.satuan_duration && req?.body?.satuan_duration) {
+      payload.satuan_duration = req?.body?.satuan_duration;
     }
 
     if (req?.body?.passing_grade) {
@@ -54,7 +49,7 @@ class TryoutCategoryHandler {
   }
 
   async findById(req: I_RequestCustom, res: Response): Promise<Response> {
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutPackageDetails];
+    const id: string = req?.params?.[columns.id];
     const result = await this.service.findById(id);
     return sendResponseJson(res, result);
   }
@@ -73,7 +68,7 @@ class TryoutCategoryHandler {
 
   async update(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutPackageDetails];
+    const id: string = req?.params?.[columns.id];
     let payload: Record<string, any> = {
       updated_at: today,
       updated_by: req?.user?.user_id,
@@ -86,7 +81,7 @@ class TryoutCategoryHandler {
 
   async softDelete(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutPackageDetails];
+    const id: string = req?.params?.[columns.id];
     let payload: Record<string, any> = {
       deleted_at: today,
       deleted_by: req?.user?.user_id,
@@ -97,4 +92,4 @@ class TryoutCategoryHandler {
   }
 }
 
-export default new TryoutCategoryHandler();
+export default new TryoutDetailHandler();

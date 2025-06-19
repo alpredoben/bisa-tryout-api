@@ -1,4 +1,3 @@
-import { TryoutPackageService } from '../../app/modules/tryout-package/service';
 import { subscribeMessage } from '../../config/rabbitmq.config';
 import { CS_MessageBroker, CS_TypeName } from '../../constanta';
 import { I_RequestCustom } from '../../interfaces/app.interface';
@@ -10,8 +9,8 @@ const extractHistoryTryoutMessage = async (exchangeName: string, queueName: stri
   const req: I_RequestCustom = request;
   switch (type_name) {
     case CS_TypeName.TryoutPackage:
-      const tryoutService = new TryoutPackageService();
-      await tryoutService.executeTryoutPackageImport(origin, history_id, req);
+      // const tryoutService = new TryoutPackageService();
+      // await tryoutService.executeTryoutPackageImport(origin, history_id, req);
       break;
 
     default:

@@ -1,10 +1,10 @@
 import { IsNull } from 'typeorm';
 import AppDataSource from '../../config/db.config';
 import { standartDateISO } from '../../utils/common.util';
-import { TryoutTypeModel } from '../models/TryoutTypeModal';
+import { TryoutTypeModal } from '../models/TryoutTypeModal';
 import { UserModel } from '../models/UserModel';
 
-const repository = AppDataSource.getRepository(TryoutTypeModel);
+const repository = AppDataSource.getRepository(TryoutTypeModal);
 
 const data = [
   { name: 'TWK', description: 'Tes Wawasan Kebangsaan' },
@@ -12,8 +12,8 @@ const data = [
   { name: 'TKP', description: 'Tes Karakteristik Pribadi' },
   { name: 'TKD', description: 'Tes Kompetensi Dasar' },
   { name: 'Tes AKHLAK', description: 'Amanah, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif' },
-  { name: 'Tes Bahasa Inggris' },
-  { name: 'Tes Learning Agility' },
+  { name: 'Tes Bahasa Inggris', description: 'Test Toefl' },
+  { name: 'Tes Learning Agility', description: 'Test Kepribadian' },
 ];
 
 export const TryoutTypeSeeder = async () => {

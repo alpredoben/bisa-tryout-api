@@ -1,39 +1,34 @@
 import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutPackageDetailModel } from '../../../database/models/TryoutDetailModal';
-import { TryoutPackageModel } from '../../../database/models/TryoutTypeModal';
+import { TryoutDetailModal } from '../../../database/models/TryoutDetailModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';
 import { setPagination } from '../../../utils/pagination.util';
 import { setupErrorMessage } from '../../../utils/response.util';
-import { selection } from './constanta';
+import { columns } from './constanta';
 
+const MSG_LABEL: string = 'tryout-details';
 export class TryoutDetailService {
-  private repository = AppDataSource.getRepository(TryoutPackageDetailModel);
+  private repository = AppDataSource.getRepository(TryoutDetailModal);
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
     try {
       let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutPackageModel> = {
+      let whereAnd: FindOptionsWhere<TryoutDetailModal> = {
         deleted_at: IsNull(),
       };
 
-      if (queries?.category_id) {
-        whereAnd.category_id = queries.category_id;
+      if (queries?.package_id) {
+        whereAnd.package_id = queries.package_id;
       }
 
       if (paging?.search) {
         const searchTerm: any = paging?.search;
         whereCondition = [
           {
-            name: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-          {
-            description: ILike(`%${searchTerm}%`),
+            total_duration: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
         ];
@@ -45,15 +40,31 @@ export class TryoutDetailService {
           whereCondition.push({
             total_questions: Number(searchTerm),
           });
+          whereCondition.push({
+            order_number: Number(searchTerm),
+          });
         }
       }
 
       const [rows, count] = await this.repository.findAndCount({
         where: whereCondition?.length > 0 ? whereCondition : whereAnd,
         relations: {
-          tryout_package: true,
+          package: true,
+          type: true,
         },
-        select: selection.default,
+        select: {
+          detail_id: true,
+          package: {
+            package_id: true,
+            total_questions: true,
+          },
+          total_questions: true,
+          total_duration: true,
+          passing_grade: true,
+          order_number: true,
+          created_at: true,
+          updated_at: true,
+        },
         skip: Number(paging?.skip),
         take: Number(paging?.limit),
         order: sorting,
@@ -64,7 +75,7 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: pagination,
       };
     } catch (error: any) {
@@ -77,12 +88,38 @@ export class TryoutDetailService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
         relations: {
-          tryout_package: true,
+          package: {
+            category: true,
+            stage: true,
+          },
         },
-        select: selection.default,
+        select: {
+          detail_id: true,
+          passing_grade: true,
+          total_duration: true,
+          total_questions: true,
+          created_at: true,
+          updated_at: true,
+          order_number: true,
+          package: {
+            package_id: true,
+            total_questions: true,
+            category: {
+              category_id: true,
+              name: true,
+              prices: true,
+              description: true,
+            },
+            stage: {
+              stage_id: true,
+              name: true,
+              description: true,
+            },
+          },
+        },
       });
 
       if (!result) {
@@ -97,7 +134,7 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: result,
       };
     } catch (error: any) {
@@ -117,7 +154,7 @@ export class TryoutDetailService {
         return {
           success: false,
           code: 400,
-          message: MessageDialog.__('error.tryout-details.store', { value: payload.name }),
+          message: MessageDialog.__(`error.${MSG_LABEL}.store`, { value: payload.name }),
           data: result,
         };
       }
@@ -128,9 +165,9 @@ export class TryoutDetailService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-details.store', { value: payload.name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.store`, { value: payload.name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: result.package_id,
+          [columns.id]: result.package_id,
         },
       };
     } catch (error: any) {
@@ -143,7 +180,7 @@ export class TryoutDetailService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       });
 
@@ -156,7 +193,7 @@ export class TryoutDetailService {
         };
       }
 
-      const name: string = result?.name;
+      const name: string = '';
       const updateResult = { ...result, ...payload };
       await this.repository.save(updateResult);
 
@@ -168,7 +205,7 @@ export class TryoutDetailService {
         code: 200,
         message: MessageDialog.__('success.tryout-details.update', { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {
@@ -180,7 +217,7 @@ export class TryoutDetailService {
     try {
       const result = await this.repository.findOne({
         where: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
           deleted_at: IsNull(),
         },
       });
@@ -194,7 +231,7 @@ export class TryoutDetailService {
         };
       }
 
-      const name: string = result?.name;
+      const name: string = '';
 
       const updateResult = {
         ...result,
@@ -211,7 +248,7 @@ export class TryoutDetailService {
         code: 200,
         message: MessageDialog.__('success.tryout-details.delete', { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutPackageDetails]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {

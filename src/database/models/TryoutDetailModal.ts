@@ -26,8 +26,11 @@ export class TryoutDetailModal {
   @Column({ type: 'bigint', name: 'total_questions', default: null })
   total_questions!: number;
 
-  @Column({ type: 'jsonb', name: 'total_duration', default: { satuan: 'detik', waktu: 0 } })
-  total_duration!: string;
+  @Column({ type: 'bigint', name: 'total_duration', default: null })
+  total_duration!: number;
+
+  @Column({ type: 'varchar', length: 100, name: 'satuan_duration', default: null })
+  satuan_duration!: string;
 
   @Column({ type: 'bigint', name: 'order_number', default: null })
   order_number!: number;

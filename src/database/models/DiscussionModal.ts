@@ -8,23 +8,26 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuestionModel } from './QuestionModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { QuestionModal } from './QuestionModal';
 
-@Entity({ name: 'question_answers' })
-export class QuestionAnswerModel {
+@Entity({ name: SC.TableName.Discussion })
+export class DiscussionModal {
   @PrimaryGeneratedColumn('uuid')
-  answer_id!: string;
+  discussion_id!: string;
 
   @Column({ name: 'question_id', type: 'uuid', default: null, nullable: true })
   question_id!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'type_answer', default: 'text' })
-  type_answer!: string;
+  @Column({ type: 'varchar', length: 200, name: 'discussion_type', nullable: true, default: 'text' })
+  discussion_type!: string;
 
-  @Column({ type: 'text', name: 'answer_value', nullable: true, default: null })
-  answer_value!: string;
+  @Column({ type: 'text', name: 'discussion_value', nullable: true, default: null })
+  discussion_value!: string;
 
-  @Column({ type: 'boolean', name: 'is_answer', default: false })
+  @Column({ type: 'jsonb', name: 'discussion_file', default: null, nullable: true })
+  discussion_file!: string;
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
 
@@ -43,7 +46,7 @@ export class QuestionAnswerModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => QuestionModel, (value) => value.answers)
+  @OneToOne(() => QuestionModal, (value) => value.discussion)
   @JoinColumn({ name: 'question_id' })
-  question!: QuestionModel;
+  question!: QuestionModal;
 }

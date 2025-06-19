@@ -30,10 +30,6 @@
         "type": "string",
         "summary": "Description of organization",
         "default": "Badan Usaha Milik Negara"
-      },
-      "file_id": {
-        "type": "string",
-        "summary": "UUID Get from upload file"
       }
     }
   }

@@ -1,18 +1,19 @@
 import { CS_DbSchema as SC } from '../../../constanta';
 export const columns = {
-  id: SC.PrimaryKey.TryoutPackages,
-  name: 'name',
-  description: 'description',
-  prices: 'prices',
-  category_id: 'category_id',
+  id: SC.PrimaryKey.TryoutTypes,
+  category_id: SC.PrimaryKey.TryoutCategories,
+  stage_id: SC.PrimaryKey.TryoutStages,
+  total_questions: 'total_questions',
+  order_number: 'order_number',
 };
 
 export const sortItem = {
   default: ['created_at', 'DESC'],
   request: {
-    name: 'name',
-    description: 'description',
-    prices: 'prices',
+    category_name: 'category_name',
+    stage_name: 'stage_name',
+    category_prices: 'category_prices',
+    category_year: 'category_year',
     created_at: 'created_at',
   },
 };
@@ -20,11 +21,15 @@ export const sortItem = {
 export const selection = {
   default: {
     package_id: true,
-    name: true,
-    description: true,
-    prices: true,
-    tryout_category: {
+    category: {
       category_id: true,
+      name: true,
+      description: true,
+      prices: true,
+      year: true,
+    },
+    stage: {
+      stage_id: true,
       name: true,
       description: true,
     },
@@ -32,31 +37,3 @@ export const selection = {
     updated_at: true,
   },
 };
-
-export const excelHeaders = [
-  {
-    header: 'Nama Paket',
-    key: 'package_name',
-    width: 25,
-  },
-  {
-    header: 'Keterangan',
-    key: 'package_desc',
-    width: 100,
-  },
-  {
-    header: 'Harga Paket',
-    key: 'package_price',
-    width: 40,
-  },
-  {
-    header: 'Kategori Paket',
-    key: 'category_name',
-    width: 40,
-  },
-  {
-    header: 'Keterangan Kategori',
-    key: 'category_desc',
-    width: 100,
-  },
-];

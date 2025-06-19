@@ -40,10 +40,24 @@ const data = [
         name: 'Master Tryout',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
+
       {
-        name: 'Kategori Tryout',
+        name: 'Organisasi',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
+      {
+        name: 'Kategori',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+      },
+      {
+        name: 'Jenis Test',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+      },
+      {
+        name: 'Tipe Tryout',
+        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+      },
+
       {
         name: 'Paket Tryout',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
@@ -57,16 +71,10 @@ const data = [
         name: 'Master Pertanyaan',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
-
-      {
-        name: 'Tipe Pertanyaan',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
-      },
       {
         name: 'Daftar Pertanyaan',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
-
       {
         name: 'Laporan',
         permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],

@@ -1,17 +1,51 @@
 import { IsNull } from 'typeorm';
 import AppDataSource from '../../config/db.config';
 import { standartDateISO } from '../../utils/common.util';
-import { TryoutCategoryModel } from '../models/TryoutCategoryModal';
+import { OrganizationModal } from '../models/OrganizationModal';
+import { TryoutCategoryModal } from '../models/TryoutCategoryModal';
 import { UserModel } from '../models/UserModel';
 
-const repository = AppDataSource.getRepository(TryoutCategoryModel);
+const repository = AppDataSource.getRepository(TryoutCategoryModal);
+const repoOrganization = AppDataSource.getRepository(OrganizationModal);
 
 const data = [
-  { name: 'Tryout BUMN Career', description: 'Tryout Seleksi Kenaikan Karir Pegawai BUMN ' },
-  { name: 'Tryout Recruitment BUMN', description: 'Tryout Seleksi Penerimaan Pegawai BUMN' },
-  { name: 'Tryout CASN', description: 'Tryout Seleksi Calon Aparatur Sipil Negara ' },
-  { name: 'Tryout SKD', description: 'Tryout Seleksi Ujian Sekolah Kedinasan' },
-  { name: 'Tryout SNBT', description: 'Tryout Seleksi Nasional Berdasarkan Tes' },
+  {
+    name: 'BUMN Career 2025',
+    description: 'Tryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2025',
+    year: 2025,
+    price: 5000,
+    organization: 'BUMN',
+  },
+  {
+    name: 'BUMN Career 2024',
+    description: 'Tryout Seleksi Kenaikan Karir Pegawai BUMN Tahun 2024',
+    year: 2024,
+    price: 4000,
+    organization: 'BUMN',
+  },
+
+  {
+    name: 'Recruitment BUMN 2025',
+    description: 'Tryout Seleksi Penerimaan Pegawai BUMN 2025',
+    year: 2025,
+    price: 4000,
+    organization: 'BUMN',
+  },
+  {
+    name: 'Recruitment BUMN 2025',
+    description: 'Tryout Seleksi Penerimaan Pegawai BUMN 2024',
+    year: 2024,
+    price: 3000,
+    organization: 'BUMN',
+  },
+
+  {
+    name: 'CASN 2024',
+    description: 'Tryout Seleksi Calon Aparatur Sipil Negara 2024',
+    year: 2024,
+    price: 3000,
+    organization: 'ASN',
+  },
 ];
 
 export const TryoutCategorySeeder = async () => {
@@ -28,25 +62,41 @@ export const TryoutCategorySeeder = async () => {
 
   if (rowUser && data.length > 0) {
     for (let i = 0; i < data.length; i++) {
-      const element = data[i];
+      const { organization, ...element } = data[i];
 
-      const result = await repository.findOne({
+      const findOrganization = await repoOrganization.findOne({
         where: {
-          name: element.name,
           deleted_at: IsNull(),
+          name: organization,
         },
       });
 
-      if (!result) {
-        await repository.save(
-          repository.create({
-            ...element,
-            created_at: new Date(standartDateISO()),
-            created_by: userId,
-            updated_at: new Date(standartDateISO()),
-            updated_by: userId,
-          }),
-        );
+      if (findOrganization) {
+        const result = await repository.findOne({
+          where: {
+            name: element.name,
+            organization: {
+              organization_id: findOrganization.organization_id,
+            },
+            deleted_at: IsNull(),
+          },
+          relations: {
+            organization: true,
+          },
+        });
+
+        if (!result) {
+          await repository.save(
+            repository.create({
+              ...element,
+              organization_id: findOrganization.organization_id,
+              created_at: new Date(standartDateISO()),
+              created_by: userId,
+              updated_at: new Date(standartDateISO()),
+              updated_by: userId,
+            }),
+          );
+        }
       }
     }
   }
