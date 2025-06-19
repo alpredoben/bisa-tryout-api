@@ -1,6 +1,6 @@
 import { IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { OrganizationModal } from '../../../database/models/OrganizationModal';
+import { TryoutStageModal } from '../../../database/models/TryoutStageModal';
 import { MessageDialog } from '../../../lang';
 import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 import { columns } from './constanta';
@@ -17,7 +17,7 @@ const IDValidation = [
   }),
 ];
 
-const repository = AppDataSource.getRepository(OrganizationModal);
+const repository = AppDataSource.getRepository(TryoutStageModal);
 
 export const TryoutStageValidation = {
   created: [

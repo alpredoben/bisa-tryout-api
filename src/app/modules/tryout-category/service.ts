@@ -1,4 +1,4 @@
-import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
+import { Brackets, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { TryoutCategoryModal } from '../../../database/models/TryoutCategoryModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
@@ -17,40 +17,59 @@ export class TryoutCategoryService {
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
+
+    console.log({ paging, sorting, queries });
     try {
-      let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutCategoryModal> = {
-        deleted_at: IsNull(),
-      };
+      const searchTerm = paging?.search;
 
-      if (queries?.[columns.organization_id]) {
-        whereAnd.organization_id = queries?.[columns.organization_id];
+      const queryBuilder = this.repository
+        .createQueryBuilder('tryout_category')
+        .leftJoinAndSelect('tryout_category.organization', 'organization')
+        .where('tryout_category.deleted_at IS NULL');
+
+      if (queries?.organization_id) {
+        queryBuilder.andWhere('tryout_category.organization_id = :id', {
+          id: queries.organization_id,
+        });
       }
 
-      if (paging?.search) {
-        const searchTerm: any = paging?.search;
-        whereCondition = [
-          {
-            name: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-          {
-            description: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-        ];
+      if (searchTerm) {
+        queryBuilder.andWhere(
+          new Brackets((qb) => {
+            qb.where('tryout_category.name ILIKE :search', { search: `%${searchTerm}%` }).orWhere(
+              'tryout_category.description ILIKE :search',
+              { search: `%${searchTerm}%` },
+            );
+          }),
+        );
       }
 
-      const [rows, count] = await this.repository.findAndCount({
-        where: whereCondition?.length > 0 ? whereCondition : whereAnd,
-        relations: {
-          organization: true,
-        },
-        select: selection.default,
-        skip: Number(paging?.skip),
-        take: Number(paging?.limit),
-        order: sorting,
-      });
+      const dataQuery = queryBuilder
+        .clone()
+        .select([
+          'tryout_category.category_id AS category_id',
+          'organization.organization_id AS organization_id',
+          'organization.name AS organization_name',
+          'organization.icon AS organization_icon',
+          'tryout_category.name AS name',
+          'tryout_category.description AS description',
+          'tryout_category.prices AS prices',
+          'tryout_category.year AS year',
+          'tryout_category.created_at AS created_at',
+          'tryout_category.updated_at AS updated_at',
+        ])
+        .skip(Number(paging?.skip))
+        .take(Number(paging?.limit));
+
+      const countQuery = queryBuilder.clone().select('tryout_category.category_id');
+
+      if (sorting) {
+        Object.entries(sorting).forEach(([key, value]) => {
+          dataQuery.addOrderBy(key, value?.toString()?.toUpperCase() == 'ASC' ? 'ASC' : 'DESC');
+        });
+      }
+
+      const [rows, count] = await Promise.all([dataQuery.getRawMany(), countQuery.getCount()]);
 
       const pagination: I_ResponsePagination = setPagination(rows, count, paging?.page, paging?.limit);
 

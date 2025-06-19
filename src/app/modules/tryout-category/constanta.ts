@@ -1,7 +1,7 @@
 import { CS_DbSchema as SC } from '../../../constanta';
 export const columns = {
   id: SC.PrimaryKey.TryoutCategories,
-  organization_id: SC.PrimaryKey.TryoutCategories,
+  organization_id: SC.PrimaryKey.Organizations,
   name: 'name',
   description: 'description',
   year: 'year',
@@ -9,13 +9,16 @@ export const columns = {
 };
 
 export const sortItem = {
-  default: ['created_at', 'DESC'],
+  default: ['tryout_category.updated_at', 'DESC'],
   request: {
-    name: 'name',
-    description: 'description',
-    year: 'year',
-    prices: 'prices',
-    created_at: 'created_at',
+    name: 'tryout_category.name',
+    description: 'tryout_category.description',
+    organization_name: 'organization.name',
+    organization_icon: 'organization.icon',
+    year: 'tryout_category.year',
+    prices: 'tryout_category.prices',
+    created_at: 'tryout_category.created_at',
+    updated_at: 'tryout_category.updated_at',
   },
 };
 

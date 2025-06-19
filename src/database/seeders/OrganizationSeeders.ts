@@ -7,12 +7,12 @@ import { UserModel } from '../models/UserModel';
 const repository = AppDataSource.getRepository(OrganizationModal);
 
 const data = [
-  { name: 'BUMN' },
-  { name: 'ASN' },
-  { name: 'PTN' },
-  { name: 'SEKDIN' },
-  { name: 'Swasta' },
-  { name: 'Lainnya' },
+  { name: 'BUMN', description: 'Badan Usaha Milik Negara' },
+  { name: 'ASN', description: 'Aparatur Sipil Negara' },
+  { name: 'PTN', description: 'Perguruan Tinggi Negeri' },
+  { name: 'SEKDIN', description: 'Sekolah Kedinasan Negara' },
+  { name: 'Swasta', description: 'Sekolah/Perguruan Tinggi Swasta' },
+  { name: 'Lainnya', description: 'Organisasi/Perusahaan Lainnya' },
 ];
 
 export const OrganizationSeeder = async () => {

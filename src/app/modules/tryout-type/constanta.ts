@@ -6,11 +6,12 @@ export const columns = {
 };
 
 export const sortItem = {
-  default: ['created_at', 'DESC'],
+  default: ['updated_at', 'DESC'],
   request: {
     name: 'name',
     description: 'description',
     created_at: 'created_at',
+    updated_at: 'updated_at',
   },
 };
 

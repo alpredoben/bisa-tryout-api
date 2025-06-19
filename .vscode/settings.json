@@ -21,5 +21,8 @@
   "prettier.useEditorConfig": true,
   "eslint.enable": true,
   "explorer.excludeGitIgnore": true,
-  "terminal.integrated.defaultProfile.linux": "bash"
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  }
 }
