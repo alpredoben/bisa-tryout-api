@@ -17,8 +17,6 @@ export class TryoutCategoryService {
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
-
-    console.log({ paging, sorting, queries });
     try {
       const searchTerm = paging?.search;
 

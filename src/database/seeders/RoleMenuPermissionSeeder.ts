@@ -14,85 +14,85 @@ const data = [
     menu: [
       {
         name: 'Dashboard',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Konfigurasi',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Master Role',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Master Permission',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Master User',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Master Menu',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Master Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Organisasi',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Kategori',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Jenis Test',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Tipe Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Paket Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Detail Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Master Pertanyaan',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Daftar Pertanyaan',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'Laporan',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Hasil Try Out',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Pembelian Paket Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
         name: 'Pengaturan Akun',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
 
       {
@@ -101,11 +101,11 @@ const data = [
       },
       {
         name: 'Notifikasi',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
       {
         name: 'History Import Tryout',
-        permissions: ['read', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
+        permissions: ['read', 'view', 'create', 'update', 'delete', 'import', 'export', 'print', 'report', 'download'],
       },
     ],
   },

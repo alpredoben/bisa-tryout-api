@@ -9,7 +9,7 @@ export const columns = {
 };
 
 export const sortItem = {
-  default: ['tryout_category.updated_at', 'DESC'],
+  default: ['updated_at', 'DESC'],
   request: {
     name: 'tryout_category.name',
     description: 'tryout_category.description',

@@ -60,6 +60,7 @@ export class TryoutPackageService {
           'category.year AS category_year',
           'stage.name AS stage_name',
           'package.created_at AS created_at',
+          'package.updated_at AS updated_at',
         ])
         .skip(Number(paging?.skip))
         .take(Number(paging?.limit))

@@ -17,7 +17,7 @@ export const TryoutPackageValidation = {
   created: [
     reqValidation(columns.category_id, 'Kategori ID', 'check'),
     reqValidation(columns.stage_id, 'Jenis Tes ID', 'check'),
-    reqValidation(columns.total_questions, 'Jumlah Pertanyaan', 'check'),
+    reqValidation(columns.total_questions, 'Jumlah Pertanyaan', 'check', true),
     reqValidation(columns.order_number, 'No. Urut', 'check'),
     ...validationMiddleware,
   ],

@@ -11,6 +11,16 @@
         "type": "string",
         "summary": "Tryout Stage ID",
         "default": "UUID"
+      },
+      "total_questions": {
+        "type": "number",
+        "summary": "Total Questions",
+        "default": 110
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
       }
     }
   },
@@ -26,6 +36,16 @@
         "type": "string",
         "summary": "Tryout Stage ID",
         "default": "UUID"
+      },
+      "total_questions": {
+        "type": "number",
+        "summary": "Total Questions",
+        "default": 110
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
       }
     }
   }

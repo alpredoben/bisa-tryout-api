@@ -53,6 +53,8 @@ class TryoutPackageHandler {
     let payload: Record<string, any> = {
       created_at: today,
       created_by: req?.user?.user_id,
+      updated_at: today,
+      updated_by: req?.user?.user_id,
       ...this.bodyValidation(req),
     };
 
