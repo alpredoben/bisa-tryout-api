@@ -1,8 +1,3 @@
-import { IsNull, Not } from 'typeorm';
-import AppDataSource from '../../../config/db.config';
-import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutPackageDetailModel } from '../../../database/models/TryoutPackageDetailModel';
-import { MessageDialog } from '../../../lang';
 import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 import { columns } from './constanta';
 import { TryoutDetailService } from './service';
@@ -18,25 +13,10 @@ const IDValidation = [
   }),
 ];
 
-const repository = AppDataSource.getRepository(TryoutPackageDetailModel);
-
 export const TryoutDetailValidation = {
   created: [
-    reqValidation(columns.name, 'Nama Detail Tryout', 'check').custom(async (value, { req }) => {
-      const packageId = req?.body?.package_id;
-      const result = await repository.findOne({
-        where: {
-          deleted_at: IsNull(),
-          name: value.trim(),
-          package_id: packageId,
-        },
-      });
-
-      if (result) {
-        throw new Error(MessageDialog.__('error.validator.exists', { value: value }));
-      }
-    }),
-    reqValidation(columns.package_id, 'ID Pake Tryout', 'check'),
+    reqValidation(columns.package_id, 'Paket Tryout ID', 'check'),
+    reqValidation(columns.type_id, 'Tipe Tryout ID', 'check'),
     reqValidation(columns.total_questions, 'Jumlah Soal', 'check'),
     reqValidation('duration', 'Durasi', 'check'),
     reqValidation('satuan', 'Durasi', 'check'),
@@ -46,25 +26,7 @@ export const TryoutDetailValidation = {
   updated: [
     ...IDValidation,
     reqValidation(columns.package_id, 'ID Paket Tryout', 'check', true),
-    reqValidation(columns.name, 'Nama Detail', 'check', true).custom(async (value, { req }) => {
-      const id = req?.params?.[SC.PrimaryKey.TryoutPackageDetails];
-      const packageId = req?.body?.package_id;
-      const search: string = value.trim();
-      const result = await repository.findOne({
-        where: [
-          {
-            name: search,
-            package_id: packageId,
-            deleted_at: IsNull(),
-            [SC.PrimaryKey.TryoutPackageDetails]: Not(id),
-          },
-        ],
-      });
-
-      if (result) {
-        throw new Error(MessageDialog.__('error.validator.exists', { value: search }));
-      }
-    }),
+    reqValidation(columns.type_id, 'Tipe Tryout ID', 'check', true),
     reqValidation(columns.package_id, 'ID Pake Tryout', 'check', true),
     reqValidation(columns.total_questions, 'Jumlah Soal', 'check', true),
     reqValidation('duration', 'Durasi', 'check', true),

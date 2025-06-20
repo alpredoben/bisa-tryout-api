@@ -4,30 +4,32 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TryoutCategoryModel } from './TryoutCategoryModel';
-import { TryoutPackageDetailModel } from './TryoutPackageDetailModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { TryoutCategoryModal } from './TryoutCategoryModal';
+import { TryoutDetailModal } from './TryoutDetailModal';
+import { TryoutStageModal } from './TryoutStageModal';
 
-@Entity({ name: 'tryout_packages' })
-export class TryoutPackageModel {
+@Entity({ name: SC.TableName.TryoutPackages })
+export class TryoutPackageModal {
   @PrimaryGeneratedColumn('uuid')
   package_id!: string;
 
   @Column({ name: 'category_id', type: 'uuid', default: null, nullable: true })
   category_id!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'name', nullable: false })
-  name!: string;
+  @Column({ name: 'stage_id', type: 'uuid', default: null, nullable: true })
+  stage_id!: string;
 
-  @Column({ type: 'text', name: 'description', nullable: true, default: null })
-  description!: string;
+  @Column({ type: 'bigint', name: 'total_questions', default: null })
+  total_questions!: number;
 
-  @Column({ type: 'decimal', name: 'prices', default: null })
-  prices!: string;
+  @Column({ type: 'bigint', name: 'order_number', default: null })
+  order_number!: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -47,10 +49,14 @@ export class TryoutPackageModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => TryoutCategoryModel, (value) => value.tryout_package)
+  @ManyToOne(() => TryoutCategoryModal, (value) => value.tryout_packages)
   @JoinColumn({ name: 'category_id' })
-  tryout_category!: TryoutCategoryModel;
+  category!: TryoutCategoryModal;
 
-  @OneToMany(() => TryoutPackageDetailModel, (value) => value.tryout_package)
-  tryout_details!: TryoutPackageDetailModel[];
+  @ManyToOne(() => TryoutStageModal, (value) => value.tryout_packages)
+  @JoinColumn({ name: 'stage_id' })
+  stage!: TryoutStageModal;
+
+  @OneToMany(() => TryoutDetailModal, (value) => value.package)
+  tryout_details!: TryoutDetailModal[];
 }

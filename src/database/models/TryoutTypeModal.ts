@@ -3,28 +3,24 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuestionModel } from './QuestionModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { TryoutDetailModal } from './TryoutDetailModal';
 
-@Entity({ name: 'question_answers' })
-export class QuestionAnswerModel {
+@Entity({ name: SC.TableName.TryoutTypes })
+export class TryoutTypeModal {
   @PrimaryGeneratedColumn('uuid')
-  answer_id!: string;
+  type_id!: string;
 
-  @Column({ name: 'question_id', type: 'uuid', default: null, nullable: true })
-  question_id!: string;
+  @Column({ type: 'varchar', length: 255, name: 'name', nullable: false })
+  name!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'type_answer', default: 'text' })
-  type_answer!: string;
+  @Column({ type: 'text', name: 'description', default: null, nullable: true })
+  description!: string;
 
-  @Column({ type: 'text', name: 'answer_value', nullable: true, default: null })
-  answer_value!: string;
-
-  @Column({ type: 'boolean', name: 'is_answer', default: false })
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
 
@@ -43,7 +39,6 @@ export class QuestionAnswerModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => QuestionModel, (value) => value.answers)
-  @JoinColumn({ name: 'question_id' })
-  question!: QuestionModel;
+  @OneToMany(() => TryoutDetailModal, (value) => value.type)
+  tryout_details!: TryoutDetailModal[];
 }

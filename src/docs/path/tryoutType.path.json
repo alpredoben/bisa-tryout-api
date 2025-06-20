@@ -1,0 +1,209 @@
+{
+  "/tryout-types": {
+    "get": {
+      "tags": ["Tryout Type"],
+      "summary": "Fetch all tryout types with pagination response service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "page",
+          "required": false,
+          "schema": {
+            "type": "number"
+          },
+          "description": "Page value is number. ex : ?page=1"
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "type": "number"
+          },
+          "description": "Limit value is number by default limit is 10. ex : ?limit=100"
+        },
+        {
+          "in": "query",
+          "name": "direction_name",
+          "required": false,
+          "schema": {
+            "type": "array or string"
+          },
+          "description": "Example --> direction_name=role_name, direction_name=order_number"
+        },
+        {
+          "in": "query",
+          "name": "order_name",
+          "required": false,
+          "schema": {
+            "type": "array or string"
+          },
+          "description": "Example --> order_name=asc, order_name=desc"
+        },
+        {
+          "in": "query",
+          "name": "search",
+          "required": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Example --> search=Pengaturan"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponsePaginationSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "tags": ["Tryout Type"],
+      "summary": "Add new tryout type service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaCreateForTryoutStage"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/tryout-types/{type_id}": {
+    "get": {
+      "tags": ["Tryout Type"],
+      "summary": "Find tryout type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": ["Tryout Type"],
+      "summary": "Update tryout type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SchemaUpdateForTryoutStage"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Tryout Type"],
+      "summary": "Delete tryout type by id service",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "type_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefaultResponseSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

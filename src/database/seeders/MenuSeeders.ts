@@ -50,21 +50,39 @@ const data = [
     is_sidebar: true,
     childrens: [
       {
-        name: 'Kategori Tryout',
-        slug: '/tryout-categories',
+        name: 'Organisasi',
+        slug: '/organization',
         order_number: 1,
+        is_sidebar: true,
+      },
+      {
+        name: 'Kategori',
+        slug: '/tryout-categories',
+        order_number: 2,
+        is_sidebar: true,
+      },
+      {
+        name: 'Jenis Test',
+        slug: '/tryout-stages',
+        order_number: 3,
+        is_sidebar: true,
+      },
+      {
+        name: 'Tipe Tryout',
+        slug: '/tryout-types',
+        order_number: 4,
         is_sidebar: true,
       },
       {
         name: 'Paket Tryout',
         slug: '/tryout-packages',
-        order_number: 2,
+        order_number: 5,
         is_sidebar: true,
       },
       {
         name: 'Detail Tryout',
         slug: '/tryout-details',
-        order_number: 3,
+        order_number: 6,
         is_sidebar: true,
       },
     ],
@@ -76,15 +94,9 @@ const data = [
     is_sidebar: true,
     childrens: [
       {
-        name: 'Tipe Pertanyaan',
-        slug: '/question-type',
-        order_number: 1,
-        is_sidebar: true,
-      },
-      {
         name: 'Daftar Pertanyaan',
         slug: '/questions',
-        order_number: 2,
+        order_number: 1,
         is_sidebar: true,
       },
     ],

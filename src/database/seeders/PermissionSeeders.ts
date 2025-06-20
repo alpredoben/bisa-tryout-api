@@ -10,36 +10,40 @@ const data = [
     order_number: 1,
   },
   {
-    name: 'create',
+    name: 'view',
     order_number: 2,
   },
   {
-    name: 'update',
+    name: 'create',
     order_number: 3,
   },
   {
-    name: 'delete',
+    name: 'update',
     order_number: 4,
   },
   {
-    name: 'import',
+    name: 'delete',
     order_number: 5,
   },
   {
-    name: 'export',
+    name: 'import',
     order_number: 6,
   },
   {
-    name: 'print',
+    name: 'export',
     order_number: 7,
   },
   {
-    name: 'report',
+    name: 'print',
     order_number: 8,
   },
   {
-    name: 'download',
+    name: 'report',
     order_number: 9,
+  },
+  {
+    name: 'download',
+    order_number: 10,
   },
 ];
 

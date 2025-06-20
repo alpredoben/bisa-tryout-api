@@ -1,14 +1,14 @@
 import { IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
-import { TryoutCategoryModel } from '../../../database/models/TryoutCategoryModel';
+import { TryoutCategoryModal } from '../../../database/models/TryoutCategoryModal';
 import { MessageDialog } from '../../../lang';
 import { reqValidation, validationMiddleware } from '../../middlewares/validation.middleware';
 import { columns } from './constanta';
 import { TryoutCategoryService } from './service';
 
 const IDValidation = [
-  reqValidation(columns.id, 'Id Kategori Tryout', 'param').custom(async (value) => {
+  reqValidation(columns.id, 'Kategori Tryout ID', 'param').custom(async (value) => {
     const service = new TryoutCategoryService();
     const result = await service.findById(value);
 
@@ -18,7 +18,7 @@ const IDValidation = [
   }),
 ];
 
-const repository = AppDataSource.getRepository(TryoutCategoryModel);
+const repository = AppDataSource.getRepository(TryoutCategoryModal);
 
 export const TryoutCategoryValidation = {
   created: [
@@ -34,6 +34,9 @@ export const TryoutCategoryValidation = {
         throw new Error(MessageDialog.__('error.validator.exists', { value: value }));
       }
     }),
+    reqValidation(columns.organization_id, 'Organisasi ID', 'check'),
+    reqValidation(columns.prices, 'Harga', 'check'),
+    reqValidation(columns.year, 'Tahun', 'check'),
     ...validationMiddleware,
   ],
   updated: [
@@ -46,7 +49,7 @@ export const TryoutCategoryValidation = {
           {
             name: search,
             deleted_at: IsNull(),
-            [SC.PrimaryKey.TryoutCategories]: Not(id),
+            [columns.id]: Not(id),
           },
         ],
       });
@@ -55,6 +58,9 @@ export const TryoutCategoryValidation = {
         throw new Error(MessageDialog.__('error.validator.exists', { value: search }));
       }
     }),
+    reqValidation(columns.organization_id, 'Organisasi ID', 'check', true),
+    reqValidation(columns.prices, 'Harga', 'check', true),
+    reqValidation(columns.year, 'Tahun', 'check', true),
     ...validationMiddleware,
   ],
   findId: [...IDValidation, ...validationMiddleware],

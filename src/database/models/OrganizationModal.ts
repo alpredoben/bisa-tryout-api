@@ -7,18 +7,22 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuestionModel } from './QuestionModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { TryoutCategoryModal } from './TryoutCategoryModal';
 
-@Entity({ name: 'question_types' })
-export class QuestionTypeModel {
+@Entity({ name: SC.TableName.Organizations })
+export class OrganizationModal {
   @PrimaryGeneratedColumn('uuid')
-  question_type_id!: string;
+  organization_id!: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false, name: 'name' })
   name!: string;
 
-  @Column({ type: 'text', default: null, nullable: false, name: 'description' })
+  @Column({ type: 'text', nullable: true, default: null, name: 'description' })
   description!: string;
+
+  @Column({ type: 'jsonb', nullable: true, default: null, name: 'icon' })
+  icon!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -38,6 +42,6 @@ export class QuestionTypeModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToMany(() => QuestionModel, (value) => value.question_type)
-  questions!: QuestionModel[];
+  @OneToMany(() => TryoutCategoryModal, (value) => value.organization)
+  tryout_categories!: TryoutCategoryModal[];
 }

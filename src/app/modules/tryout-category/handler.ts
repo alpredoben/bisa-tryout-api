@@ -1,10 +1,9 @@
 import { Response } from 'express';
-import { CS_DbSchema as SC } from '../../../constanta';
 import { I_RequestCustom } from '../../../interfaces/app.interface';
 import { standartDateISO } from '../../../utils/common.util';
 import { defineRequestOrderORM, defineRequestPaginateArgs } from '../../../utils/request.util';
 import { sendResponseJson } from '../../../utils/response.util';
-import { sortItem } from './constanta';
+import { columns, sortItem } from './constanta';
 import { TryoutCategoryService } from './service';
 
 class TryoutCategoryHandler {
@@ -21,6 +20,22 @@ class TryoutCategoryHandler {
       payload.description = req?.body?.description;
     }
 
+    if (req?.body?.prices) {
+      payload.prices = req?.body?.prices;
+    }
+
+    if (req?.body?.year) {
+      payload.year = req?.body?.year;
+    }
+
+    if (req?.body?.file_id) {
+      payload.file_id = req?.body?.file_id;
+    }
+
+    if (req?.body?.[columns.organization_id]) {
+      payload.organization_id = req?.body?.[columns.organization_id];
+    }
+
     return payload;
   }
 
@@ -28,13 +43,14 @@ class TryoutCategoryHandler {
     const filters: Record<string, any> = {
       paging: defineRequestPaginateArgs(req),
       sorting: defineRequestOrderORM(req, sortItem.default, sortItem.request),
+      queries: req?.query,
     };
     const result = await this.service.fetchPagination(filters);
     return sendResponseJson(res, result);
   }
 
   async findById(req: I_RequestCustom, res: Response): Promise<Response> {
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
+    const id: string = req?.params?.[columns.id];
     const result = await this.service.findById(id);
     return sendResponseJson(res, result);
   }
@@ -45,6 +61,8 @@ class TryoutCategoryHandler {
     let payload: Record<string, any> = {
       created_at: today,
       created_by: req?.user?.user_id,
+      updated_at: today,
+      updated_by: req?.user?.user_id,
       ...this.bodyValidation(req),
     };
 
@@ -54,7 +72,7 @@ class TryoutCategoryHandler {
 
   async update(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
+    const id: string = req?.params?.[columns.id];
     let payload: Record<string, any> = {
       updated_at: today,
       updated_by: req?.user?.user_id,
@@ -67,7 +85,7 @@ class TryoutCategoryHandler {
 
   async softDelete(req: I_RequestCustom, res: Response): Promise<Response> {
     const today: Date = new Date(standartDateISO());
-    const id: string = req?.params?.[SC.PrimaryKey.TryoutCategories];
+    const id: string = req?.params?.[columns.id];
     let payload: Record<string, any> = {
       deleted_at: today,
       deleted_by: req?.user?.user_id,

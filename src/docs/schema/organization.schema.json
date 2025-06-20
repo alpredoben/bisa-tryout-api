@@ -1,0 +1,36 @@
+{
+  "SchemaCreateForOrganization": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Name of organization",
+        "default": "BUMN"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Description of organization",
+        "default": "Badan Usaha Milik Negara"
+      },
+      "file_id": {
+        "type": "string",
+        "summary": "UUID Get from upload file"
+      }
+    }
+  },
+  "SchemaUpdateForOrganization": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "summary": "Name of organization",
+        "default": "BUMN"
+      },
+      "description": {
+        "type": "string",
+        "summary": "Description of organization",
+        "default": "Badan Usaha Milik Negara"
+      }
+    }
+  }
+}

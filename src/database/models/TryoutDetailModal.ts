@@ -4,40 +4,39 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuestionModel } from './QuestionModel';
-import { TryoutPackageModel } from './TryoutPackageModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { TryoutPackageModal } from './TryoutPackageModal';
+import { TryoutTypeModal } from './TryoutTypeModal';
 
-@Entity({ name: 'tryout_package_details' })
-export class TryoutPackageDetailModel {
+@Entity({ name: SC.TableName.TryoutDetails })
+export class TryoutDetailModal {
   @PrimaryGeneratedColumn('uuid')
-  package_detail_id!: string;
+  detail_id!: string;
 
   @Column({ name: 'package_id', type: 'uuid', default: null, nullable: true })
   package_id!: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'name', nullable: false })
-  name!: string;
-
-  @Column({ type: 'text', name: 'description', nullable: true, default: null })
-  description!: string;
+  @Column({ name: 'type_id', type: 'uuid', default: null, nullable: true })
+  type_id!: string;
 
   @Column({ type: 'bigint', name: 'total_questions', default: null })
-  total_questions!: string;
+  total_questions!: number;
 
-  @Column({ type: 'jsonb', name: 'total_duration', default: { satuan: 'detik', waktu: 0 } })
-  total_duration!: string;
+  @Column({ type: 'bigint', name: 'total_duration', default: null })
+  total_duration!: number;
+
+  @Column({ type: 'varchar', length: 100, name: 'satuan_duration', default: null })
+  satuan_duration!: string;
 
   @Column({ type: 'bigint', name: 'order_number', default: null })
-  order_number!: string;
+  order_number!: number;
 
   @Column({ type: 'bigint', name: 'passing_grade', default: null })
-  passing_grade!: string;
+  passing_grade!: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -57,11 +56,11 @@ export class TryoutPackageDetailModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => TryoutPackageModel, (value) => value.tryout_details)
+  @ManyToOne(() => TryoutPackageModal, (value) => value.tryout_details)
   @JoinColumn({ name: 'package_id' })
-  tryout_package!: TryoutPackageModel;
+  package!: TryoutPackageModal;
 
-  @ManyToMany(() => QuestionModel, (value) => value.tryout_details)
-  @JoinTable({ name: 'tryout_question_mapping' })
-  questions!: QuestionModel[];
+  @ManyToOne(() => TryoutTypeModal, (value) => value.tryout_details)
+  @JoinColumn({ name: 'type_id' })
+  type!: TryoutTypeModal;
 }

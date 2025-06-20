@@ -3,25 +3,23 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TryoutPackageModel } from './TryoutPackageModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { TryoutPackageModal } from './TryoutPackageModal';
 
-@Entity({ name: 'tryout_categories' })
-export class TryoutCategoryModel {
+@Entity({ name: SC.TableName.TryoutStages })
+export class TryoutStageModal {
   @PrimaryGeneratedColumn('uuid')
-  category_id!: string;
+  stage_id!: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false, name: 'name' })
   name!: string;
 
   @Column({ type: 'text', default: null, name: 'description' })
   description!: string;
-
-  @Column({ type: 'text', default: null, name: 'icon' })
-  icon!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -41,6 +39,6 @@ export class TryoutCategoryModel {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @OneToOne(() => TryoutPackageModel, (value) => value.tryout_category)
-  tryout_package!: TryoutPackageModel;
+  @OneToMany(() => TryoutPackageModal, (value) => value.stage)
+  tryout_packages!: TryoutPackageModal[];
 }

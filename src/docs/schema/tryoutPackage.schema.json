@@ -2,60 +2,50 @@
   "SchemaCreateForTryoutPackage": {
     "type": "object",
     "properties": {
-      "name": {
-        "type": "string",
-        "summary": "Tryout Package Name",
-        "default": "SKD"
-      },
-      "description": {
-        "type": "string",
-        "summary": "Tryout Package Description",
-        "default": "Seleksi Kompetensi Dasar"
-      },
       "category_id": {
         "type": "string",
         "summary": "Tryout Category ID",
         "default": "UUID"
       },
-      "prices": {
+      "stage_id": {
+        "type": "string",
+        "summary": "Tryout Stage ID",
+        "default": "UUID"
+      },
+      "total_questions": {
         "type": "number",
-        "summary": "Tryout package price",
-        "default": 5000
+        "summary": "Total Questions",
+        "default": 110
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
       }
     }
   },
   "SchemaUpdateForTryoutPackage": {
     "type": "object",
     "properties": {
-      "name": {
-        "type": "string",
-        "summary": "Tryout Package Name",
-        "default": "SKD"
-      },
-      "description": {
-        "type": "string",
-        "summary": "Tryout Package Description",
-        "default": "Seleksi Kompetensi Dasar"
-      },
       "category_id": {
         "type": "string",
         "summary": "Tryout Category ID",
         "default": "UUID"
       },
-      "prices": {
-        "type": "number",
-        "summary": "Tryout package price",
-        "default": 5000
-      }
-    }
-  },
-
-  "SchemaTryoutPackageImported": {
-    "type": "object",
-    "properties": {
-      "file": {
+      "stage_id": {
         "type": "string",
-        "format": "binary"
+        "summary": "Tryout Stage ID",
+        "default": "UUID"
+      },
+      "total_questions": {
+        "type": "number",
+        "summary": "Total Questions",
+        "default": 110
+      },
+      "order_number": {
+        "type": "number",
+        "summary": "Order Number",
+        "default": 1
       }
     }
   }

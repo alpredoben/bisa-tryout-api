@@ -2,7 +2,7 @@
   "/tryout-categories": {
     "get": {
       "tags": ["Tryout Category"],
-      "summary": "Fetch all tryout-categories with pagination response service",
+      "summary": "Fetch all tryout categories with pagination response service",
       "security": [
         {
           "bearerAuth": []
@@ -44,6 +44,15 @@
             "type": "array or string"
           },
           "description": "Example --> order_name=asc, order_name=desc"
+        },
+        {
+          "in": "query",
+          "name": "organization_id",
+          "required": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "UUID Organization ID"
         },
         {
           "in": "query",

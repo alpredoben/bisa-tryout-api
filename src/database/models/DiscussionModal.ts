@@ -4,26 +4,29 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuestionModel } from './QuestionModel';
-import { TryoutPackageDetailModel } from './TryoutPackageDetailModel';
+import { CS_DbSchema as SC } from '../../constanta';
+import { QuestionModal } from './QuestionModal';
 
-@Entity({ name: 'tryout_question_mapping' })
-export class TryoutQuestionMapping {
+@Entity({ name: SC.TableName.Discussion })
+export class DiscussionModal {
   @PrimaryGeneratedColumn('uuid')
-  tryout_question_id!: string;
-
-  @Column({ name: 'package_detail_id', type: 'uuid', default: null, nullable: true })
-  package_detail_id!: string;
+  discussion_id!: string;
 
   @Column({ name: 'question_id', type: 'uuid', default: null, nullable: true })
   question_id!: string;
 
-  @Column({ type: 'bigint', name: 'order_number', default: null })
-  order_number!: string;
+  @Column({ type: 'varchar', length: 200, name: 'discussion_type', nullable: true, default: 'text' })
+  discussion_type!: string;
+
+  @Column({ type: 'text', name: 'discussion_value', nullable: true, default: null })
+  discussion_value!: string;
+
+  @Column({ type: 'jsonb', name: 'discussion_file', default: null, nullable: true })
+  discussion_file!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
@@ -43,11 +46,7 @@ export class TryoutQuestionMapping {
   @Column({ name: 'deleted_by', type: 'uuid', select: false })
   deleted_by!: string;
 
-  @ManyToOne(() => TryoutPackageDetailModel, (value) => value.questions)
-  @JoinColumn({ name: 'package_detail_id' })
-  tryout_detail!: TryoutPackageDetailModel;
-
-  @ManyToOne(() => QuestionModel, (value) => value.tryout_details)
+  @OneToOne(() => QuestionModal, (value) => value.discussion)
   @JoinColumn({ name: 'question_id' })
-  question!: QuestionModel;
+  question!: QuestionModal;
 }

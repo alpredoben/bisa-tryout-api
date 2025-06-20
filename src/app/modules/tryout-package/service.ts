@@ -1,31 +1,23 @@
-import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
+import { FindOptionsWhere, ILike, IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
-import { extractFileExcel } from '../../../config/excel.config';
-import { Logger } from '../../../config/logger.config';
-import { CS_HistoryReportType, CS_StatusName, CS_TypeName, CS_DbSchema as SC } from '../../../constanta';
-import { TryoutCategoryModel } from '../../../database/models/TryoutCategoryModel';
-import { TryoutPackageModel } from '../../../database/models/TryoutPackageModel';
-import { executePublishHistoryTryout } from '../../../events/publishers/history-tryout.publisher';
-import { I_ExpressResponse, I_MetaHistory, I_RequestCustom } from '../../../interfaces/app.interface';
+import { CS_DbSchema as SC } from '../../../constanta';
+import { TryoutPackageModal } from '../../../database/models/TryoutPackageModal';
+import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
 import { I_ResponsePagination } from '../../../interfaces/pagination.interface';
 import { MessageDialog } from '../../../lang';
-import { setupResponseMessage } from '../../../utils/helper.util';
 import { setPagination } from '../../../utils/pagination.util';
 import { setupErrorMessage } from '../../../utils/response.util';
-import { HistoryTryoutService } from '../history-tryout/services';
-import { excelHeaders, selection } from './constanta';
+import { columns, selection } from './constanta';
 
+const MSG_LABEL: string = 'tryout-package';
 export class TryoutPackageService {
-  private repository = AppDataSource.getRepository(TryoutPackageModel);
-  private repoCategory = AppDataSource.getRepository(TryoutCategoryModel);
-
-  private readonly historyService = new HistoryTryoutService();
+  private repository = AppDataSource.getRepository(TryoutPackageModal);
 
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
     try {
       let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutPackageModel> = {
+      let whereAnd: FindOptionsWhere<TryoutPackageModal> = {
         deleted_at: IsNull(),
       };
 
@@ -33,37 +25,57 @@ export class TryoutPackageService {
         whereAnd.category_id = queries.category_id;
       }
 
+      if (queries?.stage_id) {
+        whereAnd.stage_id = queries.stage_id;
+      }
+
       if (paging?.search) {
         const searchTerm: any = paging?.search;
         whereCondition = [
           {
-            name: ILike(`%${searchTerm}%`),
+            category_name: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
           {
-            description: ILike(`%${searchTerm}%`),
+            stage_name: ILike(`%${searchTerm}%`),
             ...whereAnd,
           },
         ];
       }
 
-      const [rows, count] = await this.repository.findAndCount({
-        where: whereCondition?.length > 0 ? whereCondition : whereAnd,
-        relations: {
-          tryout_category: true,
-        },
-        select: selection.default,
-        skip: Number(paging?.skip),
-        take: Number(paging?.limit),
-        order: sorting,
-      });
+      const queryBuilder = this.repository
+        .createQueryBuilder('package')
+        .leftJoin('package.category', 'category')
+        .leftJoin('package.stage', 'stage')
+        .where(whereCondition?.length > 0 ? whereCondition : whereAnd);
+
+      const dataQuery = queryBuilder
+        .clone()
+        .select([
+          'package.package_id AS package_id',
+          'category.category_id AS category_id',
+          'stage.stage_id AS stage_id',
+          'category.name AS category_name',
+          'category.prices AS category_prices',
+          'category.year AS category_year',
+          'stage.name AS stage_name',
+          'package.created_at AS created_at',
+          'package.updated_at AS updated_at',
+        ])
+        .skip(Number(paging?.skip))
+        .take(Number(paging?.limit))
+        .orderBy(sorting);
+
+      const countQuery = queryBuilder.clone().select('package.package_id');
+
+      const [rows, count] = await Promise.all([dataQuery.getRawMany(), countQuery.getCount()]);
 
       const pagination: I_ResponsePagination = setPagination(rows, count, paging?.page, paging?.limit);
 
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-package.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: pagination,
       };
     } catch (error: any) {
@@ -76,10 +88,11 @@ export class TryoutPackageService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackages]: id,
+          [columns.id]: id,
         },
         relations: {
-          tryout_category: true,
+          category: true,
+          stage: true,
         },
         select: selection.default,
       });
@@ -87,7 +100,7 @@ export class TryoutPackageService {
       if (!result) {
         return {
           success: false,
-          code: 404,
+          code: 400,
           message: MessageDialog.__('error.default.notFoundItem', { item: 'paket tryout' }),
           data: result,
         };
@@ -96,7 +109,7 @@ export class TryoutPackageService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-package.fetch'),
+        message: MessageDialog.__(`success.${MSG_LABEL}.fetch`),
         data: result,
       };
     } catch (error: any) {
@@ -106,6 +119,33 @@ export class TryoutPackageService {
 
   async create(req: I_RequestCustom, payload: Record<string, any>): Promise<I_ExpressResponse> {
     try {
+      const findRow = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          category: {
+            category_id: payload?.category_id,
+          },
+          stage: {
+            stage_id: payload?.stage_id,
+          },
+        },
+        relations: {
+          category: true,
+          stage: true,
+        },
+      });
+
+      if (findRow) {
+        return {
+          success: false,
+          code: 400,
+          message: MessageDialog.__('error.validator.exists', {
+            value: `${findRow.category.name}, ${findRow.stage.name}`,
+          }),
+          data: findRow,
+        };
+      }
+
       const result = await this.repository.save(
         this.repository.create({
           ...payload,
@@ -116,7 +156,7 @@ export class TryoutPackageService {
         return {
           success: false,
           code: 400,
-          message: MessageDialog.__('error.tryout-package.store', { value: payload.name }),
+          message: MessageDialog.__(`error.${MSG_LABEL}.store`, { value: payload.name }),
           data: result,
         };
       }
@@ -127,9 +167,9 @@ export class TryoutPackageService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-package.store', { value: payload.name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.store`, { value: payload.name }),
         data: {
-          [SC.PrimaryKey.TryoutPackages]: result.package_id,
+          [columns.id]: result.package_id,
         },
       };
     } catch (error: any) {
@@ -142,7 +182,11 @@ export class TryoutPackageService {
       const result = await this.repository.findOne({
         where: {
           deleted_at: IsNull(),
-          [SC.PrimaryKey.TryoutPackages]: id,
+          [columns.id]: id,
+        },
+        relations: {
+          category: true,
+          stage: true,
         },
       });
 
@@ -155,7 +199,36 @@ export class TryoutPackageService {
         };
       }
 
-      const name: string = result?.name;
+      // Check existing
+      const findRow = await this.repository.findOne({
+        where: {
+          deleted_at: IsNull(),
+          category: {
+            category_id: payload?.category_id ? payload.category_id : result.category.category_id,
+          },
+          stage: {
+            stage_id: payload?.stage_id ? payload.stage_id : result.stage.stage_id,
+          },
+          package_id: Not(id),
+        },
+        relations: {
+          category: true,
+          stage: true,
+        },
+      });
+
+      if (findRow) {
+        return {
+          success: false,
+          code: 400,
+          message: MessageDialog.__('error.validator.exists', {
+            value: `${findRow.category.name}, ${findRow.stage.name}`,
+          }),
+          data: findRow,
+        };
+      }
+
+      const name = `${result.category.name}, ${result.stage.name}`;
       const updateResult = { ...result, ...payload };
       await this.repository.save(updateResult);
 
@@ -165,7 +238,7 @@ export class TryoutPackageService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-package.update', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.update`, { value: name }),
         data: {
           [SC.PrimaryKey.TryoutPackages]: id,
         },
@@ -182,6 +255,10 @@ export class TryoutPackageService {
           [SC.PrimaryKey.TryoutPackages]: id,
           deleted_at: IsNull(),
         },
+        relations: {
+          category: true,
+          stage: true,
+        },
       });
 
       if (!result) {
@@ -193,7 +270,7 @@ export class TryoutPackageService {
         };
       }
 
-      const name: string = result?.name;
+      const name: string = `${result.category.name}, ${result.stage.name}`;
 
       const updateResult = {
         ...result,
@@ -208,230 +285,13 @@ export class TryoutPackageService {
       return {
         success: true,
         code: 200,
-        message: MessageDialog.__('success.tryout-package.delete', { value: name }),
+        message: MessageDialog.__(`success.${MSG_LABEL}.delete`, { value: name }),
         data: {
-          [SC.PrimaryKey.TryoutPackages]: id,
+          [columns.id]: id,
         },
       };
     } catch (error: any) {
       return setupErrorMessage(error);
-    }
-  }
-
-  async excelImported(req: I_RequestCustom): Promise<I_ExpressResponse> {
-    try {
-      const resultExtract = await extractFileExcel(req, excelHeaders);
-
-      if (!resultExtract.status) {
-        return {
-          success: resultExtract.status,
-          code: 400,
-          message: resultExtract.message,
-          data: resultExtract.origin,
-        };
-      }
-
-      const resultHistory = await this.historyService.create(req, {
-        history_status: CS_StatusName.onProgress,
-        history_type: CS_HistoryReportType.import.name,
-        history_request: { files: req?.file, user: req?.user },
-        history_description: CS_HistoryReportType.import.description('Paket Tryout'),
-        created_at: resultExtract.origin.today,
-        created_by: req?.user?.user_id,
-        updated_at: resultExtract.origin.today,
-        updated_by: req?.user?.user_id,
-      });
-
-      if (!resultHistory?.success) {
-        return resultHistory;
-      }
-
-      await executePublishHistoryTryout({
-        origin: resultExtract.origin,
-        history_id: resultHistory.data.history_id,
-        type_name: CS_TypeName.TryoutPackage,
-        request: req,
-      });
-
-      return {
-        success: true,
-        code: 200,
-        message: MessageDialog.__('success.tryout-package.import'),
-        data: resultHistory.data,
-      };
-    } catch (err: any) {
-      return setupResponseMessage(false, err);
-    }
-  }
-
-  async executeTryoutPackageImport(origin: any, history_id: string, req: I_RequestCustom): Promise<void> {
-    const { columns, data, today } = origin;
-    const rowLength: number = data?.length || 0;
-
-    let meta: I_MetaHistory = {
-      total_created: 0,
-      total_row: rowLength,
-      total_updated: 0,
-      total_failed: 0,
-      record: [],
-      message: '',
-    };
-
-    const queryRunner = AppDataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      if (rowLength > 0) {
-        for (let i = 0; i < rowLength; i++) {
-          const element = data[i];
-          let categoryId: any = null;
-
-          const findCategory = await this.repoCategory.findOne({
-            where: {
-              deleted_at: IsNull(),
-              name: element.category_name,
-            },
-          });
-
-          if (!findCategory) {
-            // Create New Category
-            const resultCategory = await this.repoCategory.save(
-              this.repoCategory.create({
-                name: element.category_name,
-                description: element.category_desc,
-                created_at: today,
-                created_by: req?.user?.user_id,
-              }),
-            );
-
-            if (!resultCategory) {
-              meta.total_failed += 1;
-              meta.record.push({ ...element, message: 'Proses check kategori tryout gagal' });
-              continue;
-            } else {
-              categoryId = resultCategory?.category_id;
-            }
-          } else {
-            // Update Category
-            categoryId = findCategory.category_id;
-            const resultCategory = await this.repoCategory.save({
-              ...findCategory,
-              ...{
-                name: element.category_name,
-                description: element.category_desc,
-                updated_at: today,
-                updated_by: req?.user?.user_id,
-              },
-            });
-
-            if (!resultCategory) {
-              meta.total_failed += 1;
-              meta.record.push({ ...element, message: 'Proses update kategori tryout gagal' });
-              continue;
-            }
-          }
-
-          const findPackage = await this.repository.findOne({
-            where: {
-              deleted_at: IsNull(),
-              name: element.package_name,
-              category_id: categoryId,
-            },
-          });
-
-          if (findPackage) {
-            // Update
-            const resultPackage = await this.repository.save({
-              ...findPackage,
-              ...{
-                name: element.package_name,
-                description: element.package_desc,
-                prices: element.package_price,
-                updated_at: today,
-                updated_by: req?.user?.user_id,
-              },
-            });
-
-            if (!resultPackage) {
-              meta.total_failed += 1;
-              meta.record.push({ ...element, message: 'Proses update paket tryout gagal' });
-              continue;
-            } else {
-              meta.total_updated += 1;
-            }
-          } else {
-            // Create
-            const resultPackage = await this.repository.save(
-              this.repository.create({
-                name: element.package_name,
-                description: element.package_desc,
-                prices: element.package_price,
-                created_at: today,
-                created_by: req?.user?.user_id,
-                category_id: categoryId,
-              }),
-            );
-
-            if (!resultPackage) {
-              meta.total_failed += 1;
-              meta.record.push({ ...element, message: 'Proses simpan paket tryout gagal' });
-              continue;
-            } else {
-              meta.total_created += 1;
-            }
-          }
-        }
-
-        const totalOperated: number = meta.total_created + meta.total_updated;
-        if (totalOperated == meta.total_row) {
-          meta.message = `${meta.total_row} berhasil disimpan`;
-        } else {
-          meta.message = `${meta.total_failed} gagal disimpan`;
-        }
-
-        const resultHistory = await this.historyService.update(req, history_id, {
-          history_status: CS_StatusName.done,
-          history_response: meta,
-          history_descriptio: meta.message,
-        });
-
-        if (!resultHistory.success) {
-          await queryRunner.rollbackTransaction();
-          Logger().error('Update data riwayat paket tryout gagal', resultHistory);
-        } else {
-          await queryRunner.commitTransaction();
-          Logger().info(`Import data riwayat paket tryout (Riwayat ID : ${history_id}) berhasil`, resultHistory.data);
-        }
-      }
-    } catch (error: any) {
-      await queryRunner.rollbackTransaction();
-      Logger().error(`Error execute import tryout package`, error);
-    } finally {
-      await queryRunner.release();
-    }
-  }
-
-  async downloadTemplate(): Promise<I_ExpressResponse> {
-    try {
-      const results: Record<string, any>[] = [
-        {
-          package_name: 'SKD',
-          package_desc: 'Seleksi Kompetensi Dasar',
-          package_price: 2500,
-          category_name: 'CPNS 2025',
-          category_desc: 'Tryout Seleksi CPNS 2025',
-        },
-      ];
-
-      return {
-        success: true,
-        message: MessageDialog.__('success.converter.downloadTemplate'),
-        data: results,
-        code: 200,
-      };
-    } catch (error: any) {
-      return setupResponseMessage(false, error);
     }
   }
 }
