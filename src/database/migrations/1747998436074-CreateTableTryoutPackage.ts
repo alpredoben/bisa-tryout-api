@@ -4,10 +4,12 @@ export class CreateTableTryoutPackage1747998436074 implements MigrationInterface
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE TABLE tryout_packages (
       package_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      package_name VARCHAR(255) NOT NULL,
       category_id  UUID NULL DEFAULT NULL,
       stage_id  UUID NULL DEFAULT NULL,
       total_questions BIGINT DEFAULT NULL,
       order_number BIGINT DEFAULT NULL,
+      mode_answer VARCHAR(100) NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
       created_by UUID NULL,
       updated_at TIMESTAMP NULL,

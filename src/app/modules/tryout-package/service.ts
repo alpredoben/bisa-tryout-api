@@ -1,4 +1,4 @@
-import { FindOptionsWhere, ILike, IsNull, Not } from 'typeorm';
+import { Brackets, IsNull, Not } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { CS_DbSchema as SC } from '../../../constanta';
 import { TryoutPackageModal } from '../../../database/models/TryoutPackageModal';
@@ -16,57 +16,61 @@ export class TryoutPackageService {
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
     try {
-      let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutPackageModal> = {
-        deleted_at: IsNull(),
-      };
-
-      if (queries?.category_id) {
-        whereAnd.category_id = queries.category_id;
-      }
-
-      if (queries?.stage_id) {
-        whereAnd.stage_id = queries.stage_id;
-      }
-
-      if (paging?.search) {
-        const searchTerm: any = paging?.search;
-        whereCondition = [
-          {
-            category_name: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-          {
-            stage_name: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-        ];
-      }
+      const searchTerm = paging?.search;
 
       const queryBuilder = this.repository
         .createQueryBuilder('package')
         .leftJoin('package.category', 'category')
         .leftJoin('package.stage', 'stage')
-        .where(whereCondition?.length > 0 ? whereCondition : whereAnd);
+        .where('package.deleted_at IS NULL');
+
+      if (queries?.category_id) {
+        queryBuilder.andWhere('category.category_id = :id', {
+          id: queries.category_id,
+        });
+      }
+
+      if (queries?.stage_id) {
+        queryBuilder.andWhere('stage.stage_id = :id', {
+          id: queries.stage_id,
+        });
+      }
+
+      if (searchTerm) {
+        queryBuilder.andWhere(
+          new Brackets((qb) => {
+            qb.where('package.package_name ILIKE :search', { search: `%${searchTerm}%` })
+              .orWhere('category.name ILIKE :search', { search: `%${searchTerm}%` })
+              .orWhere('stage.name ILIKE :search', { search: `%${searchTerm}%` });
+          }),
+        );
+      }
 
       const dataQuery = queryBuilder
         .clone()
         .select([
           'package.package_id AS package_id',
+          'package.package_name AS package_name',
           'category.category_id AS category_id',
           'stage.stage_id AS stage_id',
           'category.name AS category_name',
           'category.prices AS category_prices',
           'category.year AS category_year',
           'stage.name AS stage_name',
+          'package.order_number AS order_number',
+          'package.total_questions AS total_questions',
+          'package.mode_answer AS mode_answer',
           'package.created_at AS created_at',
           'package.updated_at AS updated_at',
-        ])
-        .skip(Number(paging?.skip))
-        .take(Number(paging?.limit))
-        .orderBy(sorting);
+        ]);
 
       const countQuery = queryBuilder.clone().select('package.package_id');
+
+      if (sorting) {
+        Object.entries(sorting).forEach(([key, value]) => {
+          dataQuery.addOrderBy(key, value?.toString()?.toUpperCase() == 'ASC' ? 'ASC' : 'DESC');
+        });
+      }
 
       const [rows, count] = await Promise.all([dataQuery.getRawMany(), countQuery.getCount()]);
 

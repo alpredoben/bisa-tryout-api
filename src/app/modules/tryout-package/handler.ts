@@ -12,6 +12,10 @@ class TryoutPackageHandler {
   bodyValidation(req: I_RequestCustom): Record<string, any> {
     let payload: Record<string, any> = {};
 
+    if (req?.body?.[columns.package_name]) {
+      payload.package_name = req?.body?.[columns.package_name];
+    }
+
     if (req?.body?.[columns.category_id]) {
       payload.category_id = req?.body?.[columns.category_id];
     }
@@ -26,6 +30,10 @@ class TryoutPackageHandler {
 
     if (req?.body?.order_number) {
       payload.order_number = req?.body?.order_number;
+    }
+
+    if (req?.body?.mode_answer) {
+      payload.mode_answer = req?.body?.mode_answer;
     }
 
     return payload;
