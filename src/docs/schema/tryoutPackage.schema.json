@@ -2,6 +2,11 @@
   "SchemaCreateForTryoutPackage": {
     "type": "object",
     "properties": {
+      "package_name": {
+        "type": "string",
+        "summary": "Package Name",
+        "default": "Your Package Name"
+      },
       "category_id": {
         "type": "string",
         "summary": "Tryout Category ID",
@@ -27,6 +32,11 @@
   "SchemaUpdateForTryoutPackage": {
     "type": "object",
     "properties": {
+      "package_name": {
+        "type": "string",
+        "summary": "Package Name",
+        "default": "Your Package Name"
+      },
       "category_id": {
         "type": "string",
         "summary": "Tryout Category ID",

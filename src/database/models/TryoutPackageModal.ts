@@ -19,6 +19,9 @@ export class TryoutPackageModal {
   @PrimaryGeneratedColumn('uuid')
   package_id!: string;
 
+  @Column({ name: 'package_name', type: 'varchar', length: 255, nullable: false })
+  package_name!: string;
+
   @Column({ name: 'category_id', type: 'uuid', default: null, nullable: true })
   category_id!: string;
 
@@ -30,6 +33,9 @@ export class TryoutPackageModal {
 
   @Column({ type: 'bigint', name: 'order_number', default: null })
   order_number!: number;
+
+  @Column({ type: 'varchar', length: 255, name: 'mode_answer', nullable: true, default: null })
+  mode_answer!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;

@@ -167,7 +167,7 @@ export class TryoutDetailService {
         code: 200,
         message: MessageDialog.__(`success.${MSG_LABEL}.store`, { value: payload.name }),
         data: {
-          [columns.id]: result.package_id,
+          [columns.id]: result.detail_id,
         },
       };
     } catch (error: any) {

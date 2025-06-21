@@ -7,27 +7,22 @@
         "summary": "Tryout Package ID",
         "default": "UUID"
       },
-      "name": {
+      "type_id": {
         "type": "string",
-        "summary": "Tryout Detail Name",
-        "default": "SKD"
-      },
-      "description": {
-        "type": "string",
-        "summary": "Tryout Detail Description",
-        "default": "Seleksi Kompetensi Dasar"
+        "summary": "Tryout Type ID",
+        "default": "UUID"
       },
       "total_questions": {
         "type": "number",
         "summary": "Total Question",
         "default": 110
       },
-      "duration": {
+      "total_duration": {
         "type": "number",
         "summary": "Total Duration",
         "default": 110
       },
-      "satuan": {
+      "satuan_duration": {
         "type": "string",
         "summary": "Satuan (menit, detik, jam)",
         "default": "detik"
@@ -35,6 +30,10 @@
       "passing_grade": {
         "type": "number",
         "default": 100
+      },
+      "order_number": {
+        "type": "number",
+        "default": 1
       }
     }
   },
@@ -46,27 +45,22 @@
         "summary": "Tryout Package ID",
         "default": "UUID"
       },
-      "name": {
+      "type_id": {
         "type": "string",
-        "summary": "Tryout Detail Name",
-        "default": "SKD"
-      },
-      "description": {
-        "type": "string",
-        "summary": "Tryout Detail Description",
-        "default": "Seleksi Kompetensi Dasar"
+        "summary": "Tryout Type ID",
+        "default": "UUID"
       },
       "total_questions": {
         "type": "number",
         "summary": "Total Question",
         "default": 110
       },
-      "duration": {
+      "total_duration": {
         "type": "number",
         "summary": "Total Duration",
         "default": 110
       },
-      "satuan": {
+      "satuan_duration": {
         "type": "string",
         "summary": "Satuan (menit, detik, jam)",
         "default": "detik"
@@ -74,6 +68,10 @@
       "passing_grade": {
         "type": "number",
         "default": 100
+      },
+      "order_number": {
+        "type": "number",
+        "default": 1
       }
     }
   }
