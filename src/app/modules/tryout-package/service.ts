@@ -59,7 +59,7 @@ export class TryoutPackageService {
           'stage.name AS stage_name',
           'package.order_number AS order_number',
           'package.total_questions AS total_questions',
-          'package.mode_answer AS mode_answer',
+          'package.mode_layout AS mode_layout',
           'package.created_at AS created_at',
           'package.updated_at AS updated_at',
         ]);

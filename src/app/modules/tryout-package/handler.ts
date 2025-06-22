@@ -32,8 +32,8 @@ class TryoutPackageHandler {
       payload.order_number = req?.body?.order_number;
     }
 
-    if (req?.body?.mode_answer) {
-      payload.mode_answer = req?.body?.mode_answer;
+    if (req?.body?.mode_layout) {
+      payload.mode_layout = req?.body?.mode_layout;
     }
 
     return payload;

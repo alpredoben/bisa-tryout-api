@@ -10,16 +10,21 @@ export const columns = {
   satuan_duration: 'satuan_duration',
   order_number: 'order_number',
   passing_grade: 'passing_grade',
+  mode_answer: 'mode_answer',
   created_at: 'created_at',
+  updated_at: 'updated_at',
 };
 
 export const sortItem = {
-  default: ['created_at', 'DESC'],
+  default: ['updated_at', 'DESC'],
   request: {
     name: 'name',
-    description: 'description',
-    total_questions: 'total_questions',
-    passing_grade: 'passing_grade',
-    created_at: 'created_at',
+    total_questions: 'detail.total_questions',
+    passing_grade: 'detail.passing_grade',
+    mode_answer: 'detail.mode_answer',
+    package_name: 'package.package_name',
+    type_name: 'type.name',
+    created_at: 'detail.created_at',
+    updated_at: 'detail.updated_at',
   },
 };

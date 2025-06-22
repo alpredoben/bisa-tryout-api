@@ -26,6 +26,11 @@
         "type": "number",
         "summary": "Order Number",
         "default": 1
+      },
+      "mode_layout": {
+        "type": "string",
+        "summary": "Mode Layout",
+        "default": "cat"
       }
     }
   },
@@ -56,6 +61,11 @@
         "type": "number",
         "summary": "Order Number",
         "default": 1
+      },
+      "mode_layout": {
+        "type": "string",
+        "summary": "Mode Layout",
+        "default": "cat"
       }
     }
   }
