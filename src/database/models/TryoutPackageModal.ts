@@ -34,8 +34,8 @@ export class TryoutPackageModal {
   @Column({ type: 'bigint', name: 'order_number', default: null })
   order_number!: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'mode_answer', nullable: true, default: null })
-  mode_answer!: string;
+  @Column({ type: 'varchar', length: 255, name: 'mode_layout', nullable: true, default: null })
+  mode_layout!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;

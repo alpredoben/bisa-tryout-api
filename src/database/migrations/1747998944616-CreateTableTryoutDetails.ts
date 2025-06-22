@@ -11,6 +11,7 @@ export class CreateTableTryoutDetail1747998944616 implements MigrationInterface 
       satuan_duration VARCHAR(100) DEFAULT NULL,
       order_number BIGINT DEFAULT NULL,
       passing_grade BIGINT DEFAULT NULL,
+      mode_answer VARCHAR(200) DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
       created_by UUID NULL,
       updated_at TIMESTAMP NULL,

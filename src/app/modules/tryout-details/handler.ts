@@ -35,6 +35,14 @@ class TryoutDetailHandler {
     if (req?.body?.passing_grade) {
       payload.passing_grade = req?.body?.passing_grade;
     }
+
+    if (req?.body?.order_number) {
+      payload.order_number = req?.body?.order_number;
+    }
+
+    if (req?.body?.mode_answer) {
+      payload.mode_answer = req?.body?.mode_answer;
+    }
     return payload;
   }
 

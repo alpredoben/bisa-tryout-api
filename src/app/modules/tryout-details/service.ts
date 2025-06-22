@@ -1,4 +1,4 @@
-import { FindOptionsWhere, ILike, IsNull } from 'typeorm';
+import { Brackets, IsNull } from 'typeorm';
 import AppDataSource from '../../../config/db.config';
 import { TryoutDetailModal } from '../../../database/models/TryoutDetailModal';
 import { I_ExpressResponse, I_RequestCustom } from '../../../interfaces/app.interface';
@@ -15,60 +15,57 @@ export class TryoutDetailService {
   async fetchPagination(filters: Record<string, any>): Promise<I_ExpressResponse> {
     const { paging, sorting, queries } = filters;
     try {
-      let whereCondition: Record<string, any>[] = [];
-      let whereAnd: FindOptionsWhere<TryoutDetailModal> = {
-        deleted_at: IsNull(),
-      };
+      const searchTerm = paging?.search;
+
+      const queryBuilder = this.repository
+        .createQueryBuilder('detail')
+        .leftJoinAndSelect('detail.package', 'package')
+        .leftJoinAndSelect('detail.type', 'type');
 
       if (queries?.package_id) {
-        whereAnd.package_id = queries.package_id;
+        queryBuilder.andWhere('detail.package_id = :id', {
+          id: queries.package_id,
+        });
       }
 
-      if (paging?.search) {
-        const searchTerm: any = paging?.search;
-        whereCondition = [
-          {
-            total_duration: ILike(`%${searchTerm}%`),
-            ...whereAnd,
-          },
-        ];
-
-        if (!isNaN(searchTerm)) {
-          whereCondition.push({
-            passing_grade: Number(searchTerm),
-          });
-          whereCondition.push({
-            total_questions: Number(searchTerm),
-          });
-          whereCondition.push({
-            order_number: Number(searchTerm),
-          });
-        }
+      if (searchTerm) {
+        queryBuilder.andWhere(
+          new Brackets((qb) => {
+            qb.where('package.package_name ILIKE :search', { search: `%${searchTerm}%` }).orWhere(
+              'type.name ILIKE :search',
+              { search: `%${searchTerm}%` },
+            );
+          }),
+        );
       }
 
-      const [rows, count] = await this.repository.findAndCount({
-        where: whereCondition?.length > 0 ? whereCondition : whereAnd,
-        relations: {
-          package: true,
-          type: true,
-        },
-        select: {
-          detail_id: true,
-          package: {
-            package_id: true,
-            total_questions: true,
-          },
-          total_questions: true,
-          total_duration: true,
-          passing_grade: true,
-          order_number: true,
-          created_at: true,
-          updated_at: true,
-        },
-        skip: Number(paging?.skip),
-        take: Number(paging?.limit),
-        order: sorting,
-      });
+      const dataQuery = queryBuilder
+        .clone()
+        .select([
+          'detail.detail_id AS detail_id',
+          'detail.total_questions AS total_questions',
+          'detail.total_duration AS total_duration',
+          'detail.satuan_duration AS satuan_duration',
+          'detail.passing_grade AS passing_grade',
+          'detail.mode_answer AS mode_answer',
+          'detail.order_number AS order_number',
+          'package.package_name AS package_name',
+          'type.name AS type_name',
+          'detail.package_id AS package_id',
+          'detail.type_id AS type_id',
+          'detail.created_at AS created_at',
+          'detail.updated_at AS updated_at',
+        ]);
+
+      const countQuery = queryBuilder.clone().select('detail.detail_id');
+
+      if (sorting) {
+        Object.entries(sorting).forEach(([key, value]) => {
+          dataQuery.addOrderBy(key, value?.toString()?.toUpperCase() == 'ASC' ? 'ASC' : 'DESC');
+        });
+      }
+
+      const [rows, count] = await Promise.all([dataQuery.getRawMany(), countQuery.getCount()]);
 
       const pagination: I_ResponsePagination = setPagination(rows, count, paging?.page, paging?.limit);
 
@@ -95,29 +92,40 @@ export class TryoutDetailService {
             category: true,
             stage: true,
           },
+          type: true,
         },
         select: {
           detail_id: true,
           passing_grade: true,
           total_duration: true,
+          satuan_duration: true,
           total_questions: true,
+          mode_answer: true,
           created_at: true,
           updated_at: true,
           order_number: true,
           package: {
             package_id: true,
+            package_name: true,
             total_questions: true,
+            mode_layout: true,
             category: {
               category_id: true,
               name: true,
               prices: true,
               description: true,
+              year: true,
             },
             stage: {
               stage_id: true,
               name: true,
               description: true,
             },
+          },
+          type: {
+            type_id: true,
+            name: true,
+            description: true,
           },
         },
       });

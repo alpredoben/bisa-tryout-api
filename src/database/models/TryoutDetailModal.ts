@@ -38,6 +38,9 @@ export class TryoutDetailModal {
   @Column({ type: 'bigint', name: 'passing_grade', default: null })
   passing_grade!: number;
 
+  @Column({ type: 'varchar', length: 200, name: 'mode_answer', default: null })
+  mode_answer!: string;
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
   created_at!: Date;
 

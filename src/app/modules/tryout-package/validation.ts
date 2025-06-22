@@ -46,7 +46,7 @@ export const TryoutPackageValidation = {
     reqValidation(columns.stage_id, 'Jenis Tes ID', 'check'),
     reqValidation(columns.total_questions, 'Jumlah Pertanyaan', 'check', true),
     reqValidation(columns.order_number, 'No. Urut', 'check'),
-    reqValidation(columns.mode_answer, 'Jenis Jawaban', 'check'),
+    reqValidation(columns.mode_layout, 'Jenis Layout', 'check'),
     ...validationMiddleware,
   ],
   updated: [
@@ -73,7 +73,7 @@ export const TryoutPackageValidation = {
     reqValidation(columns.stage_id, 'Jenis Tes ID', 'check', true),
     reqValidation(columns.total_questions, 'Jumlah Pertanyaan', 'check', true),
     reqValidation(columns.order_number, 'No. Urut', 'check', true),
-    reqValidation(columns.mode_answer, 'Jenis Jawaban', 'check', true),
+    reqValidation(columns.mode_layout, 'Jenis Layout', 'check', true),
     ...validationMiddleware,
   ],
   findId: [...IDValidation, ...validationMiddleware],

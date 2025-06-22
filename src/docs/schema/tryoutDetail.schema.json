@@ -34,6 +34,11 @@
       "order_number": {
         "type": "number",
         "default": 1
+      },
+      "mode_answer": {
+        "type": "string",
+        "summary": "Mode Answer",
+        "default": "pilihan-berganda"
       }
     }
   },
@@ -72,6 +77,11 @@
       "order_number": {
         "type": "number",
         "default": 1
+      },
+      "mode_answer": {
+        "type": "string",
+        "summary": "Mode Answer",
+        "default": "pilihan-berganda"
       }
     }
   }
